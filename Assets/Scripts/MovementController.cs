@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class MovementController : MonoBehaviour
 {
     private float velocity = 3.0f;
     private Vector2 vector = new Vector2();
+    private Vector2 mousePos = new Vector2();
 
     private UnityEngine.Transform transform;
     private Animator animator;
@@ -47,7 +49,7 @@ public class MovementController : MonoBehaviour
 
     private void UpdateState()
     {
-        if(!vector.Equals(Vector2.zero))
+        if (!vector.Equals(Vector2.zero))
         {
             // x 축 입력이 존재하는 경우
             // x 축 입력에 따라 오른쪽을 바라볼지, 왼쪽을 바라볼지 결정
@@ -91,10 +93,20 @@ public class MovementController : MonoBehaviour
 
     void FixedUpdate()
     {
-        MoveCharacter();
+        // S키를 눌렀을 때 캐릭터가 멈춤
+        if (Input.GetKey(KeyCode.S))
+        {
+            mousePos = transform.position;
+        }
+
+        //MoveCharacter_KeyBoard();
+        MoveCharacter_Mouse();
+        //MoveCharacter_Mouse_STOP_WHEN_RELEASED();
     }
 
-    private void MoveCharacter()
+    //UNUSED
+    /* 
+    private void MoveCharacter_KeyBoard()
     {
         vector.x = Input.GetAxisRaw("Horizontal");
         vector.y = Input.GetAxisRaw("Vertical");
@@ -108,4 +120,63 @@ public class MovementController : MonoBehaviour
         debug_vector_x = debug_vector.x;
 #endif
     }
+    */
+
+    private void MoveCharacter_Mouse()
+    {
+        // 마우스 오른쪽 버튼을 누른 즉시 || (마우스 오른쪽 버튼을 누르고 있을 때 && 마우스 좌표에 변화가 생길 때)
+        if (Input.GetMouseButtonDown(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f))
+        {
+            mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
+
+        vector.x = mousePos.x - transform.position.x;
+        vector.y = mousePos.y - transform.position.y;
+
+        if (vector.magnitude < 0.05f)
+        {
+            vector = Vector2.zero;
+        }
+
+        vector.Normalize();
+
+        rigidbody.velocity = vector * velocity;
+
+#if DEBUG
+        debug_vector = vector;
+        debug_vector_x = debug_vector.x;
+#endif
+    }
+
+//UNUSED
+/* 
+private void MoveCharacter_Mouse_STOP_WHEN_RELEASED()
+{
+    vector = Vector2.zero;
+
+    if (Input.GetMouseButton(1))
+    {
+    mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+    vector.x = mousePos.x - transform.position.x;
+    vector.y = mousePos.y - transform.position.y;
+
+    //Debug.Log("Vector Magnitude : " + vector.magnitude + "  (" + vector.x + ", " + vector.y + ")");
+
+    if (vector.magnitude < 0.05f)
+    {
+        vector = Vector2.zero;
+    }
+
+    vector.Normalize();
+    }
+
+    rigidbody.velocity = vector * velocity;
+
+#if DEBUG
+    debug_vector = vector;
+    debug_vector_x = debug_vector.x;
+#endif
+}
+*/
 }
