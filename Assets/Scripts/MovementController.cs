@@ -8,6 +8,7 @@ public class MovementController : MonoBehaviour
 {
     private float velocity = 3.0f;
     private Vector2 vector = new Vector2();
+    private bool is_moveable = false;
     private Vector2 mousePos = new Vector2();
 
     private UnityEngine.Transform transform;
@@ -26,6 +27,7 @@ public class MovementController : MonoBehaviour
     public float debug_velocity;
     public Vector2 debug_vector;
     public float debug_vector_x;
+    public bool debug_is_mouse_moved;
     public int debug_animationstate;
 #endif
 
@@ -96,6 +98,7 @@ public class MovementController : MonoBehaviour
         // S키를 눌렀을 때 캐릭터가 멈춤
         if (Input.GetKey(KeyCode.S))
         {
+            is_moveable = true;
             mousePos = transform.position;
         }
 
@@ -124,8 +127,15 @@ public class MovementController : MonoBehaviour
 
     private void MoveCharacter_Mouse()
     {
-        // 마우스 오른쪽 버튼을 누른 즉시 || (마우스 오른쪽 버튼을 누르고 있을 때 && 마우스 좌표에 변화가 생길 때)
-        if (Input.GetMouseButtonDown(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f))
+        // 마우스 오른쪽 버튼을 누르고 있을 때 && 마우스 좌표에 변화가 생길 때
+        if (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f)
+        {
+            is_moveable = false;
+        }
+
+        // S키를 누르지 않았을 때
+        if(!is_moveable)
+        //if (Input.GetMouseButtonDown(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f))
         {
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
@@ -145,6 +155,7 @@ public class MovementController : MonoBehaviour
 #if DEBUG
         debug_vector = vector;
         debug_vector_x = debug_vector.x;
+        debug_is_mouse_moved = is_moveable;
 #endif
     }
 
