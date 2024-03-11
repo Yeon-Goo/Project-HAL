@@ -11,7 +11,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Blocking
   - 
   - 
   - 
@@ -40,4 +40,22 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Tilemap_Water
+    uniqueID: 3970351775
+    locked: 0
+  - name: Tilemap_Ground
+    uniqueID: 3345679839
+    locked: 0
+  - name: Tilemap_Walkable_Objects
+    uniqueID: 1342830985
+    locked: 0
+  - name: Tilemap_Trees_and_Rocks(Under)
+    uniqueID: 99373249
+    locked: 0
+  - name: Characters
+    uniqueID: 3130689361
+    locked: 0
+  - name: Tilemap_Trees_and_Rocks(Over)
+    uniqueID: 3425836341
     locked: 0
