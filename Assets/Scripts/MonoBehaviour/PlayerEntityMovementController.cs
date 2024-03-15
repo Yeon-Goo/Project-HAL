@@ -4,18 +4,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
-public class MovementController : MonoBehaviour
+// Player의 움직임에 대한 Controller
+
+public class PlayerEntityMovementController : MonoBehaviour
 {
+    // Player의 속력
     private float velocity = 3.0f;
+    // Player의 방향
     private Vector2 vector = new Vector2();
+    // Player가 움직일 수 있는지의 유무 (stop 기능에 쓰임)
     private bool is_moveable = false;
+    // Player의 목표 좌표
     private Vector2 mousePos = new Vector2();
 
+    // Component Variables
     private UnityEngine.Transform transform;
     private Animator animator;
     private Rigidbody2D rigidbody;
 
-    string animationState = "AnimationState";
+    // String Variables
+    private static string animationState = "AnimationState";
+
+    // Player의 애니메이션 재생에 쓰이는 변수
     enum AnimationStateEnum
     {
         idle = 0,
