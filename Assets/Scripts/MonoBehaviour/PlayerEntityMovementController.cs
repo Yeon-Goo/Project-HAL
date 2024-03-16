@@ -8,6 +8,7 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerEntityMovementController : MonoBehaviour
 {
+    [SerializeField]
     // Player�� �ӷ�
     private float velocity = 3.0f;
     // Player�� ����
@@ -15,7 +16,7 @@ public class PlayerEntityMovementController : MonoBehaviour
     // Player�� ������ �� �ִ����� ���� (stop ��ɿ� ����)
     private bool is_moveable = false;
     // Player�� ��ǥ ��ǥ
-    private Vector2 mousePos = new Vector2();
+    private Vector2 target_pos = new Vector2();
 
     // Component Variables
     private UnityEngine.Transform transform;
@@ -109,13 +110,85 @@ public class PlayerEntityMovementController : MonoBehaviour
         if (Input.GetKey(KeyCode.S))
         {
             is_moveable = false;
-            mousePos = transform.position;
+            target_pos = transform.position;
         }
 
         //MoveCharacter_KeyBoard();
         MoveCharacter_Mouse();
         //MoveCharacter_Mouse_STOP_WHEN_RELEASED();
     }
+
+    private void MoveCharacter_Mouse()
+    {
+        // ���콺 ������ ��ư�� ������ ���� �� || (���콺 ������ ��ư�� ������ ���� �� && ���콺 ��ǥ�� ��ȭ�� ���� ��)
+        if (!Input.GetMouseButton(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f))
+        //if (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f)
+        {
+            is_moveable = true;
+        }
+
+        // SŰ�� ������ �ʾ��� ��
+        if (is_moveable && Input.GetMouseButton(1))
+        //if (Input.GetMouseButtonDown(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f))
+        {
+            target_pos = FindPath();
+        }
+
+        vector.x = target_pos.x - transform.position.x;
+        vector.y = target_pos.y - transform.position.y;
+
+        if (vector.magnitude < 0.1f)
+        {
+            vector = Vector2.zero;
+        }
+
+        vector.Normalize();
+
+        rigidbody.velocity = vector * velocity;
+
+#if DEBUG
+        debug_vector = vector;
+        debug_vector_x = debug_vector.x;
+        debug_is_moveable = is_moveable;
+#endif
+    }
+
+    private Vector2 FindPath()
+    {
+        return Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    }
+
+    //UNUSED
+    /* 
+    private void MoveCharacter_Mouse_STOP_WHEN_RELEASED()
+    {
+        vector = Vector2.zero;
+
+        if (Input.GetMouseButton(1))
+        {
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        vector.x = mousePos.x - transform.position.x;
+        vector.y = mousePos.y - transform.position.y;
+
+        //Debug.Log("Vector Magnitude : " + vector.magnitude + "  (" + vector.x + ", " + vector.y + ")");
+
+        if (vector.magnitude < 0.05f)
+        {
+            vector = Vector2.zero;
+        }
+
+        vector.Normalize();
+        }
+
+        rigidbody.velocity = vector * velocity;
+
+    #if DEBUG
+        debug_vector = vector;
+        debug_vector_x = debug_vector.x;
+    #endif
+    }
+    */
 
     //UNUSED
     /* 
@@ -134,70 +207,4 @@ public class PlayerEntityMovementController : MonoBehaviour
 #endif
     }
     */
-
-    private void MoveCharacter_Mouse()
-    {
-        // ���콺 ������ ��ư�� ������ ���� �� && ���콺 ��ǥ�� ��ȭ�� ���� ��
-        if (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f)
-        {
-            is_moveable = true;
-        }
-
-        // SŰ�� ������ �ʾ��� ��
-        if(Input.GetMouseButton(1) && is_moveable)
-        //if (Input.GetMouseButtonDown(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f))
-        {
-            mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        }
-
-        vector.x = mousePos.x - transform.position.x;
-        vector.y = mousePos.y - transform.position.y;
-
-        if (vector.magnitude < 0.1f)
-        {
-            vector = Vector2.zero;
-        }
-
-        vector.Normalize();
-
-        rigidbody.velocity = vector * velocity;
-
-#if DEBUG
-        debug_vector = vector;
-        debug_vector_x = debug_vector.x;
-        debug_is_moveable = is_moveable;
-#endif
-    }
-
-//UNUSED
-/* 
-private void MoveCharacter_Mouse_STOP_WHEN_RELEASED()
-{
-    vector = Vector2.zero;
-
-    if (Input.GetMouseButton(1))
-    {
-    mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-    vector.x = mousePos.x - transform.position.x;
-    vector.y = mousePos.y - transform.position.y;
-
-    //Debug.Log("Vector Magnitude : " + vector.magnitude + "  (" + vector.x + ", " + vector.y + ")");
-
-    if (vector.magnitude < 0.05f)
-    {
-        vector = Vector2.zero;
-    }
-
-    vector.Normalize();
-    }
-
-    rigidbody.velocity = vector * velocity;
-
-#if DEBUG
-    debug_vector = vector;
-    debug_vector_x = debug_vector.x;
-#endif
-}
-*/
 }
