@@ -8,6 +8,7 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerEntityMovementController : MonoBehaviour
 {
+    [SerializeField]
     // Player의 속력
     private float velocity = 3.0f;
     // Player의 방향
@@ -15,7 +16,7 @@ public class PlayerEntityMovementController : MonoBehaviour
     // Player가 움직일 수 있는지의 유무 (stop 기능에 쓰임)
     private bool is_moveable = false;
     // Player의 목표 좌표
-    private Vector2 mousePos = new Vector2();
+    private Vector2 target_pos = new Vector2();
 
     // Component Variables
     private UnityEngine.Transform transform;
@@ -109,13 +110,85 @@ public class PlayerEntityMovementController : MonoBehaviour
         if (Input.GetKey(KeyCode.S))
         {
             is_moveable = false;
-            mousePos = transform.position;
+            target_pos = transform.position;
         }
 
         //MoveCharacter_KeyBoard();
         MoveCharacter_Mouse();
         //MoveCharacter_Mouse_STOP_WHEN_RELEASED();
     }
+
+    private void MoveCharacter_Mouse()
+    {
+        // 마우스 오른쪽 버튼이 눌리지 않을 때 || (마우스 오른쪽 버튼을 누르고 있을 때 && 마우스 좌표에 변화가 생길 때)
+        if (!Input.GetMouseButton(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f))
+        //if (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f)
+        {
+            is_moveable = true;
+        }
+
+        // S키를 누르지 않았을 때
+        if (is_moveable && Input.GetMouseButton(1))
+        //if (Input.GetMouseButtonDown(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f))
+        {
+            target_pos = FindPath();
+        }
+
+        vector.x = target_pos.x - transform.position.x;
+        vector.y = target_pos.y - transform.position.y;
+
+        if (vector.magnitude < 0.1f)
+        {
+            vector = Vector2.zero;
+        }
+
+        vector.Normalize();
+
+        rigidbody.velocity = vector * velocity;
+
+#if DEBUG
+        debug_vector = vector;
+        debug_vector_x = debug_vector.x;
+        debug_is_moveable = is_moveable;
+#endif
+    }
+
+    private Vector2 FindPath()
+    {
+        return Camera.main.ScreenToWorldPoint(Input.mousePosition);
+    }
+
+    //UNUSED
+    /* 
+    private void MoveCharacter_Mouse_STOP_WHEN_RELEASED()
+    {
+        vector = Vector2.zero;
+
+        if (Input.GetMouseButton(1))
+        {
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        vector.x = mousePos.x - transform.position.x;
+        vector.y = mousePos.y - transform.position.y;
+
+        //Debug.Log("Vector Magnitude : " + vector.magnitude + "  (" + vector.x + ", " + vector.y + ")");
+
+        if (vector.magnitude < 0.05f)
+        {
+            vector = Vector2.zero;
+        }
+
+        vector.Normalize();
+        }
+
+        rigidbody.velocity = vector * velocity;
+
+    #if DEBUG
+        debug_vector = vector;
+        debug_vector_x = debug_vector.x;
+    #endif
+    }
+    */
 
     //UNUSED
     /* 
@@ -134,70 +207,4 @@ public class PlayerEntityMovementController : MonoBehaviour
 #endif
     }
     */
-
-    private void MoveCharacter_Mouse()
-    {
-        // 마우스 오른쪽 버튼을 누르고 있을 때 && 마우스 좌표에 변화가 생길 때
-        if (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f)
-        {
-            is_moveable = true;
-        }
-
-        // S키를 누르지 않았을 때
-        if(Input.GetMouseButton(1) && is_moveable)
-        //if (Input.GetMouseButtonDown(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f))
-        {
-            mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        }
-
-        vector.x = mousePos.x - transform.position.x;
-        vector.y = mousePos.y - transform.position.y;
-
-        if (vector.magnitude < 0.1f)
-        {
-            vector = Vector2.zero;
-        }
-
-        vector.Normalize();
-
-        rigidbody.velocity = vector * velocity;
-
-#if DEBUG
-        debug_vector = vector;
-        debug_vector_x = debug_vector.x;
-        debug_is_moveable = is_moveable;
-#endif
-    }
-
-//UNUSED
-/* 
-private void MoveCharacter_Mouse_STOP_WHEN_RELEASED()
-{
-    vector = Vector2.zero;
-
-    if (Input.GetMouseButton(1))
-    {
-    mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-    vector.x = mousePos.x - transform.position.x;
-    vector.y = mousePos.y - transform.position.y;
-
-    //Debug.Log("Vector Magnitude : " + vector.magnitude + "  (" + vector.x + ", " + vector.y + ")");
-
-    if (vector.magnitude < 0.05f)
-    {
-        vector = Vector2.zero;
-    }
-
-    vector.Normalize();
-    }
-
-    rigidbody.velocity = vector * velocity;
-
-#if DEBUG
-    debug_vector = vector;
-    debug_vector_x = debug_vector.x;
-#endif
-}
-*/
 }
