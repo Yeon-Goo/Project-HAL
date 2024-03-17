@@ -8,13 +8,13 @@ using UnityEngine;
 public class Item : ScriptableObject
 {
     // Item의 이름
-    private string objectName;
+    public string objectName;
     // Item의 sprite
     private Sprite sprite;
     // Item의 수량 (default : 1)
-    private int quantity;
+    public int quantity;
     // Item의 stack 여부 (default : false)
-    private bool stackable;
+    public bool stackable;
 
     // ** 여기 private enum으로 하면 왜 GetItemType()에서 오류가 나는지 모르겠음 **
     public enum ItemTypeEnum
@@ -23,7 +23,7 @@ public class Item : ScriptableObject
         HEALTH
     }
     // Item의 타입
-    private ItemTypeEnum itemType;
+    public ItemTypeEnum itemType;
 
     public string GetName()
     {
