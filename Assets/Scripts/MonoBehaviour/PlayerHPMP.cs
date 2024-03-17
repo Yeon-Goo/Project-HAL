@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class PlayerHPMP : MonoBehaviour
 {
+    [SerializeField]
     private int MaxHP = 10;
+    [SerializeField]
     private int MaxMP = 20;
 
+    [SerializeField]
     private int CurHP = 10;
+    [SerializeField]
     private int CurMP = 0;
 
     public void HPDamaged(int a)

@@ -10,7 +10,5 @@ using UnityEngine;
 public abstract class Entity : MonoBehaviour
 {
 
-    public int curHP;
-    public int maxHP;
 
 }
