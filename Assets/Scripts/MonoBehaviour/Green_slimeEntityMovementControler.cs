@@ -14,6 +14,10 @@ public class MonsterTracking : MonoBehaviour
     private int monster_state = 0;
     private float tempTime = 0f;
     private Vector2 player_pos;
+    private Vector2 initial_pos;
+    private Vector2 wanderDirection;
+    private Vector2 move_direction;
+    private Vector3 target_pos;
 
 
     private Animator animator;
@@ -25,9 +29,14 @@ public class MonsterTracking : MonoBehaviour
         move = 1,
         charge = 2,
         attack = 3,
-        delay = 4
+        delay = 4,
+        idle_move = 5
     }
 
+    void Start()
+    {
+        initial_pos = transform.position;
+    }
     void FixedUpdate()
     {
         float distance = Vector2.Distance(transform.position, player.position);
@@ -36,6 +45,15 @@ public class MonsterTracking : MonoBehaviour
             if(distance < range) // 거리가 가까워지면 추격상태로 전환
             {
                 monster_state = (int)StateEnum.move;
+            }
+            else if(Time.time - tempTime > 1f) // 평상시 상태가 1초 이상 지속시 탐색상태로 전환
+            {
+                wanderDirection = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+                Vector2 From_Current_To_Initial = (initial_pos - (Vector2)transform.position).normalized;
+                move_direction = (From_Current_To_Initial + wanderDirection).normalized;
+                target_pos = transform.position + (Vector3)move_direction * 10;
+                tempTime = Time.time;
+                monster_state = (int)StateEnum.idle_move;
             }
         }
 
@@ -54,6 +72,7 @@ public class MonsterTracking : MonoBehaviour
             if(distance > tracking_range) // 시야 사거리가 멀어졌을 경우 평상시로 전환
             {
                 monster_state = (int)StateEnum.idle;
+                tempTime = Time.time;
             }
         }
 
@@ -88,7 +107,18 @@ public class MonsterTracking : MonoBehaviour
                 else  // 돌진 후 멀면 평상시로 전환
                 {
                     monster_state = (int)StateEnum.idle;
+                    tempTime = Time.time;
                 }
+            }
+        }
+
+        if(monster_state == (int)StateEnum.idle_move) // 탐색 상태일 때
+        {
+            transform.position = Vector2.MoveTowards(transform.position, target_pos, speed * Time.deltaTime);
+            if(Time.time - tempTime > 1f)
+            {
+                tempTime=Time.time;
+                monster_state = (int)StateEnum.idle;
             }
         }
     }
