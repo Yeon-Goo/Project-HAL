@@ -4,18 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
-// PlayerÀÇ ¿òÁ÷ÀÓ¿¡ ´ëÇÑ Controller
+// Playerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿ï¿½ ï¿½ï¿½ï¿½ï¿½ Controller
 
 public class PlayerEntityMovementController : MonoBehaviour
 {
     [SerializeField]
-    // PlayerÀÇ ¼Ó·Â
+    // Playerï¿½ï¿½ ï¿½Ó·ï¿½
     private float velocity = 3.0f;
-    // PlayerÀÇ ¹æÇâ
+    // Playerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private Vector2 vector = new Vector2();
-    // Player°¡ ¿òÁ÷ÀÏ ¼ö ÀÖ´ÂÁöÀÇ À¯¹« (stop ±â´É¿¡ ¾²ÀÓ)
+    // Playerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (stop ï¿½ï¿½É¿ï¿½ ï¿½ï¿½ï¿½ï¿½)
     private bool is_moveable = false;
-    // PlayerÀÇ ¸ñÇ¥ ÁÂÇ¥
+    // Playerï¿½ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½Ç¥
     private Vector2 target_pos = new Vector2();
 
     // Component Variables
@@ -26,7 +26,7 @@ public class PlayerEntityMovementController : MonoBehaviour
     // String Variables
     private static string animationState = "AnimationState";
 
-    // PlayerÀÇ ¾Ö´Ï¸ÞÀÌ¼Ç Àç»ý¿¡ ¾²ÀÌ´Â º¯¼ö
+    // Playerï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ï¿½ï¿½ï¿½
     enum AnimationStateEnum
     {
         idle = 0,
@@ -64,32 +64,32 @@ public class PlayerEntityMovementController : MonoBehaviour
     {
         if (!vector.Equals(Vector2.zero))
         {
-            // x Ãà ÀÔ·ÂÀÌ Á¸ÀçÇÏ´Â °æ¿ì
-            // x Ãà ÀÔ·Â¿¡ µû¶ó ¿À¸¥ÂÊÀ» ¹Ù¶óº¼Áö, ¿ÞÂÊÀ» ¹Ù¶óº¼Áö °áÁ¤
+            // x ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½
+            // x ï¿½ï¿½ ï¿½Ô·Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (vector.x > 0)
             {
-                // ¿À¸¥ÂÊÀ» ¹Ù¶óº½
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶ï¿½
                 transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
                 animator.SetInteger(animationState, (int)AnimationStateEnum.walk_right);
             }
             else if (vector.x < 0)
             {
-                // ¿ÞÂÊÀ» ¹Ù¶óº½
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶ï¿½
                 transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
                 animator.SetInteger(animationState, (int)AnimationStateEnum.walk_left);
             }
-            // x Ãà ÀÔ·ÂÀÌ Á¸ÀçÇÏÁö ¾Ê´Â °æ¿ì
-            // transformÀÇ localScaleÀÇ x °ª¿¡ µû¶ó ¿À¸¥ÂÊÀ» ¹Ù¶óº¼Áö, ¿ÞÂÊÀ» ¹Ù¶óº¼Áö °áÁ¤
+            // x ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ ï¿½ï¿½ï¿½
+            // transformï¿½ï¿½ localScaleï¿½ï¿½ x ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             else
             {
                 if (transform.localScale.x.Equals(1.0f))
                 {
-                    // ¿À¸¥ÂÊÀ» ¹Ù¶óº½
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶ï¿½
                     animator.SetInteger(animationState, (int)AnimationStateEnum.walk_right);
                 }
                 else
                 {
-                    // ¿ÞÂÊÀ» ¹Ù¶óº½
+                    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¶ï¿½
                     animator.SetInteger(animationState, (int)AnimationStateEnum.walk_left);
                 }
             }
@@ -106,7 +106,7 @@ public class PlayerEntityMovementController : MonoBehaviour
 
     void FixedUpdate()
     {
-        // SÅ°¸¦ ´­·¶À» ¶§ Ä³¸¯ÅÍ°¡ ¸ØÃã
+        // SÅ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (Input.GetKey(KeyCode.S))
         {
             is_moveable = false;
@@ -120,14 +120,14 @@ public class PlayerEntityMovementController : MonoBehaviour
 
     private void MoveCharacter_Mouse()
     {
-        // ¸¶¿ì½º ¿À¸¥ÂÊ ¹öÆ°ÀÌ ´­¸®Áö ¾ÊÀ» ¶§ || (¸¶¿ì½º ¿À¸¥ÂÊ ¹öÆ°À» ´©¸£°í ÀÖÀ» ¶§ && ¸¶¿ì½º ÁÂÇ¥¿¡ º¯È­°¡ »ý±æ ¶§)
+        // ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ || (ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ && ï¿½ï¿½ï¿½ì½º ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½)
         if (!Input.GetMouseButton(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f))
         //if (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f)
         {
             is_moveable = true;
         }
 
-        // SÅ°¸¦ ´©¸£Áö ¾Ê¾ÒÀ» ¶§
+        // SÅ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾ï¿½ï¿½ï¿½ ï¿½ï¿½
         if (is_moveable && Input.GetMouseButton(1))
         //if (Input.GetMouseButtonDown(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f))
         {
