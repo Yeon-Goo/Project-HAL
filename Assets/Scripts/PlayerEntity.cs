@@ -7,8 +7,11 @@ using UnityEngine.Rendering.UI;
 public class PlayerEntity : Entity
 {
     private static string pickable_objects = "Pickable_Objects";
-    public HPBarUI hpbar_prefab;
-    public HPBarUI hpbar_ui;
+
+    private HPBarUI hpbar_prefab;
+    private HPBarUI hpbar_ui;
+    private Inventory inventory_prefab;
+    private Inventory inventory;
 
     void Start()
     {
@@ -23,7 +26,7 @@ public class PlayerEntity : Entity
         }
 
         // Load HPBarUI
-        hpbar_prefab = Resources.Load<HPBarUI>("Prefabs/HPBarUI");
+        hpbar_prefab = Resources.Load<HPBarUI>("Prefabs/UI/HPBar/HPBarUI");
         if (hpbar_prefab == null)
         {
 #if DEBUG
@@ -40,7 +43,27 @@ public class PlayerEntity : Entity
 #endif
             return;
         }
-        hpbar_ui.Init(this);      
+        hpbar_ui.Init(this);
+
+        // Load Inventory
+        inventory_prefab = Resources.Load<Inventory>("Prefabs/UI/Inventory/InventoryUI");
+        if (inventory_prefab == null)
+        {
+#if DEBUG
+            Debug.Log("PlayerEntity::Start() Error! Inventory Prefab is NULL");
+#endif
+            return;
+        }
+
+        inventory = Instantiate(inventory_prefab);
+        if (inventory == null)
+        {
+#if DEBUG
+            Debug.Log("PlayerEntity::Start() Error! Inventory is NULL");
+#endif
+            return;
+        }
+        hpbar_ui.Init(this);
     }
 
 
@@ -58,7 +81,7 @@ public class PlayerEntity : Entity
                 switch (hitObject.GetItemType())
                 {
                     case Item.ItemTypeEnum.COIN:
-                        should_disappear = true;
+                        should_disappear = inventory.AddItem(hitObject);
                         break;
                     case Item.ItemTypeEnum.HEALTH:
                         should_disappear = AdjustHP(hitObject.GetQuantity());

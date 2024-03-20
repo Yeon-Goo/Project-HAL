@@ -12,12 +12,19 @@ public class VirtualCameraController : CinemachineExtension
 
     private CinemachineVirtualCamera virtualcamera;
     private CinemachineFramingTransposer framingtransposer;
+    
+    /*
+    private CameraShake camera_shake;
+    private const float ShakeTime = 1.0f;
+    private const float ShakeAmount;
+    */
 
     // Start is called before the first frame update
     void Start()
     {
         virtualcamera = GetComponent<CinemachineVirtualCamera>();
         framingtransposer = virtualcamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+        //camera_shake = virtualcamera.GetComponent<CameraShake>();
 
         // 가상 카메라의 크기 (수직 해상도 / PPU) * 0.5
         virtualcamera.m_Lens.OrthographicSize = (Screen.height / (PixelsPerUnit * pixelsPerUnitScale)) * 0.5f;
@@ -30,6 +37,29 @@ public class VirtualCameraController : CinemachineExtension
         framingtransposer.m_DeadZoneWidth = 0.0f;
         framingtransposer.m_DeadZoneHeight = 0.0f;
     }
+
+    /*
+    private void Update()
+    {
+        // 화면 흔들기
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            if (ShakeTime > 0)
+            {
+                Vector2 tmp_vec = Random.insideUnitSphere * ShakeAmount + initialPosition;
+                framingtransposer.m_ScreenX = tmp_vec.x;
+                framingtransposer.m_ScreenY = tmp_vec.y;
+                ShakeTime -= Time.deltaTime;
+            }
+            else
+            {
+                ShakeTime = 0.0f;
+                framingtransposer.m_ScreenX = initialPosition.x;
+                framingtransposer.m_ScreenY = initialPosition.y;
+            }
+        }
+    }
+    */
 
     protected override void PostPipelineStageCallback(CinemachineVirtualCameraBase vcam, CinemachineCore.Stage stage, ref CameraState state, float deltaTime)
     {

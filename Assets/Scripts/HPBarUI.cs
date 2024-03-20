@@ -11,7 +11,7 @@ public class HPBarUI : MonoBehaviour
     //[HideInInspector]
     public PlayerEntity player;
     private HPManager hp_manager;
-    private Image hpbar_image;
+    private Image hpbar_meter;
     private TMP_Text hpbar_text;
     public GameObject[] test;
 
@@ -28,7 +28,7 @@ public class HPBarUI : MonoBehaviour
 
         this.player = player;
         hp_manager = player.GetHPManager();
-        hpbar_image = GetComponentsInChildren<Image>()[2];
+        hpbar_meter = GetComponentsInChildren<Image>()[2];
         hpbar_text = GetComponentInChildren<TMP_Text>();
     }
 
@@ -37,8 +37,8 @@ public class HPBarUI : MonoBehaviour
     {
         if (player != null)
         {
-            hpbar_image.fillAmount = hp_manager.cur_hp / hp_manager.max_hp;
-            hpbar_text.text = "HP:" + (hpbar_image.fillAmount * 100);
+            hpbar_meter.fillAmount = hp_manager.cur_hp / hp_manager.max_hp;
+            hpbar_text.text = "HP:" + (hpbar_meter.fillAmount * 100);
         }
     }
 

@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 4629273450196002625}
   - component: {fileID: 7711551342482104428}
   - component: {fileID: 1154545106339469190}
+  - component: {fileID: 6695081604793790504}
   m_Layer: 5
   m_Name: HPBar_Mask
   m_TagString: Untagged
@@ -210,6 +211,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6695081604793790504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269660266036450241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1
 --- !u!1 &5126059994951073345
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,9 +430,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5852cf405d85abe4793a2f7024a7f2df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cur_HP: {fileID: 11400000, guid: 8714187ce6c4dca4e81a030ab7197d02, type: 2}
-  hpbar_image: {fileID: 4800864239445026725}
-  hpbar_text: {fileID: 2959528606349576466}
+  player: {fileID: 0}
+  test: []
 --- !u!1 &8122157675643087717
 GameObject:
   m_ObjectHideFlags: 0
