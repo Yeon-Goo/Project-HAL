@@ -30,8 +30,11 @@ public class PlayerDeck : MonoBehaviour
     [SerializeField]
     private List<TextMeshProUGUI> cardTexts = new List<TextMeshProUGUI>(); // 카드 텍스트 오브젝트 리스트
 
+    private GameObject weapon;
+
     void Start()
     {
+        weapon = GameObject.Find("Arrow");
         InitializeDeck();
         UpdateCardDisplay();
     }
@@ -58,6 +61,15 @@ public class PlayerDeck : MonoBehaviour
         {
             Debug.LogWarning("Invalid card selection.");
             return;
+        }
+
+        if (weapon != null)
+        {
+            weapon.GetComponent<Weapon>().Skill(deck[index].num, deck[index].level);
+        }
+        else
+        {
+            Debug.LogError("Weapon object not found.");
         }
 
         // Move the selected card to the end of the deck.
