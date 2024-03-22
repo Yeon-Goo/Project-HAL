@@ -64,7 +64,7 @@ public class Inventory : MonoBehaviour
 
                 qtyText.enabled = true;
                 qtyText.text = items[i].GetQuantity().ToString();
-                Debug.Log("New Quantity = " + items[i].GetQuantity().ToString());
+                //Debug.Log("New Quantity = " + items[i].GetQuantity().ToString());
 
                 return true;
             }
@@ -80,7 +80,7 @@ public class Inventory : MonoBehaviour
 
                 qtyText.enabled = true;
                 qtyText.text = items[i].GetQuantity().ToString();
-                Debug.Log("New Quantity = " + items[i].GetQuantity().ToString());
+                //Debug.Log("New Quantity = " + items[i].GetQuantity().ToString());
                 return true;
             }
         }

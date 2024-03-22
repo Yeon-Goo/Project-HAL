@@ -13,11 +13,8 @@ public class VirtualCameraController : CinemachineExtension
     private CinemachineVirtualCamera virtualcamera;
     private CinemachineFramingTransposer framingtransposer;
     
-    /*
-    private CameraShake camera_shake;
-    private const float ShakeTime = 1.0f;
-    private const float ShakeAmount;
-    */
+    private float ShakeTime = 0.0f;
+    private const float ShakeAmount = 1.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -38,28 +35,31 @@ public class VirtualCameraController : CinemachineExtension
         framingtransposer.m_DeadZoneHeight = 0.0f;
     }
 
-    /*
+    
     private void Update()
     {
-        // È­¸é Èçµé±â
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            if (ShakeTime > 0)
-            {
-                Vector2 tmp_vec = Random.insideUnitSphere * ShakeAmount + initialPosition;
-                framingtransposer.m_ScreenX = tmp_vec.x;
-                framingtransposer.m_ScreenY = tmp_vec.y;
-                ShakeTime -= Time.deltaTime;
-            }
-            else
-            {
-                ShakeTime = 0.0f;
-                framingtransposer.m_ScreenX = initialPosition.x;
-                framingtransposer.m_ScreenY = initialPosition.y;
-            }
+            ShakeTime = 1.0f;
+        }
+
+        // È­¸é Èçµé±â
+        if (ShakeTime > 0)
+        {
+            Vector2 tmp_vec = Random.insideUnitSphere * ShakeAmount;
+            Debug.Log("Vector2 = " + tmp_vec);
+            framingtransposer.m_ScreenX = 0.5f + tmp_vec.x;
+            framingtransposer.m_ScreenY = 0.5f + tmp_vec.y;
+            ShakeTime -= Time.deltaTime;
+        }
+        else
+        {
+            ShakeTime = 0.0f;
+            framingtransposer.m_ScreenX = 0.5f;
+            framingtransposer.m_ScreenY = 0.5f;
         }
     }
-    */
+    
 
     protected override void PostPipelineStageCallback(CinemachineVirtualCameraBase vcam, CinemachineCore.Stage stage, ref CameraState state, float deltaTime)
     {

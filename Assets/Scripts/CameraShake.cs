@@ -28,8 +28,15 @@ public class CameraShake : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            VibrateForTime(1.0f);
+        }
+
         if (ShakeTime > 0)
         {
+            Debug.Log("camera shake");
+            Debug.Log("ShakeTime = " + ShakeTime);
             Vector2 tmp_vec = Random.insideUnitSphere * ShakeAmount + initialPosition;
             framingtransposer.m_ScreenX = tmp_vec.x;
             framingtransposer.m_ScreenY = tmp_vec.y;
@@ -37,9 +44,10 @@ public class CameraShake : MonoBehaviour
         }
         else
         {
+            Debug.Log("ShakeTime = " + ShakeTime);
             ShakeTime = 0.0f;
-            framingtransposer.m_ScreenX = initialPosition.x;
-            framingtransposer.m_ScreenY = initialPosition.y;
+            framingtransposer.m_ScreenX = 0.5f;
+            framingtransposer.m_ScreenY = 0.5f;
         }
     }
 }
