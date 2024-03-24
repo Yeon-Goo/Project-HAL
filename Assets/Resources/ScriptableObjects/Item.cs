@@ -10,7 +10,7 @@ public class Item : ScriptableObject
     // Item의 이름
     public string objectName;
     // Item의 sprite
-    public Sprite sprite;
+    private Sprite sprite;
     // Item의 수량 (default : 1)
     public int quantity;
     // Item의 stack 여부 (default : false)
@@ -30,11 +30,6 @@ public class Item : ScriptableObject
         return objectName;
     }
 
-    public Sprite GetSprite()
-    {
-        return sprite;
-    }
-
     public int GetQuantity()
     {
         return quantity;
@@ -48,20 +43,5 @@ public class Item : ScriptableObject
     public ItemTypeEnum GetItemType()
     {
         return itemType;
-    }
-
-    public void SetQuantity(int quantity)
-    {
-        this.quantity = quantity;
-    }
-
-    public void SetStackable(bool stackable)
-    {
-        this.stackable = stackable;
-    }
-
-    public void SetItemType(ItemTypeEnum itemType)
-    {
-        this.itemType = itemType;
     }
 }
