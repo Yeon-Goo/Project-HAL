@@ -77,13 +77,13 @@ public class PlayerDeck : MonoBehaviour
         deck.RemoveAt(index);
         deck.Add(selectedCard);
 
-        // Shift the next card (5th card, if available) to the selected position.
+        /* Shift the next card (5th card, if available) to the selected position.
         if (deck.Count > 4)
         {
             Card nextCard = deck[4];
             deck.Insert(index, nextCard);
             deck.RemoveAt(5); // Remove the shifted card from its original position.
-        }
+        }*/
 
         UpdateCardDisplay();
 
@@ -92,7 +92,7 @@ public class PlayerDeck : MonoBehaviour
 
     private void UpdateCardDisplay()
     {
-        for (int i = 0; i < cardImages.Count; i++)
+        for (int i = 0; i < cardImages.Count + 1; i++)
         {
             if (i < deck.Count)
             {
