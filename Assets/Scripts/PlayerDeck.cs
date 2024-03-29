@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[Serializable]
+//[Serializable]
 public class Card
 {
     public int num; // 카드 고유 번호
@@ -62,7 +62,7 @@ public class PlayerDeck : MonoBehaviour
     }
     private void UseCard(int index)
     {
-        this.GetComponent<PlayerEntityMovementController>().CharacterStop();
+        this.GetComponent<PlayerEntity>().CharacterStop();
 
         if (deck.Count <= index)
         {

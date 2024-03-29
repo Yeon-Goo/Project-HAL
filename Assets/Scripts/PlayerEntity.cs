@@ -127,13 +127,18 @@ public class PlayerEntity : Entity
         // SŰ�� ������ �� ĳ���Ͱ� ����
         if (Input.GetKey(KeyCode.S))
         {
-            is_moveable = false;
-            target_pos = transform.position;
+            CharacterStop();
         }
 
         //MoveCharacter_KeyBoard();
         MoveCharacter_Mouse();
         //MoveCharacter_Mouse_STOP_WHEN_RELEASED();
+    }
+
+    public void CharacterStop()
+    {
+        is_moveable = false;
+        target_pos = transform.position;
     }
 
     private void MoveCharacter_Mouse()
