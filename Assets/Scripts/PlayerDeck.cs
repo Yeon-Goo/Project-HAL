@@ -4,39 +4,37 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-/*
 [Serializable]
 public class Card
 {
     public int num; // 카드 고유 번호
     public int level; // 카드 레벨
     public int count; // 해당 카드의 개수
-    public bool is_unlocked; // 카드의 해금 여부
+    public bool isUnlocked; // 카드의 해금 여부
 
-    public Card(int num, int level, int count = 1, bool is_unlocked = false)
+    public Card(int num, int level, int count = 1, bool isUnlocked = false)
     {
         this.num = num;
         this.level = level;
         this.count = count;
-        this.is_unlocked = is_unlocked;
+        this.isUnlocked = isUnlocked;
     }
 }
-*/
 
-public class DeckUI : MonoBehaviour
+public class PlayerDeck : MonoBehaviour
 {
     [SerializeField]
-    private List<Card> deck = new List<Card>(5); // 카드 덱
-    //[SerializeField]
-    //private List<Image> cardImages = new List<Image>(); // 카드 이미지 오브젝트 리스트
-    //[SerializeField]
-    //private List<TextMeshProUGUI> cardTexts = new List<TextMeshProUGUI>(); // 카드 텍스트 오브젝트 리스트
+    private List<Card> deck = new List<Card>(); // 카드 덱
+    [SerializeField]
+    private List<Image> cardImages = new List<Image>(); // 카드 이미지 오브젝트 리스트
+    [SerializeField]
+    private List<TextMeshProUGUI> cardTexts = new List<TextMeshProUGUI>(); // 카드 텍스트 오브젝트 리스트
 
-    private Weapon weapon;
+    private GameObject weapon;
 
     void Start()
     {
-        weapon = new Arrow();
+        weapon = GameObject.Find("Arrow");
         InitializeDeck();
         UpdateCardDisplay();
     }
@@ -53,7 +51,7 @@ public class DeckUI : MonoBehaviour
     {
         for (int i = 0; i < 8; i++)
         {
-            //deck.Add(new Card(i, 1, 1, true));
+            deck.Add(new Card(i, 1, 1, true));
         }
     }
 
@@ -94,7 +92,6 @@ public class DeckUI : MonoBehaviour
 
     private void UpdateCardDisplay()
     {
-        /*
         for (int i = 0; i < cardImages.Count + 1; i++)
         {
             if (i < deck.Count)
@@ -106,6 +103,5 @@ public class DeckUI : MonoBehaviour
                 cardTexts[i].text = "";
             }
         }
-        */
     }
 }

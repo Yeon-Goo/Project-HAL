@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Scriptable Objects/Item", fileName = "Item")]
+[CreateAssetMenu(menuName = "Item")]
 
 // Item의 속성을 정의하는 Sciprtable Object 클래스
 public class Item : ScriptableObject

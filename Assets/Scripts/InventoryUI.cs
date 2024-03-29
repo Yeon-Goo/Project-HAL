@@ -15,7 +15,13 @@ public class InventoryUI : MonoBehaviour
     void Start()
     {
         slotPrefab = Resources.Load<GameObject>("Prefabs/UI/Inventory/SlotUI");
-        if (slotPrefab == null) return;
+        if (slotPrefab == null)
+        {
+#if DEBUG
+            Debug.Log("Inventory::Start() Error! SlotUI Prefab is NULL");
+#endif
+            return;
+        }
         CreateSlots();
     }
 

@@ -39,9 +39,9 @@ public class VirtualCameraController : CinemachineExtension
 
         // Camera Shake
         // Ä«¸Þ¶ó Èçµé¸² ½Ã°£
-        camera_shake_time = 0.0f;
+        camera_shake_time = 0.5f;
         // Ä«¸Þ¶ó Èçµé¸² °­µ·
-        camera_shake_amount = 0.0f;
+        camera_shake_amount = 0.0075f;
         camera_shake_initial_pos = new Vector3(0.5f, 0.5f, 0.0f);
     }
 
