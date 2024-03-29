@@ -6,18 +6,15 @@ using UnityEngine;
 public class VirtualCameraController : CinemachineExtension
 {
     // 유닛(타일) 하나의 픽셀
-    private float pixelsperunit = 32.0f;
+    private float PixelsPerUnit = 32.0f;
     // 유닛 하나를 얼만큼 확대할지
-    private int pixelsperunit_scale = 3;
+    private int pixelsPerUnitScale = 3;
 
-    // Component Variables
     private CinemachineVirtualCamera virtualcamera;
     private CinemachineFramingTransposer framingtransposer;
-
-    // Camera Shake
-    private float camera_shake_amount;
-    private float camera_shake_time;
-    private Vector3 camera_shake_initial_pos;
+    
+    private float ShakeTime = 0.0f;
+    private const float ShakeAmount = 1.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +24,7 @@ public class VirtualCameraController : CinemachineExtension
         //camera_shake = virtualcamera.GetComponent<CameraShake>();
 
         // 가상 카메라의 크기 (수직 해상도 / PPU) * 0.5
-        virtualcamera.m_Lens.OrthographicSize = (Screen.height / (pixelsperunit * pixelsperunit_scale)) * 0.5f;
+        virtualcamera.m_Lens.OrthographicSize = (Screen.height / (PixelsPerUnit * pixelsPerUnitScale)) * 0.5f;
 
         // 가상 카메라의 데드 존이 트래킹 포인트를 따라 잡을 때까지의 시간
         framingtransposer.m_XDamping = 0.0f;
@@ -36,10 +33,6 @@ public class VirtualCameraController : CinemachineExtension
         // 가상 카메라의 데드 존의 크기
         framingtransposer.m_DeadZoneWidth = 0.0f;
         framingtransposer.m_DeadZoneHeight = 0.0f;
-
-        camera_shake_amount = 0.0f;
-        camera_shake_time = 0.0f;
-        camera_shake_initial_pos = new Vector3(0.5f, 0.5f, 0.0f);
     }
 
     
@@ -47,40 +40,30 @@ public class VirtualCameraController : CinemachineExtension
     {
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            VibrateForTimeAndAmount();
+            ShakeTime = 1.0f;
         }
 
-        CameraShake();
-    }
-
-    public void VibrateForTimeAndAmount(float time = 0.5f, float amount = 0.0075f)
-    {
-        Debug.Log("vibrate for " + time + "with amount " + amount);
-        camera_shake_time = time;
-        camera_shake_amount = amount;
-    }
-
-    private void CameraShake()
-    {
         // 화면 흔들기
-        if (camera_shake_time > 0)
+        if (ShakeTime > 0)
         {
-            Vector2 tmp_vec = Random.insideUnitSphere * camera_shake_amount;
+            Vector2 tmp_vec = Random.insideUnitSphere * ShakeAmount;
+            Debug.Log("Vector2 = " + tmp_vec);
             framingtransposer.m_ScreenX = 0.5f + tmp_vec.x;
             framingtransposer.m_ScreenY = 0.5f + tmp_vec.y;
-            camera_shake_time -= Time.deltaTime;
+            ShakeTime -= Time.deltaTime;
         }
         else
         {
-            camera_shake_time = 0.0f;
-            framingtransposer.m_ScreenX = camera_shake_initial_pos.x;
-            framingtransposer.m_ScreenY = camera_shake_initial_pos.y;
+            ShakeTime = 0.0f;
+            framingtransposer.m_ScreenX = 0.5f;
+            framingtransposer.m_ScreenY = 0.5f;
         }
     }
+    
 
-    // 화면 지터링 해결
     protected override void PostPipelineStageCallback(CinemachineVirtualCameraBase vcam, CinemachineCore.Stage stage, ref CameraState state, float deltaTime)
     {
+        // 화면 지터링 해결 코드
         if (stage == CinemachineCore.Stage.Body)
         {
             // 가상 카메라의 좌표
@@ -93,9 +76,8 @@ public class VirtualCameraController : CinemachineExtension
         }
     }
 
-    // 반올림
-    private float Round(float x)
+    float Round(float x)
     {
-        return Mathf.Round(x * pixelsperunit) / pixelsperunit;
+        return Mathf.Round(x * PixelsPerUnit) / PixelsPerUnit;
     }
 }

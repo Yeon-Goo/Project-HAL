@@ -2,14 +2,20 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventorySlotUI : MonoBehaviour
+public class Slot : MonoBehaviour
 {
-    // 아이템의 수량을 나타내는 TMP_Text
+    // quantity_text;
     public TMP_Text qtyText;
 
     // Start is called before the first frame update
     void Start()
     {
         qtyText = GetComponentInChildren<TMP_Text>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
     }
 }
