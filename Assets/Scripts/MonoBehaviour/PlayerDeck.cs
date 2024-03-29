@@ -62,7 +62,7 @@ public class PlayerDeck : MonoBehaviour
     }
     private void UseCard(int index)
     {
-        this.GetComponent<PlayerEntity>().CharacterStop();
+        this.GetComponent<PlayerEntityMovementController>().CharacterStop();
 
         if (deck.Count <= index)
         {
