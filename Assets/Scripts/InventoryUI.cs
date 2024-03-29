@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Inventory : MonoBehaviour
+public class InventoryUI : MonoBehaviour
 {
     private GameObject slotPrefab;
     public const int numSlots = 5;
@@ -59,7 +59,7 @@ public class Inventory : MonoBehaviour
             {
                 items[i].SetQuantity(items[i].GetQuantity() + 1);
 
-                Slot slotScript = slots[i].GetComponent<Slot>();
+                InventorySlotUI slotScript = slots[i].GetComponent<InventorySlotUI>();
                 TMP_Text qtyText = slotScript.qtyText;
 
                 qtyText.enabled = true;
@@ -75,7 +75,7 @@ public class Inventory : MonoBehaviour
                 items[i].SetQuantity(1);
                 itemImages[i].sprite = itemToAdd.GetSprite();
                 itemImages[i].enabled = true;
-                Slot slotScript = slots[i].GetComponent<Slot>();
+                InventorySlotUI slotScript = slots[i].GetComponent<InventorySlotUI>();
                 TMP_Text qtyText = slotScript.qtyText;
 
                 qtyText.enabled = true;

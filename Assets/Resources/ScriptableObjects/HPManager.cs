@@ -4,9 +4,13 @@ using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/HPManager", fileName = "HPManager")]
+
+// Entity의 HP를 관리하는 HPManager
 public class HPManager : ScriptableObject
 {
+    // Entity의 현재 체력
     public float cur_hp;
+    // Entity의 최대 체력
     public float max_hp;
 
     public void SetCurrentHP(float value)
