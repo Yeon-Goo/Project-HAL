@@ -37,11 +37,8 @@ public class VirtualCameraController : CinemachineExtension
         framingtransposer.m_DeadZoneWidth = 0.0f;
         framingtransposer.m_DeadZoneHeight = 0.0f;
 
-        // Camera Shake
-        // 카메라 흔들림 시간
-        camera_shake_time = 0.5f;
-        // 카메라 흔들림 강돈
-        camera_shake_amount = 0.0075f;
+        camera_shake_amount = 0.0f;
+        camera_shake_time = 0.0f;
         camera_shake_initial_pos = new Vector3(0.5f, 0.5f, 0.0f);
     }
 
@@ -56,10 +53,9 @@ public class VirtualCameraController : CinemachineExtension
         CameraShake();
     }
 
-    // CameraShake에 필요한 변수 초기화 (default : time = 0.5f, amount = 0.0075f)
     public void VibrateForTimeAndAmount(float time = 0.5f, float amount = 0.0075f)
     {
-        //Debug.Log("vibrate for " + time + "with amount " + amount);
+        Debug.Log("vibrate for " + time + "with amount " + amount);
         camera_shake_time = time;
         camera_shake_amount = amount;
     }
