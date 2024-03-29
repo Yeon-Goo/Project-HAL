@@ -9,7 +9,7 @@ using UnityEngine;
  */
 public abstract class Entity : MonoBehaviour
 {
-    // Entity의 HP 시스템을 관리하는 변수
+    // Entity의 HP를 관리하는 변수
     public HPManager hp_manager;
 
     public void SetHPManager(HPManager hp_manager)
