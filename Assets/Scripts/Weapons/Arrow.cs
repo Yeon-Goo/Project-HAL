@@ -1,15 +1,11 @@
 using UnityEngine;
 
-public class Archer : Weapon
+public class Arrow : Weapon
 {
-    [SerializeField]
-    private GameObject arrowPrefab;
-    public float arrowSpeed = 10f;
-
+    // 스킬 사용 메서드
     public override void Skill(int num, int level)
     {
-        FanShot();
-        /*switch (num)
+        switch (num)
         {
             case 1:
                 FanShot();
@@ -41,33 +37,12 @@ public class Archer : Weapon
             default:
                 Debug.Log("Unknown skill.");
                 break;
-        } */
+        }
     }
 
     void FanShot()
     {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePosition.z = 0; // 2D 게임에서는 Z 좌표를 0으로 설정해야 합니다.
-
-        if (arrowPrefab != null)
-        {
-            GameObject arrow = Instantiate(arrowPrefab, transform.position, Quaternion.identity);
-            Vector2 direction = (mousePosition - this.transform.position).normalized;
-
-            Rigidbody2D rb = arrow.GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                rb.velocity = direction * arrowSpeed;
-
-                // 화살의 회전을 마우스 위치의 방향으로 설정합니다.
-                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-                arrow.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-            }
-        }
-        else
-        {
-            Debug.Log("Arrow Prefab Null Error");
-        }
+        Debug.Log("Launching Fan Shot: Fires multiple arrows in a cone shape.");
     }
 
     void Barrage()

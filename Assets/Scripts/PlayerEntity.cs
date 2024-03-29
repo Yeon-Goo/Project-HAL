@@ -122,18 +122,13 @@ public class PlayerEntity : Entity
         }
     }
 
-    public void CharacterStop()
-    {
-        is_moveable = false;
-        target_pos = transform.position;
-    }
-
     void FixedUpdate()
     {
         // SŰ�� ������ �� ĳ���Ͱ� ����
         if (Input.GetKey(KeyCode.S))
         {
-            CharacterStop();
+            is_moveable = false;
+            target_pos = transform.position;
         }
 
         //MoveCharacter_KeyBoard();

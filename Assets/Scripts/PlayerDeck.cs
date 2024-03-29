@@ -34,8 +34,7 @@ public class PlayerDeck : MonoBehaviour
 
     void Start()
     {
-        //need to fix - can select weapon
-        weapon = GameObject.Find("Archer");
+        weapon = GameObject.Find("Arrow");
         InitializeDeck();
         UpdateCardDisplay();
     }
@@ -56,14 +55,8 @@ public class PlayerDeck : MonoBehaviour
         }
     }
 
-    private void WeaponUse()
-    {
-       
-    }
     private void UseCard(int index)
     {
-        this.GetComponent<PlayerEntity>().CharacterStop();
-
         if (deck.Count <= index)
         {
             Debug.LogWarning("Invalid card selection.");
@@ -93,9 +86,8 @@ public class PlayerDeck : MonoBehaviour
         }*/
 
         UpdateCardDisplay();
-#if DEBUG
+
         Debug.Log($"Card used: Num={selectedCard.num}, Level={selectedCard.level}. Shifted to the end.");
-#endif
     }
 
     private void UpdateCardDisplay()
