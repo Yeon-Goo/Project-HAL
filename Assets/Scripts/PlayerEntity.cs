@@ -14,8 +14,8 @@ public class PlayerEntity : Entity
     private HPBarUI hpbar_ui;
     private InventoryUI inventory_prefab;
     private InventoryUI inventory_ui;
-    //private CardUI card_prefab;
-    //private CardUI card_ui;
+    private GameObject deck_prefab;
+    private GameObject deck_ui;
 
     // Player�� �ӷ�
     private float velocity = 3.0f;
@@ -61,14 +61,12 @@ public class PlayerEntity : Entity
         if (inventory_ui == null) return;
         hpbar_ui.Init(this);
 
-        /*
         // Load CardUI Prefab
-        card_prefab = Resources.Load<CardUI>("Prefabs/UI/Card/CardUI");
-        if (card_prefab == null) return;
+        deck_prefab = Resources.Load<GameObject>("Prefabs/UI/Card/CardUI");
+        if (deck_prefab == null) Debug.Log("card_prefab is null\n");// return;
         // Instantiate CardUI
-        card_ui = Instantiate(card_prefab);
-        if (card_ui == null) return;
-        */
+        deck_ui = Instantiate(deck_prefab);
+        if (deck_ui == null) Debug.Log("card_ui is null\n");// return;
 
         // Get Components
         transform = GetComponent<UnityEngine.Transform>();
