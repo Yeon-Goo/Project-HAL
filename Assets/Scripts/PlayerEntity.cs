@@ -19,6 +19,7 @@ public class PlayerEntity : Entity
 
     // Player의 속력
     private float velocity = 3.0f;
+    [SerializeField]
     // Player가 움직일 방향
     private Vector2 vector = new Vector2();
     // Player가 현재 움직일 수 있는 상황인지 (stop 
@@ -221,5 +222,10 @@ public class PlayerEntity : Entity
         }
 
         return true;
+    }
+
+    public Vector2 GetPos()
+    {
+        return new Vector2(transform.position.x, transform.position.y);
     }
 }

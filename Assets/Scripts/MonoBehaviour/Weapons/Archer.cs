@@ -46,17 +46,22 @@ public class Archer : Weapon
 
     void FanShot()
     {
+        /*
         Vector3 mouseScreenPosition = Input.mousePosition;
         mouseScreenPosition.z = -Camera.main.transform.position.z;
         Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
         mouseWorldPosition.z = 0;
+        */
 
-        Debug.Log(mouseWorldPosition);
+        Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        PlayerEntity playerEntity = GameObject.Find("PlayerObject").GetComponent<PlayerEntity>();
+
+        //Debug.Log(mouseWorldPosition);
 
         if (arrowPrefab != null)
         {
-            GameObject arrow = Instantiate(arrowPrefab, transform.position, Quaternion.identity);
-            Vector2 direction = (mouseWorldPosition - this.transform.position).normalized;
+            GameObject arrow = Instantiate(arrowPrefab, playerEntity.GetPos(), Quaternion.identity);
+            Vector2 direction = (mouseWorldPosition - playerEntity.GetPos()).normalized;
 
             Rigidbody2D rb = arrow.GetComponent<Rigidbody2D>();
             if (rb != null)
@@ -65,6 +70,7 @@ public class Archer : Weapon
 
                 // 화살의 회전을 마우스 위치의 방향으로 설정합니다.
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                //Debug.Log("angle = " + angle);
                 arrow.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             }
         }

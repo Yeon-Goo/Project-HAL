@@ -194,3 +194,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp_manager: {fileID: 0}
+  vector: {x: 0, y: 0}

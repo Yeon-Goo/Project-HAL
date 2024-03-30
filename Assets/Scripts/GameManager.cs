@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
     // 게임 매니저는 오직 하나여야 한다
     public static GameManager sharedInstance = null;
 
+    public SpawnPoint playerSpawnPoint;
+
     private void Awake()
     {
         if (sharedInstance != null && sharedInstance != this)
@@ -27,6 +29,14 @@ public class GameManager : MonoBehaviour
 
     public void SetupScene()
     {
-        //
+        SpawnPlayer();
+    }
+
+    public void SpawnPlayer()
+    {
+        if (playerSpawnPoint != null)
+        {
+            GameObject player_entity = playerSpawnPoint.SpawnObject();
+        }
     }
 }
