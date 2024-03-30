@@ -40,7 +40,7 @@ public class Archer : Weapon
                 break;
             default:
                 Debug.Log("Unknown skill.");
-                break;
+                break; 
         } */
     }
 
