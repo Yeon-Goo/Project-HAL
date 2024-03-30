@@ -31,11 +31,16 @@ public class PlayerDeck : MonoBehaviour
     private List<TextMeshProUGUI> cardTexts = new List<TextMeshProUGUI>(); // 카드 텍스트 오브젝트 리스트
 
     private GameObject weapon;
+    private GameObject playerobject;
+    PlayerEntity playerEntity;
 
     void Start()
     {
         //need to fix - can select weapon
         weapon = GameObject.Find("Archer");
+        playerobject = GameObject.Find("PlayerObject");
+        playerEntity = playerobject.GetComponent<PlayerEntity>();
+
         InitializeDeck();
         UpdateCardDisplay();
     }
@@ -62,7 +67,7 @@ public class PlayerDeck : MonoBehaviour
     }
     private void UseCard(int index)
     {
-        this.GetComponent<PlayerEntity>().CharacterStop();
+        playerEntity.CharacterStop();
 
         if (deck.Count <= index)
         {
@@ -93,9 +98,7 @@ public class PlayerDeck : MonoBehaviour
         }*/
 
         UpdateCardDisplay();
-#if DEBUG
-        Debug.Log($"Card used: Num={selectedCard.num}, Level={selectedCard.level}. Shifted to the end.");
-#endif
+        //Debug.Log($"Card used: Num={selectedCard.num}, Level={selectedCard.level}. Shifted to the end.");
     }
 
     private void UpdateCardDisplay()

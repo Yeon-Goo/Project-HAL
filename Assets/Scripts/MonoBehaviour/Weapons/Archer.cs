@@ -46,13 +46,17 @@ public class Archer : Weapon
 
     void FanShot()
     {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePosition.z = 0; // 2D 게임에서는 Z 좌표를 0으로 설정해야 합니다.
+        Vector3 mouseScreenPosition = Input.mousePosition;
+        mouseScreenPosition.z = -Camera.main.transform.position.z;
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
+        mouseWorldPosition.z = 0;
+
+        Debug.Log(mouseWorldPosition);
 
         if (arrowPrefab != null)
         {
             GameObject arrow = Instantiate(arrowPrefab, transform.position, Quaternion.identity);
-            Vector2 direction = (mousePosition - this.transform.position).normalized;
+            Vector2 direction = (mouseWorldPosition - this.transform.position).normalized;
 
             Rigidbody2D rb = arrow.GetComponent<Rigidbody2D>();
             if (rb != null)

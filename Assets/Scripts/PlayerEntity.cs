@@ -139,6 +139,7 @@ public class PlayerEntity : Entity
     {
         is_moveable = false;
         target_pos = transform.position;
+        Debug.Log("CALLED");
     }
 
     private void MoveCharacter_Mouse()
