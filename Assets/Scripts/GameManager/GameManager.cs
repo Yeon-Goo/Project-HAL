@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // °ÔÀÓ ¸Å´ÏÀú´Â ¿ÀÁ÷ ÇÏ³ª¿©¾ß ÇÑ´Ù
+    // ê²Œì„ ë§¤ë‹ˆì €ëŠ” ì˜¤ì§ í•˜ë‚˜ì—¬ì•¼ í•œë‹¤
     public static GameManager sharedInstance = null;
 
     private void Awake()
