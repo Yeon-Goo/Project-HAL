@@ -40,12 +40,12 @@ public class InventoryUI : MonoBehaviour
                 GameObject newSlot = Instantiate(slotPrefab);
                 newSlot.name = "ItemSlot_" + i;
 
-                // gameObject.transform.GetChild(0)¿∫ InventoryBackground
+                // gameObject.transform.GetChild(0)ÏùÄ InventoryBackground
                 newSlot.transform.SetParent(gameObject.transform.GetChild(0).transform);
 
                 slots[i] = newSlot;
 
-                // newSlot.transform.GetChild(1)¿∫ ItemImage
+                // newSlot.transform.GetChild(1)ÏùÄ ItemImage
                 itemImages[i] = newSlot.transform.GetChild(1).GetComponent<Image>();
             }
         }

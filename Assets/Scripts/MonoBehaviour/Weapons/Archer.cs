@@ -63,7 +63,7 @@ public class Archer : Weapon
             {
                 rb.velocity = direction * arrowSpeed;
 
-                // È­»ìÀÇ È¸ÀüÀ» ¸¶¿ì½º À§Ä¡ÀÇ ¹æÇâÀ¸·Î ¼³Á¤ÇÕ´Ï´Ù.
+                // í™”ì‚´ì˜ íšŒì „ì„ ë§ˆìš°ìŠ¤ ìœ„ì¹˜ì˜ ë°©í–¥ìœ¼ë¡œ ì„¤ì •í•©ë‹ˆë‹¤.
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
                 arrow.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             }

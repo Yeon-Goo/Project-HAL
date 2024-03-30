@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
- * Entity ¡æ PlayerEntity
- *        ¡æ EnemyEntity ¡æ BossEntity
- *        ¡æ Living Entity
+ * Entity â†’ PlayerEntity
+ *        â†’ EnemyEntity â†’ BossEntity
+ *        â†’ Living Entity
  */
 public abstract class Entity : MonoBehaviour
 {
-    // EntityÀÇ HP¸¦ °ü¸®ÇÏ´Â º¯¼ö
+    // Entityì˜ HPë¥¼ ê´€ë¦¬í•˜ëŠ” ë³€ìˆ˜
     public HPManager hp_manager;
 
     public void SetHPManager(HPManager hp_manager)

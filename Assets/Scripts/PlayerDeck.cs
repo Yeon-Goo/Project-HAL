@@ -7,10 +7,10 @@ using UnityEngine.UI;
 //[Serializable]
 public class Card
 {
-    public int num; // Ä«µå °íÀ¯ ¹øÈ£
-    public int level; // Ä«µå ·¹º§
-    public int count; // ÇØ´ç Ä«µåÀÇ °³¼ö
-    public bool isUnlocked; // Ä«µåÀÇ ÇØ±İ ¿©ºÎ
+    public int num; // ì¹´ë“œ ê³ ìœ  ë²ˆí˜¸
+    public int level; // ì¹´ë“œ ë ˆë²¨
+    public int count; // í•´ë‹¹ ì¹´ë“œì˜ ê°œìˆ˜
+    public bool isUnlocked; // ì¹´ë“œì˜ í•´ê¸ˆ ì—¬ë¶€
 
     public Card(int num, int level, int count = 1, bool isUnlocked = false)
     {
@@ -24,11 +24,11 @@ public class Card
 public class PlayerDeck : MonoBehaviour
 {
     [SerializeField]
-    private List<Card> deck = new List<Card>(); // Ä«µå µ¦
+    private List<Card> deck = new List<Card>(); // ì¹´ë“œ ë±
     [SerializeField]
-    private List<Image> cardImages = new List<Image>(); // Ä«µå ÀÌ¹ÌÁö ¿ÀºêÁ§Æ® ¸®½ºÆ®
+    private List<Image> cardImages = new List<Image>(); // ì¹´ë“œ ì´ë¯¸ì§€ ì˜¤ë¸Œì íŠ¸ ë¦¬ìŠ¤íŠ¸
     [SerializeField]
-    private List<TextMeshProUGUI> cardTexts = new List<TextMeshProUGUI>(); // Ä«µå ÅØ½ºÆ® ¿ÀºêÁ§Æ® ¸®½ºÆ®
+    private List<TextMeshProUGUI> cardTexts = new List<TextMeshProUGUI>(); // ì¹´ë“œ í…ìŠ¤íŠ¸ ì˜¤ë¸Œì íŠ¸ ë¦¬ìŠ¤íŠ¸
 
     private GameObject weapon;
     private GameObject playerobject;

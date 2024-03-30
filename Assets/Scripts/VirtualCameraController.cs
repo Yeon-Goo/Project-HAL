@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class VirtualCameraController : CinemachineExtension
 {
-    // À¯´Ö(Å¸ÀÏ) ÇÏ³ªÀÇ ÇÈ¼¿
+    // ìœ ë‹›(íƒ€ì¼) í•˜ë‚˜ì˜ í”½ì…€
     private float pixelsperunit = 32.0f;
-    // À¯´Ö ÇÏ³ª¸¦ ¾ó¸¸Å­ È®´ëÇÒÁö
+    // ìœ ë‹› í•˜ë‚˜ë¥¼ ì–¼ë§Œí¼ í™•ëŒ€í• ì§€
     private int pixelsperunit_scale = 3;
 
     // Component Variables
@@ -25,22 +25,22 @@ public class VirtualCameraController : CinemachineExtension
         virtualcamera = GetComponent<CinemachineVirtualCamera>();
         framingtransposer = virtualcamera.GetCinemachineComponent<CinemachineFramingTransposer>();
         //camera_shake = virtualcamera.GetComponent<CameraShake>();
-
-        // °¡»ó Ä«¸Ş¶óÀÇ Å©±â (¼öÁ÷ ÇØ»óµµ / PPU) * 0.5
+        
+        // ê°€ìƒ ì¹´ë©”ë¼ì˜ í¬ê¸° (ìˆ˜ì§ í•´ìƒë„ / PPU) * 0.5
         virtualcamera.m_Lens.OrthographicSize = (Screen.height / (pixelsperunit * pixelsperunit_scale)) * 0.5f;
 
-        // °¡»ó Ä«¸Ş¶óÀÇ µ¥µå Á¸ÀÌ Æ®·¡Å· Æ÷ÀÎÆ®¸¦ µû¶ó ÀâÀ» ¶§±îÁöÀÇ ½Ã°£
+        // ê°€ìƒ ì¹´ë©”ë¼ì˜ ë°ë“œ ì¡´ì´ íŠ¸ë˜í‚¹ í¬ì¸íŠ¸ë¥¼ ë”°ë¼ ì¡ì„ ë•Œê¹Œì§€ì˜ ì‹œê°„
         framingtransposer.m_XDamping = 0.0f;
         framingtransposer.m_YDamping = 0.0f;
 
-        // °¡»ó Ä«¸Ş¶óÀÇ µ¥µå Á¸ÀÇ Å©±â
+        // ê°€ìƒ ì¹´ë©”ë¼ì˜ ë°ë“œ ì¡´ì˜ í¬ê¸°
         framingtransposer.m_DeadZoneWidth = 0.0f;
         framingtransposer.m_DeadZoneHeight = 0.0f;
 
         // Camera Shake
-        // Ä«¸Ş¶ó Èçµé¸² ½Ã°£
+        // ì¹´ë©”ë¼ í”ë“¤ë¦¼ ì‹œê°„
         camera_shake_time = 0.0f;
-        // Ä«¸Ş¶ó Èçµé¸² °­µ·
+        // ì¹´ë©”ë¼ í”ë“¤ë¦¼ ê°•ëˆ
         camera_shake_amount = 0.0f;
         camera_shake_initial_pos = new Vector3(0.5f, 0.5f, 0.0f);
     }
@@ -56,7 +56,7 @@ public class VirtualCameraController : CinemachineExtension
         CameraShake();
     }
 
-    // CameraShake¿¡ ÇÊ¿äÇÑ º¯¼ö ÃÊ±âÈ­ (default : time = 0.5f, amount = 0.0075f)
+    // CameraShakeì— í•„ìš”í•œ ë³€ìˆ˜ ì´ˆê¸°í™” (default : time = 0.5f, amount = 0.0075f)
     public void VibrateForTimeAndAmount(float time = 0.5f, float amount = 0.0075f)
     {
         //Debug.Log("vibrate for " + time + "with amount " + amount);
@@ -66,7 +66,7 @@ public class VirtualCameraController : CinemachineExtension
 
     private void CameraShake()
     {
-        // È­¸é Èçµé±â
+        // í™”ë©´ í”ë“¤ê¸°
         if (camera_shake_time > 0)
         {
             Vector2 tmp_vec = Random.insideUnitSphere * camera_shake_amount;
@@ -82,22 +82,22 @@ public class VirtualCameraController : CinemachineExtension
         }
     }
 
-    // È­¸é ÁöÅÍ¸µ ÇØ°á
+    // í™”ë©´ ì§€í„°ë§ í•´ê²°
     protected override void PostPipelineStageCallback(CinemachineVirtualCameraBase vcam, CinemachineCore.Stage stage, ref CameraState state, float deltaTime)
     {
         if (stage == CinemachineCore.Stage.Body)
         {
-            // °¡»ó Ä«¸Ş¶óÀÇ ÁÂÇ¥
+            // ê°€ìƒ ì¹´ë©”ë¼ì˜ ì¢Œí‘œ
             Vector3 pos = state.FinalPosition;
-            // ÇÈ¼¿ ´ÜÀ§·Î ¹İ¿Ã¸²ÇÑ °¡»ó Ä«¸Ş¶óÀÇ ÁÂÇ¥
+            // í”½ì…€ ë‹¨ìœ„ë¡œ ë°˜ì˜¬ë¦¼í•œ ê°€ìƒ ì¹´ë©”ë¼ì˜ ì¢Œí‘œ
             Vector3 pos2 = new Vector3(Round(pos.x), Round(pos.y), pos.z);
 
-            // À§ÀÇ µÎ ÁÂÇ¥ÀÇ Â÷ÀÌ¸¦ °¡»ó Ä«¸Ş¶ó¿¡ ¹İ¿µ
+            // ìœ„ì˜ ë‘ ì¢Œí‘œì˜ ì°¨ì´ë¥¼ ê°€ìƒ ì¹´ë©”ë¼ì— ë°˜ì˜
             state.PositionCorrection += pos2 - pos;
         }
     }
 
-    // ¹İ¿Ã¸²
+    // ë°˜ì˜¬ë¦¼
     private float Round(float x)
     {
         return Mathf.Round(x * pixelsperunit) / pixelsperunit;

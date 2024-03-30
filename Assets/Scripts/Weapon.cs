@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 public class Weapon : MonoBehaviour
 {
-    // Ä«µå ¹øÈ£¿¡ µû¸¥ ½ºÅ³ ½ÇÇà
+    // ì¹´ë“œ ë²ˆí˜¸ì— ë”°ë¥¸ ìŠ¤í‚¬ ì‹¤í–‰
     public virtual void Skill(int num, int level)
     {
-        // ¿©±â¼­ °£´ÜÇÑ Á¶°Ç¹®À» »ç¿ëÇÏ¿© num¿¡ µû¸¥ ´Ù¸¥ ½ºÅ³À» ½ÇÇàÇÒ ¼ö ÀÖ½À´Ï´Ù.
-        // ¿¹½Ã:
+        // ì—¬ê¸°ì„œ ê°„ë‹¨í•œ ì¡°ê±´ë¬¸ì„ ì‚¬ìš©í•˜ì—¬ numì— ë”°ë¥¸ ë‹¤ë¥¸ ìŠ¤í‚¬ì„ ì‹¤í–‰í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.
+        // ì˜ˆì‹œ:
         switch (num)
         {
             case 0:
@@ -16,7 +16,7 @@ public class Weapon : MonoBehaviour
             case 1:
                 Debug.Log("Card 1 activated.");
                 break;
-            // Ãß°¡ÀûÀÎ ½ºÅ³ ÄÉÀÌ½º
+            // ì¶”ê°€ì ì¸ ìŠ¤í‚¬ ì¼€ì´ìŠ¤
             default:
                 Debug.Log($"Card {num} not implemented.");
                 break;

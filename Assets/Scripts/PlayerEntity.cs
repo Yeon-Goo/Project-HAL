@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -17,13 +17,13 @@ public class PlayerEntity : Entity
     //private CardUI card_prefab;
     //private CardUI card_ui;
 
-    // Player�� �ӷ�
+    // Player의 속력
     private float velocity = 3.0f;
-    // Player�� ����
+    // Player가 움직일 방향
     private Vector2 vector = new Vector2();
-    // Player�� ������ �� �ִ����� ���� (stop ��ɿ� ����)
+    // Player가 현재 움직일 수 있는 상황인지 (stop 
     private bool is_moveable = false;
-    // Player�� ��ǥ ��ǥ
+    // Player가 움직일 목표 좌표
     private Vector2 target_pos = new Vector2();
 
     // Component Variables
@@ -31,7 +31,7 @@ public class PlayerEntity : Entity
     private Animator animator;
     private Rigidbody2D rigidbody;
 
-    // Player�� �ִϸ��̼� ����� ���̴� ����
+    // Player가 현재 어떤 애니메이션을 재생해야 하는지 저장하는 변수
     enum AnimationStateEnum
     {
         idle = 0,
@@ -86,32 +86,32 @@ public class PlayerEntity : Entity
     {
         if (!vector.Equals(Vector2.zero))
         {
-            // x �� �Է��� �����ϴ� ���
-            // x �� �Է¿� ���� �������� �ٶ���, ������ �ٶ��� ����
+            // x 방향으로 움직였을 때
+            // x 성분의 값으로 오른쪽 왼쪽을 판단
             if (vector.x > 0)
             {
-                // �������� �ٶ�
+                // 오른쪽을 바라봄
                 transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
                 animator.SetInteger(animationState, (int)AnimationStateEnum.walk_right);
             }
             else if (vector.x < 0)
             {
-                // ������ �ٶ�
+                // 왼쪽을 바라봄
                 transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
                 animator.SetInteger(animationState, (int)AnimationStateEnum.walk_left);
             }
-            // x �� �Է��� �������� �ʴ� ���
-            // transform�� localScale�� x ���� ���� �������� �ٶ���, ������ �ٶ��� ����
+            // x 방향으로 움직이지 않았을 때
+            // transform.localScale.x의 값으로 오른쪽 왼쪽을 판단
             else
             {
                 if (transform.localScale.x.Equals(1.0f))
                 {
-                    // �������� �ٶ�
+                    // 오른쪽을 바라봄
                     animator.SetInteger(animationState, (int)AnimationStateEnum.walk_right);
                 }
                 else
                 {
-                    // ������ �ٶ�
+                    // 왼쪽을 바라봄
                     animator.SetInteger(animationState, (int)AnimationStateEnum.walk_left);
                 }
             }
@@ -124,7 +124,7 @@ public class PlayerEntity : Entity
 
     void FixedUpdate()
     {
-        // SŰ�� ������ �� ĳ���Ͱ� ����
+        // S키를 입력하면 캐릭터가 그 자리에서 멈춤
         if (Input.GetKey(KeyCode.S))
         {
             CharacterStop();
@@ -139,19 +139,19 @@ public class PlayerEntity : Entity
     {
         is_moveable = false;
         target_pos = transform.position;
-        Debug.Log("CALLED");
+        //Debug.Log("CALLED");
     }
 
     private void MoveCharacter_Mouse()
     {
-        // ���콺 ������ ��ư�� ������ ���� �� || (���콺 ������ ��ư�� ������ ���� �� && ���콺 ��ǥ�� ��ȭ�� ���� ��)
+        // 마우스 오른쪽 버튼을 뗐을 때 || 마우스 오른쪽 버튼을 누르고 있는 상태에서 마우스를 움직였을 때
         if (!Input.GetMouseButton(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f))
         //if (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f)
         {
             is_moveable = true;
         }
 
-        // SŰ�� ������ �ʾ��� ��
+        // S키를 누르지 않았고 마우스 오른쪽 버튼을 눌렀을 때
         if (is_moveable && Input.GetMouseButton(1))
         //if (Input.GetMouseButtonDown(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f))
         {
@@ -171,9 +171,13 @@ public class PlayerEntity : Entity
         rigidbody.velocity = vector * velocity;
     }
 
+    // 마우스 오른쪽 버튼을 눌렀을 때의 좌표까지 도달할 수 있는 최단 거리 탐색
     private Vector2 FindPath()
     {
+        // 지금은 단순히 마우스 오른쪽 버튼을 눌렀을 때의 좌표를 return
         return Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        // 나중에 길찾기 알고리즘을 구현해야 함
     }
 
 

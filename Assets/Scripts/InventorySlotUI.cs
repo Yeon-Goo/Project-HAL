@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class InventorySlotUI : MonoBehaviour
 {
-    // ¾ÆÀÌÅÛÀÇ ¼ö·®À» ³ªÅ¸³»´Â TMP_Text
+    // ì•„ì´í…œì˜ ìˆ˜ëŸ‰ì„ ë‚˜íƒ€ë‚´ëŠ” TMP_Text
     public TMP_Text qtyText;
 
     // Start is called before the first frame update

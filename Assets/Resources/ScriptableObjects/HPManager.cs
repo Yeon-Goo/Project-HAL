@@ -5,12 +5,12 @@ using static UnityEngine.Rendering.DebugUI;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/HPManager", fileName = "HPManager")]
 
-// EntityÀÇ HP¸¦ °ü¸®ÇÏ´Â HPManager
+// Entityì˜ HPë¥¼ ê´€ë¦¬í•˜ëŠ” HPManager
 public class HPManager : ScriptableObject
 {
-    // EntityÀÇ ÇöÀç Ã¼·Â
+    // Entityì˜ í˜„ì¬ ì²´ë ¥
     public float cur_hp;
-    // EntityÀÇ ÃÖ´ë Ã¼·Â
+    // Entityì˜ ìµœëŒ€ ì²´ë ¥
     public float max_hp;
 
     public void SetCurrentHP(float value)
