@@ -31,8 +31,8 @@ public class ArrowObject : MonoBehaviour
 
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle - 90); // 화살의 회전 각도 조정
-        //StopAllCoroutines();
-        //StartCoroutine(DestroyArrowAfterTime(4.0f)); // 일정 시간 후 자동 파괴
+        StopAllCoroutines();
+        StartCoroutine(DestroyArrowAfterTime(4.0f)); // 일정 시간 후 자동 파괴
     }
 
     private IEnumerator DestroyArrowAfterTime(float delay)
