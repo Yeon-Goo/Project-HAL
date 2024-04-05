@@ -19,13 +19,14 @@ public class PlayerEntity : Entity
 
     // Player의 속력
     private float velocity = 3.0f;
-    [SerializeField]
     // Player가 움직일 방향
     private Vector2 vector = new Vector2();
-    // Player가 현재 움직일 수 있는 상황인지 (stop 
+    // Player가 현재 움직일 수 있는 상황인지
     private bool is_moveable = false;
     // Player가 움직일 목표 좌표
     private Vector2 target_pos = new Vector2();
+    // Player가 살아 있는지
+    private bool is_alive = true;
 
     // Component Variables
     private new UnityEngine.Transform transform;
@@ -37,7 +38,7 @@ public class PlayerEntity : Entity
     {
         idle = 0,
         walk_right = 1,
-        walk_left = 2
+        walk_left = 2,
     }
     void Start()
     {
@@ -87,7 +88,7 @@ public class PlayerEntity : Entity
     // Update is called once per frame
     void Update()
     {
-        UpdateAnimationState();
+        if (is_alive) UpdateAnimationState();
     }
 
     private void UpdateAnimationState()
@@ -132,15 +133,22 @@ public class PlayerEntity : Entity
 
     void FixedUpdate()
     {
-        // S키를 입력하면 캐릭터가 그 자리에서 멈춤
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.H))
         {
-            CharacterStop();
+            ResetEntity();
         }
 
-        //MoveCharacter_KeyBoard();
-        MoveCharacter_Mouse();
-        //MoveCharacter_Mouse_STOP_WHEN_RELEASED();
+        if (is_alive)
+        {
+            // S키를 입력하면 캐릭터가 그 자리에서 멈춤
+            if (Input.GetKey(KeyCode.S))
+            {
+                CharacterStop();
+            }
+            //MoveCharacter_KeyBoard();
+            MoveCharacter_Mouse();
+            //MoveCharacter_Mouse_STOP_WHEN_RELEASED();
+        }
     }
 
     public void CharacterStop()
@@ -218,22 +226,26 @@ public class PlayerEntity : Entity
         }
     }
 
-    public override IEnumerator DamageEntity(int damage, float interval)
+    // 플레이어가 대미지를 받는 함수
+    public override IEnumerator DamageEntity(int damage, float interval, Entity entity)
     {
         float cur_hp = hp_manager.GetCurrentHP();
 
         while (true)
         {
-            Debug.Log("PlayerEntity::DamageEntity(" + damage + ", " + interval + ")\n");
+            // 플레이어는 entity로부터 damage만큼의 피해를 interval초마다 받는다
+            Debug.Log("Player Get " + damage + " Damage From " + entity.name + "(interval : " + interval + ")\n");
             cur_hp -= damage;
             hp_manager.SetCurrentHP(cur_hp);
 
+            // 플레이어의 체력이 0일 때
             if (cur_hp <= float.Epsilon)
             {
                 KillEntity();
                 break;
             }
 
+            // 플레이어의 체력이 0보다 크면 interval만큼 실행을 양보
             if (interval > float.Epsilon)
             {
                 yield return new WaitForSeconds(interval);
@@ -245,17 +257,21 @@ public class PlayerEntity : Entity
         }
     }
 
+    // 플레이어가 사망하는 코드
     override public void KillEntity()
     {
+        is_alive = false;
         hp_manager.SetCurrentHP(0);
-        gameObject.SetActive(false);
+        GetComponent<SpriteRenderer>().enabled = false;
+        // 미완성
     }
 
+    // 플레이어가 부활하는 코드
     public override void ResetEntity()
     {
-        if (hp_manager != null)
-        {
-            hp_manager.SetCurrentHP(hp_manager.GetMaxHP());
-        }
+        is_alive = true;
+        hp_manager.SetCurrentHP(hp_manager.GetMaxHP());
+        GetComponent<SpriteRenderer>().enabled = true;
+        // 미완성
     }
 }

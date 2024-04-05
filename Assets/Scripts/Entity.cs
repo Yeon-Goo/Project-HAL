@@ -27,7 +27,7 @@ public abstract class Entity : MonoBehaviour
         return new Vector2(transform.position.x, transform.position.y);
     }
 
-    public abstract IEnumerator DamageEntity(int damage, float interval);
+    public abstract IEnumerator DamageEntity(int damage, float interval, Entity entity);
     public virtual void KillEntity()
     {
         hp_manager.SetCurrentHP(0);

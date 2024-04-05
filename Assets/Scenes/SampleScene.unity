@@ -15645,6 +15645,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7692286754580168946, guid: 8ab02351029a97c4da6433307841baaf, type: 3}
   m_PrefabInstance: {fileID: 1397302547}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1886671376 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7686292543535944707, guid: ab09cc36a06a4b249826494e642c734e, type: 3}
+  m_PrefabInstance: {fileID: 8655036853706658266}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1886671382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1886671376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db167284722fb3846813f5ca5661b394, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp_manager: {fileID: 11400000, guid: 134991b163e249e4c8f6b68f88ca9bee, type: 2}
 --- !u!1 &1892968274
 GameObject:
   m_ObjectHideFlags: 3
@@ -24605,6 +24623,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8660453591234882932, guid: 8e39ef7ec3bbb30449a9a0abc2fd1c04, type: 3}
+      propertyPath: hp_manager
+      value: 
+      objectReference: {fileID: 11400000, guid: 8714187ce6c4dca4e81a030ab7197d02, type: 2}
+    - target: {fileID: 8660453591234882932, guid: 8e39ef7ec3bbb30449a9a0abc2fd1c04, type: 3}
       propertyPath: hpbar_Prefab
       value: 
       objectReference: {fileID: 0}
@@ -24827,7 +24849,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7686292543535944707, guid: ab09cc36a06a4b249826494e642c734e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1886671382}
   m_SourcePrefab: {fileID: 100100000, guid: ab09cc36a06a4b249826494e642c734e, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
