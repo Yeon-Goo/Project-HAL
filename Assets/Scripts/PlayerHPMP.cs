@@ -17,13 +17,13 @@ public class PlayerHPMP : MonoBehaviour
     public void HPDamaged(int a)
     {
         CurHP -= a;
-        //Á×À¸¸é È£ÃâµÉ ¸Ş¼­µå
+        //ì£½ìœ¼ë©´ í˜¸ì¶œë  ë©”ì„œë“œ
     }
 
     public void MPUse(int a)
     {
         CurMP -= a;
-        //¸¶³ª ºÎÁ·ÇÏ¸é È£ÃâµÉ ¸Ş¼­µå
+        //ë§ˆë‚˜ ë¶€ì¡±í•˜ë©´ í˜¸ì¶œë  ë©”ì„œë“œ
     }
 
 }
