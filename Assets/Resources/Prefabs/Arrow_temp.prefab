@@ -29,13 +29,22 @@ Transform:
   m_GameObject: {fileID: 3575654442929301697}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+<<<<<<< Updated upstream:Assets/Resources/Prefabs/Arrow_temp.prefab
   m_LocalPosition: {x: -3.6510115, y: 0.55971813, z: 0}
   m_LocalScale: {x: 0.4, y: 1, z: 1}
+=======
+  m_LocalPosition: {x: 3.9301, y: 1.1858, z: 0}
+  m_LocalScale: {x: 0.4471, y: 0.9539, z: 1}
+>>>>>>> Stashed changes:Assets/Resources/Prefabs/ArrowPrefab.prefab
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< Updated upstream:Assets/Resources/Prefabs/Arrow_temp.prefab
 --- !u!212 &2419271903751094569
+=======
+--- !u!212 &8315099738078281573
+>>>>>>> Stashed changes:Assets/Resources/Prefabs/ArrowPrefab.prefab
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
