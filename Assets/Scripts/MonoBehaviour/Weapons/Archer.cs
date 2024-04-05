@@ -46,21 +46,31 @@ public class Archer : Weapon
 
     void FanShot()
     {
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePosition.z = 0; // 2D °ÔÀÓ¿¡¼­´Â Z ÁÂÇ¥¸¦ 0À¸·Î ¼³Á¤ÇØ¾ß ÇÕ´Ï´Ù.
+        /*
+        Vector3 mouseScreenPosition = Input.mousePosition;
+        mouseScreenPosition.z = -Camera.main.transform.position.z;
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
+        mouseWorldPosition.z = 0;
+        */
+
+        Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        PlayerEntity playerEntity = GameObject.Find("PlayerObject").GetComponent<PlayerEntity>();
+
+        //Debug.Log(mouseWorldPosition);
 
         if (arrowPrefab != null)
         {
-            GameObject arrow = Instantiate(arrowPrefab, transform.position, Quaternion.identity);
-            Vector2 direction = (mousePosition - this.transform.position).normalized;
+            GameObject arrow = Instantiate(arrowPrefab, playerEntity.GetPos(), Quaternion.identity);
+            Vector2 direction = (mouseWorldPosition - playerEntity.GetPos()).normalized;
 
             Rigidbody2D rb = arrow.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
                 rb.velocity = direction * arrowSpeed;
 
-                // È­»ìÀÇ È¸ÀüÀ» ¸¶¿ì½º À§Ä¡ÀÇ ¹æÇâÀ¸·Î ¼³Á¤ÇÕ´Ï´Ù.
+                // í™”ì‚´ì˜ íšŒì „ì„ ë§ˆìš°ìŠ¤ ìœ„ì¹˜ì˜ ë°©í–¥ìœ¼ë¡œ ì„¤ì •í•©ë‹ˆë‹¤.
                 float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                //Debug.Log("angle = " + angle);
                 arrow.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
             }
         }
