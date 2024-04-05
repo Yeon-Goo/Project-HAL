@@ -28,9 +28,9 @@ public class PlayerEntity : Entity
     private Vector2 target_pos = new Vector2();
 
     // Component Variables
-    private UnityEngine.Transform transform;
+    private new UnityEngine.Transform transform;
     private Animator animator;
-    private Rigidbody2D rigidbody;
+    private new Rigidbody2D rigidbody;
 
     // Player가 현재 어떤 애니메이션을 재생해야 하는지 저장하는 변수
     enum AnimationStateEnum
@@ -39,7 +39,6 @@ public class PlayerEntity : Entity
         walk_right = 1,
         walk_left = 2
     }
-
     void Start()
     {
         // Load HPManager
@@ -60,7 +59,6 @@ public class PlayerEntity : Entity
         // Instantiate InventoryUI
         inventory_ui = Instantiate(inventory_prefab);
         if (inventory_ui == null) return;
-        hpbar_ui.Init(this);
 
         /*
         // Load CardUI Prefab
@@ -75,7 +73,16 @@ public class PlayerEntity : Entity
         transform = GetComponent<UnityEngine.Transform>();
         animator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody2D>();
+
+        //ResetEntity();
     }
+
+    /*
+    private void OnEnable()
+    {
+        ResetEntity();
+    }
+    */
 
     // Update is called once per frame
     void Update()
@@ -199,7 +206,7 @@ public class PlayerEntity : Entity
                         should_disappear = inventory_ui.AddItem(hitObject);
                         break;
                     case Item.ItemTypeEnum.HEALTH:
-                        should_disappear = AdjustHP(hitObject.GetQuantity());
+                        should_disappear = hp_manager.AdjustHP(hitObject.GetQuantity());
                         break;
                 }
 
@@ -211,21 +218,44 @@ public class PlayerEntity : Entity
         }
     }
 
-    private bool AdjustHP(int amount)
+    public override IEnumerator DamageEntity(int damage, float interval)
     {
-        if (hp_manager.GetCurrentHP() < hp_manager.GetMaxHP())
+        float cur_hp = hp_manager.GetCurrentHP();
+
+        while (true)
         {
-            hp_manager.SetCurrentHP(hp_manager.GetCurrentHP() + amount);
-            //print("Adjusted HP by : " + amount + ". New value : " + hp_manager.cur_hp);
+            Debug.Log("PlayerEntity::DamageEntity(" + damage + ", " + interval + ")\n");
+            cur_hp -= damage;
+            hp_manager.SetCurrentHP(cur_hp);
 
-            return true;
+            if (cur_hp <= float.Epsilon)
+            {
+                KillEntity();
+                break;
+            }
+
+            if (interval > float.Epsilon)
+            {
+                yield return new WaitForSeconds(interval);
+            }
+            else
+            {
+                break;
+            }
         }
-
-        return true;
     }
 
-    public Vector2 GetPos()
+    override public void KillEntity()
     {
-        return new Vector2(transform.position.x, transform.position.y);
+        hp_manager.SetCurrentHP(0);
+        gameObject.SetActive(false);
+    }
+
+    public override void ResetEntity()
+    {
+        if (hp_manager != null)
+        {
+            hp_manager.SetCurrentHP(hp_manager.GetMaxHP());
+        }
     }
 }

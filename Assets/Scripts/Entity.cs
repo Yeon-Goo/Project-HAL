@@ -21,4 +21,17 @@ public abstract class Entity : MonoBehaviour
     {
         return hp_manager;
     }
+
+    public Vector2 GetPos()
+    {
+        return new Vector2(transform.position.x, transform.position.y);
+    }
+
+    public abstract IEnumerator DamageEntity(int damage, float interval);
+    public virtual void KillEntity()
+    {
+        hp_manager.SetCurrentHP(0);
+        Destroy(gameObject);
+    }
+    public abstract void ResetEntity();
 }

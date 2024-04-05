@@ -9,20 +9,17 @@ using Unity.VisualScripting;
 public class HPBarUI : MonoBehaviour
 {
     //[HideInInspector]
-    public PlayerEntity player;
+    private PlayerEntity player;
     private HPManager hp_manager;
     private Image hpbar_meter;
     private TMP_Text hpbar_text;
-    public GameObject[] test;
 
     // Called by PlayerEntity::Start()
     public void Init(PlayerEntity player)
     {
         if (player == null)
         {
-#if DEBUG
             Debug.Log("HPBarUI::Init() Error! Player is NULL");
-#endif
             return;
         }
 
@@ -37,8 +34,8 @@ public class HPBarUI : MonoBehaviour
     {
         if (player != null)
         {
-            hpbar_meter.fillAmount = hp_manager.cur_hp / hp_manager.max_hp;
-            hpbar_text.text = "HP:" + (hpbar_meter.fillAmount * 100);
+            hpbar_meter.fillAmount = hp_manager.GetCurrentHP() / hp_manager.GetMaxHP();
+            hpbar_text.text = "HP:" + hp_manager.GetCurrentHP();
         }
     }
 

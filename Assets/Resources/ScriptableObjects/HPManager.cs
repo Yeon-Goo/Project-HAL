@@ -9,9 +9,11 @@ using static UnityEngine.Rendering.DebugUI;
 public class HPManager : ScriptableObject
 {
     // Entity의 현재 체력
-    public float cur_hp;
+    [SerializeField]
+    private float cur_hp;
     // Entity의 최대 체력
-    public float max_hp;
+    [SerializeField]
+    private float max_hp;
 
     public void SetCurrentHP(float value)
     {
@@ -31,5 +33,18 @@ public class HPManager : ScriptableObject
     public float GetMaxHP()
     {
         return max_hp;
+    }
+
+    public bool AdjustHP(int amount)
+    {
+        if (this.cur_hp < this.max_hp)
+        {
+            this.cur_hp = this.cur_hp + amount;
+            //print("Adjusted HP by : " + amount + ". New value : " + hp_manager.cur_hp);
+
+            return true;
+        }
+
+        return true;
     }
 }

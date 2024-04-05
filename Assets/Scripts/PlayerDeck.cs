@@ -67,7 +67,7 @@ public class PlayerDeck : MonoBehaviour
     }
     private void UseCard(int index)
     {
-        Debug.Log("Use Card\n");
+        //Debug.Log("Use Card\n");
         playerEntity.CharacterStop();
 
         if (deck.Count <= index)
