@@ -13,11 +13,13 @@ public class Archer : Weapon
 
     public override void Skill(int num, int level)
     {
-        FanShot();
+        BaseShot(10.0f);
+        BaseShot(0.0f);
+        BaseShot(-10.0f);
         /*switch (num)
         {
             case 1:
-                FanShot();
+                BaseShot();
                 break;
             case 2:
                 Barrage();
@@ -49,7 +51,7 @@ public class Archer : Weapon
         } */
     }
 
-    void FanShot()
+    void BaseShot(float angleadd)
     {
         Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         // PlayerEntity 참조가 더 이상 사용되지 않으므로, 해당 줄은 제거되었습니다.
@@ -68,7 +70,7 @@ public class Archer : Weapon
             arrow.transform.rotation = Quaternion.identity; // 초기 회전 상태를 기본 값으로 설정
 
             // 화살 발사 (Shoot 메서드 내부에서 화살의 방향과 속도 처리)
-            arrow.Shoot(targetVec.normalized * arrowSpeed); // Shoot 메서드가 방향 벡터를 받아 처리하도록 가정
+            arrow.Shoot(targetVec.normalized * arrowSpeed, angleadd); // Shoot 메서드가 방향 벡터를 받아 처리하도록 가정
 
             // 필요한 경우, 화살의 데이터 설정 메서드 호출
             arrow.SetArrowData(1, 0, arrowSpeed); // 화살에 대한 추가 정보 설정

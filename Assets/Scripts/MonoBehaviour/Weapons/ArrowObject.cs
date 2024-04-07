@@ -32,12 +32,12 @@ public class ArrowObject : MonoBehaviour
     }
 
     // 화살이 발사되는 순간에 호출되는 메서드
-    public void Shoot(Vector3 dir)
+    public void Shoot(Vector3 dir, float angleadd)
     {
         is_released = false;
         shootvector = dir;
 
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg + angleadd;
         transform.rotation = Quaternion.Euler(0, 0, angle - 90); // 화살의 회전 각도 조정
         StopAllCoroutines();
         StartCoroutine(DestroyArrowAfterTime(4.0f)); // 일정 시간 후 자동 파괴
