@@ -62,6 +62,8 @@ public class ArrowObject : MonoBehaviour
         speed = shootspeed;
     }
 
+
+    //------------------- DONT EDIT ------------------------
     public void SetManagedPool(IObjectPool<ArrowObject> pool)
     {
         _ManagedPool = pool;

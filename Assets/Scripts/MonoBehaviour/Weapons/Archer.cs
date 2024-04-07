@@ -125,6 +125,9 @@ public class Archer : Weapon
         _Pool = new ObjectPool<ArrowObject>(CreateArrow, OnGetArrow, OnReleaseArrow, OnDestroyArrow, maxSize: 30);
         playerObject = GameObject.Find("PlayerObject");
     }
+
+    //------------ DONT EDIT -------------
+
     private ArrowObject CreateArrow()
     {
         ArrowObject arrow = Instantiate(arrowPrefab).GetComponent<ArrowObject>();
