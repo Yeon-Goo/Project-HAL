@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2829079264406940393}
   - component: {fileID: 2840895945615932077}
   - component: {fileID: 2521688437642920338}
-  - component: {fileID: 28137076970677013}
+  - component: {fileID: 3994052153404409520}
   - component: {fileID: 6302642211256728217}
   - component: {fileID: 6692563113932395249}
   m_Layer: 8
@@ -109,7 +109,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!58 &28137076970677013
+--- !u!58 &3994052153404409520
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,7 +138,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.05}

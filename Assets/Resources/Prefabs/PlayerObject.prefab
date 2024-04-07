@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4209883368398225518}
   - component: {fileID: 3599235193450134718}
   - component: {fileID: 8660453591234882932}
+  - component: {fileID: 1597254094618251851}
   m_Layer: 6
   m_Name: PlayerObject
   m_TagString: Player
@@ -193,5 +194,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3e09b2a527ef449980337ad08b7a86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp_manager: {fileID: 0}
-  vector: {x: 0, y: 0}
+  hp_manager: {fileID: 11400000, guid: 8714187ce6c4dca4e81a030ab7197d02, type: 2}
+  is_looking_right: 1
+  is_invincible: 0
+  interval: 0
+--- !u!114 &1597254094618251851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6993148404337234188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eed8c82fc1524047bb55bd6facabad8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardImages:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  cardTexts:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

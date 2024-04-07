@@ -27,12 +27,11 @@ public class EnemyEntity : Entity
         // 플레이어가 Enemy의 Collision에 들어감
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("player\n");
             PlayerEntity player = collision.gameObject.GetComponent<PlayerEntity>();
 
             if (damage_coroutine == null)
             {
-                // 1.0f의 딜레이마다 damage_scale의 피해를 입힌다
+                // interval의 딜레이마다 damage_scale의 피해를 입힌다
                 damage_coroutine = StartCoroutine(player.DamageEntity(damage_scale, 1.0f, this.gameObject));
             }
         }

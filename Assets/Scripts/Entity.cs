@@ -38,19 +38,21 @@ public abstract class Entity : MonoBehaviour
 
         while (true)
         {
-            // 플레이어는 entity로부터 damage만큼의 피해를 interval초마다 받는다
-            Debug.Log("Player Get " + damage + " Damage From " + entity.name + "(interval : " + interval + ")\n");
+            StartCoroutine(FlickEntity());
+
+            // this는 entity로부터 damage만큼의 피해를 interval초마다 받는다
+            Debug.Log(this.gameObject + " Get " + damage + " Damage From " + entity.name + "(interval : " + interval + ")\n");
             cur_hp -= damage;
             hp_manager.SetCurrentHP(cur_hp);
 
-            // 플레이어의 체력이 0일 때
+            // this의 체력이 0일 때
             if (cur_hp <= float.Epsilon)
             {
                 KillEntity();
                 break;
             }
 
-            // 플레이어의 체력이 0보다 크면 interval만큼 실행을 양보(멈춤)
+            // this의 체력이 0보다 크면 interval만큼 실행을 양보(멈춤)
             if (interval > float.Epsilon)
             {
                 yield return new WaitForSeconds(interval);
@@ -60,6 +62,13 @@ public abstract class Entity : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public virtual IEnumerator FlickEntity()
+    {
+        GetComponent<SpriteRenderer>().color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     public virtual void KillEntity()
