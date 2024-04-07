@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 744833061194964841}
   - component: {fileID: 3864113972635817214}
   - component: {fileID: 6706992823711617004}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: green_slime
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -152,7 +152,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3640349500752462225}
-  m_BodyType: 2
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Green_slimeEntityMovementControler : MonoBehaviour
+public class MonsterTracking : MonoBehaviour
 {
     public Transform player;
     public float speed = 2f;

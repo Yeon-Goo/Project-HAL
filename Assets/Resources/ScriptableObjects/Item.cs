@@ -4,30 +4,35 @@ using UnityEngine;
 
 [CreateAssetMenu(menuName = "Item")]
 
-// ItemÀÇ ¼Ó¼ºÀ» Á¤ÀÇÇÏ´Â Sciprtable Object Å¬·¡½º
+// Itemì˜ ì†ì„±ì„ ì •ì˜í•˜ëŠ” Sciprtable Object í´ë˜ìŠ¤
 public class Item : ScriptableObject
 {
-    // ItemÀÇ ÀÌ¸§
+    // Itemì˜ ì´ë¦„
     public string objectName;
-    // ItemÀÇ sprite
-    private Sprite sprite;
-    // ItemÀÇ ¼ö·® (default : 1)
+    // Itemì˜ sprite
+    public Sprite sprite;
+    // Itemì˜ ìˆ˜ëŸ‰ (default : 1)
     public int quantity;
-    // ItemÀÇ stack ¿©ºÎ (default : false)
+    // Itemì˜ stack ì—¬ë¶€ (default : false)
     public bool stackable;
 
-    // ** ¿©±â private enumÀ¸·Î ÇÏ¸é ¿Ö GetItemType()¿¡¼­ ¿À·ù°¡ ³ª´ÂÁö ¸ğ¸£°ÚÀ½ **
+    // ** ì—¬ê¸° private enumìœ¼ë¡œ í•˜ë©´ ì™œ GetItemType()ì—ì„œ ì˜¤ë¥˜ê°€ ë‚˜ëŠ”ì§€ ëª¨ë¥´ê² ìŒ **
     public enum ItemTypeEnum
     {
         COIN,
         HEALTH
     }
-    // ItemÀÇ Å¸ÀÔ
+    // Itemì˜ íƒ€ì…
     public ItemTypeEnum itemType;
 
     public string GetName()
     {
         return objectName;
+    }
+
+    public Sprite GetSprite()
+    {
+        return sprite;
     }
 
     public int GetQuantity()
@@ -43,5 +48,20 @@ public class Item : ScriptableObject
     public ItemTypeEnum GetItemType()
     {
         return itemType;
+    }
+
+    public void SetQuantity(int quantity)
+    {
+        this.quantity = quantity;
+    }
+
+    public void SetStackable(bool stackable)
+    {
+        this.stackable = stackable;
+    }
+
+    public void SetItemType(ItemTypeEnum itemType)
+    {
+        this.itemType = itemType;
     }
 }
