@@ -243,8 +243,6 @@ public class PlayerEntity : Entity
 
         while (true)
         {
-            StartCoroutine(FlickEntity());
-
             if (!is_invincible)
             {
                 is_invincible = true;
@@ -254,6 +252,7 @@ public class PlayerEntity : Entity
                 //Debug.Log(this.gameObject + " Get " + damage + " Damage From " + entity.name + "(interval : " + interval + ")\n");
                 //cur_hp -= damage;
                 //CharacterStop();
+                StartCoroutine(FlickEntity());
                 hp_manager.SetCurrentHP(hp_manager.GetCurrentHP() - damage);
             }
 
