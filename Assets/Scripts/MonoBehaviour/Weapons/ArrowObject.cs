@@ -16,10 +16,18 @@ public class ArrowObject : MonoBehaviour
     // 화살이 enemy와 충돌할 경우 호출되는 메서드
     private void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.tag == "enemy")
+        if (coll.gameObject.CompareTag("Enemy"))
         {
             //coll.gameObject.GetComponent<EnemyObject>().Damaged(dmg, armor_de);
-            DestroyArrow();
+            EnemyEntity enemy = coll.gameObject.GetComponent<EnemyEntity>();
+            Coroutine damage_coroutine = enemy.GetDamageCoroutine();
+
+            if (damage_coroutine == null)
+            {
+                // 1.0f의 딜레이마다 damage_scale의 피해를 입힌다
+                damage_coroutine = StartCoroutine(enemy.DamageEntity(dmg, 0.0f, this.gameObject));
+                DestroyArrow();
+            }
         }
     }
 

@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 9015865060788487492}
   - component: {fileID: 7620394460777069673}
   - component: {fileID: 4152645919011325539}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ArrowPrefab
-  m_TagString: Untagged
+  m_TagString: player_attack
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -174,4 +174,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b476855d0f126548bbbe95413b4d815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5

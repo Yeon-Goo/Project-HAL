@@ -21,15 +21,17 @@ public class PlayerEntity : Entity
     private float velocity = 3.0f;
     // Player가 움직일 방향
     private Vector2 vector = new Vector2();
-    // Player가 현재 움직일 수 있는 상황인지
-    private bool is_moveable = false;
     // Player가 움직일 목표 좌표
     private Vector2 target_pos = new Vector2();
+    [SerializeField]
+    // Player가 현재 오른쪽을 바라보는지
+    public bool is_looking_right = true;
+    // Player가 현재 움직일 수 있는 상황인지
+    private bool is_moveable = false;
     // Player가 살아 있는지
     private bool is_alive = true;
 
     // Component Variables
-    private new UnityEngine.Transform transform;
     private Animator animator;
     private new Rigidbody2D rigidbody;
 
@@ -37,8 +39,10 @@ public class PlayerEntity : Entity
     enum AnimationStateEnum
     {
         idle = 0,
-        walk_right = 1,
-        walk_left = 2,
+        walk = 1,
+        roll = 2,
+        throw_ = 3
+
     }
     void Start()
     {
@@ -71,7 +75,6 @@ public class PlayerEntity : Entity
         */
 
         // Get Components
-        transform = GetComponent<UnityEngine.Transform>();
         animator = GetComponent<Animator>();
         rigidbody = GetComponent<Rigidbody2D>();
 
@@ -93,42 +96,34 @@ public class PlayerEntity : Entity
 
     private void UpdateAnimationState()
     {
+        // WALK
         if (!vector.Equals(Vector2.zero))
         {
-            // x 방향으로 움직였을 때
-            // x 성분의 값으로 오른쪽 왼쪽을 판단
-            if (vector.x > 0)
+            // x 방향으로 움직였을 때, x 성분의 값으로 오른쪽 왼쪽을 판단
+            if (vector.x != 0)
             {
                 // 오른쪽을 바라봄
-                transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-                animator.SetInteger(animationState, (int)AnimationStateEnum.walk_right);
+                is_looking_right = vector.x > 0 ? true : false;
             }
-            else if (vector.x < 0)
-            {
-                // 왼쪽을 바라봄
-                transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
-                animator.SetInteger(animationState, (int)AnimationStateEnum.walk_left);
-            }
-            // x 방향으로 움직이지 않았을 때
-            // transform.localScale.x의 값으로 오른쪽 왼쪽을 판단
+            // x 방향으로 움직이지 않았을 때, transform.localScale.x의 값으로 오른쪽 왼쪽을 판단
             else
             {
-                if (transform.localScale.x.Equals(1.0f))
-                {
-                    // 오른쪽을 바라봄
-                    animator.SetInteger(animationState, (int)AnimationStateEnum.walk_right);
-                }
-                else
-                {
-                    // 왼쪽을 바라봄
-                    animator.SetInteger(animationState, (int)AnimationStateEnum.walk_left);
-                }
+                is_looking_right = transform.localScale.x.Equals(1.0f) ? true : false;
             }
+            animator.SetInteger(animationState, (int)AnimationStateEnum.walk);
         }
+        // ROLL
+        else if (Input.GetKey(KeyCode.LeftAlt))
+        {
+            animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
+        }
+        // IDLE
         else
         {
             animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
         }
+
+        transform.localScale = is_looking_right ? new Vector3(1.0f, 1.0f, 1.0f) : new Vector3(-1.0f, 1.0f, 1.0f);
     }
 
     void FixedUpdate()
@@ -155,7 +150,6 @@ public class PlayerEntity : Entity
     {
         is_moveable = false;
         target_pos = transform.position;
-        //Debug.Log("CALLED");
     }
 
     private void MoveCharacter_Mouse()
@@ -191,7 +185,7 @@ public class PlayerEntity : Entity
     private Vector2 FindPath()
     {
         // 지금은 단순히 마우스 오른쪽 버튼을 눌렀을 때의 좌표를 return
-        return Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        return GetMousePos();
 
         // 나중에 길찾기 알고리즘을 구현해야 함
     }
@@ -226,6 +220,7 @@ public class PlayerEntity : Entity
         }
     }
 
+    /*
     // 플레이어가 대미지를 받는 함수
     public override IEnumerator DamageEntity(int damage, float interval, Entity entity)
     {
@@ -245,7 +240,7 @@ public class PlayerEntity : Entity
                 break;
             }
 
-            // 플레이어의 체력이 0보다 크면 interval만큼 실행을 양보
+            // 플레이어의 체력이 0보다 크면 interval만큼 실행을 양보(멈춤)
             if (interval > float.Epsilon)
             {
                 yield return new WaitForSeconds(interval);
@@ -256,12 +251,14 @@ public class PlayerEntity : Entity
             }
         }
     }
+    */
 
     // 플레이어가 사망하는 코드
     override public void KillEntity()
     {
         is_alive = false;
         hp_manager.SetCurrentHP(0);
+        CharacterStop();
         GetComponent<SpriteRenderer>().enabled = false;
         // 미완성
     }

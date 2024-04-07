@@ -67,9 +67,6 @@ public class PlayerDeck : MonoBehaviour
     }
     private void UseCard(int index)
     {
-        //Debug.Log("Use Card\n");
-        playerEntity.CharacterStop();
-
         if (deck.Count <= index)
         {
             Debug.LogWarning("Invalid card selection.");
@@ -85,6 +82,8 @@ public class PlayerDeck : MonoBehaviour
             Debug.LogError("Weapon object not found.");
         }
 
+        playerEntity.is_looking_right = (playerEntity.GetMousePos().x > playerEntity.GetPos().x) ? true : false;
+        playerEntity.CharacterStop();
         // Move the selected card to the end of the deck.
         Card selectedCard = deck[index];
         deck.RemoveAt(index);
