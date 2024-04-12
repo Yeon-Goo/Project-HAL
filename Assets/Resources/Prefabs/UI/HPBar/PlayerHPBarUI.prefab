@@ -316,7 +316,7 @@ GameObject:
   - component: {fileID: 5055664631868148795}
   - component: {fileID: 1166579162777908408}
   m_Layer: 5
-  m_Name: HPBarUI
+  m_Name: PlayerHPBarUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

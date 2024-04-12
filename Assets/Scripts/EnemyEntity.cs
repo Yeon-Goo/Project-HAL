@@ -19,7 +19,23 @@ public class EnemyEntity : Entity
         hp_manager = Resources.Load<HPManager>("ScriptableObjects/DummyHPManager");
         if (hp_manager == null) return;
 
+        /*
+        // Load HPBarUI Prefab
+        hpbar_prefab = Resources.Load<HPBarUI>("Prefabs/UI/HPBar/EnemyHPBarUI");
+        if (hpbar_prefab == null) return;
+        // Instantiate HPBarUI
+        hpbar_ui = Instantiate(hpbar_prefab);
+        if (hpbar_ui == null) return;
+        hpbar_ui.Init(this);
+        */
+
         ResetEntity();
+    }
+
+    // 미완성
+    public override void ResetEntity()
+    {
+        hp_manager.SetCurrentHP(hp_manager.GetMaxHP());
     }
 
     void OnCollisionEnter2D(UnityEngine.Collision2D collision)
@@ -49,11 +65,5 @@ public class EnemyEntity : Entity
                 damage_coroutine = null;
             }
         }
-    }
-
-    // 미완성
-    public override void ResetEntity()
-    {
-        hp_manager.SetCurrentHP(hp_manager.GetMaxHP());
     }
 }
