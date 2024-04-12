@@ -10,8 +10,8 @@ public class PlayerEntity : Entity
     private static string animationState = "AnimationState";
     private static string pickable_objects = "Pickable_Objects";
 
-    private HPBarUI hpbar_prefab;
-    private HPBarUI hpbar_ui;
+    //private HPBarUI hpbar_prefab;
+    //private HPBarUI hpbar_ui;
     private InventoryUI inventory_prefab;
     private InventoryUI inventory_ui;
     //private CardUI card_prefab;
@@ -57,7 +57,7 @@ public class PlayerEntity : Entity
         if (hp_manager == null) return;
 
         // Load HPBarUI Prefab
-        hpbar_prefab = Resources.Load<HPBarUI>("Prefabs/UI/HPBar/HPBarUI");
+        hpbar_prefab = Resources.Load<HPBarUI>("Prefabs/UI/HPBar/PlayerHPBarUI");
         if (hpbar_prefab == null) return;
         // Instantiate HPBarUI
         hpbar_ui = Instantiate(hpbar_prefab);
