@@ -291,6 +291,7 @@ public class PlayerEntity : Entity
     {
         is_alive = true;
         hp_manager.SetCurrentHP(hp_manager.GetMaxHP());
+        hp_manager.SetCurrentMP(hp_manager.GetMaxMP());
         GetComponent<SpriteRenderer>().enabled = true;
         // 미완성
     }

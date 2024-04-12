@@ -32,7 +32,9 @@ public class PlayerDeck : MonoBehaviour
 
     private GameObject weapon;
     private GameObject playerobject;
-    PlayerEntity playerEntity;
+    private PlayerEntity playerEntity;
+    private HPManager hp_manager;
+    
 
     void Start()
     {
@@ -40,6 +42,7 @@ public class PlayerDeck : MonoBehaviour
         weapon = GameObject.Find("Archer");
         playerobject = GameObject.Find("PlayerObject");
         playerEntity = playerobject.GetComponent<PlayerEntity>();
+        hp_manager = playerEntity.GetHPManager();
 
         InitializeDeck();
         UpdateCardDisplay();
@@ -82,23 +85,31 @@ public class PlayerDeck : MonoBehaviour
             Debug.LogError("Weapon object not found.");
         }
 
-        playerEntity.is_looking_right = (playerEntity.GetMousePos().x > playerEntity.GetPos().x) ? true : false;
-        playerEntity.CharacterStop();
-        // Move the selected card to the end of the deck.
-        Card selectedCard = deck[index];
-        deck.RemoveAt(index);
-        deck.Add(selectedCard);
-
-        /* Shift the next card (5th card, if available) to the selected position.
-        if (deck.Count > 4)
+        // 나중에 0 말고 각 스킬의 마나로 바꿔야 함
+        if (hp_manager.GetCurrentMP() > 0)
         {
-            Card nextCard = deck[4];
-            deck.Insert(index, nextCard);
-            deck.RemoveAt(5); // Remove the shifted card from its original position.
-        }*/
+            playerEntity.is_looking_right = (playerEntity.GetMousePos().x > playerEntity.GetPos().x) ? true : false;
+            playerEntity.CharacterStop();
 
-        UpdateCardDisplay();
-        //Debug.Log($"Card used: Num={selectedCard.num}, Level={selectedCard.level}. Shifted to the end.");
+            // 나중에 1 말고 각 스킬의 마나로 바꿔야 함
+            hp_manager.SetCurrentMP(hp_manager.GetCurrentMP() - 1);
+
+            // Move the selected card to the end of the deck.
+            Card selectedCard = deck[index];
+            deck.RemoveAt(index);
+            deck.Add(selectedCard);
+
+            /* Shift the next card (5th card, if available) to the selected position.
+            if (deck.Count > 4)
+            {
+                Card nextCard = deck[4];
+                deck.Insert(index, nextCard);
+                deck.RemoveAt(5); // Remove the shifted card from its original position.
+            }*/
+
+            UpdateCardDisplay();
+            //Debug.Log($"Card used: Num={selectedCard.num}, Level={selectedCard.level}. Shifted to the end.");
+        }
     }
 
     private void UpdateCardDisplay()

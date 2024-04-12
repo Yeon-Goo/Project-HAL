@@ -13,9 +13,11 @@ public class HPBarUI : MonoBehaviour
     private Entity entity;
     private HPManager hp_manager;
     private Image hpbar_meter;
+    private Image mpbar_meter;
 
     // PlayerEntity HPBarUI Property
     private TMP_Text hpbar_text;
+    private TMP_Text mpbar_text;
 
     // Called by PlayerEntity::Start()
     public void Init(Entity entity)
@@ -27,15 +29,19 @@ public class HPBarUI : MonoBehaviour
         }
 
         this.entity = entity;
-        hp_manager = entity.GetHPManager();
-        hpbar_meter = GetComponentsInChildren<Image>()[2];
+        hp_manager = entity.GetHPManager();        
 
         switch (entity)
         {
             case PlayerEntity :
-                hpbar_text = GetComponentInChildren<TMP_Text>();
+                hpbar_meter = GetComponentsInChildren<Image>()[2];
+                mpbar_meter = GetComponentsInChildren<Image>()[5];
+
+                hpbar_text = GetComponentsInChildren<TMP_Text>()[0];
+                mpbar_text = GetComponentsInChildren<TMP_Text>()[1];
                 break;
             case EnemyEntity :
+                hpbar_meter = GetComponentsInChildren<Image>()[1];
                 break;
             //case BossEntity:
                 //break;
@@ -52,7 +58,10 @@ public class HPBarUI : MonoBehaviour
             switch (entity)
             {
                 case PlayerEntity:
+                    mpbar_meter.fillAmount = hp_manager.GetCurrentMP() / hp_manager.GetMaxMP();
+
                     hpbar_text.text = "HP:" + hp_manager.GetCurrentHP();
+                    mpbar_text.text = "MP:" + hp_manager.GetCurrentMP();
                     break;
                 case EnemyEntity:
                     break;
