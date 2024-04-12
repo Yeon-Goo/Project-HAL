@@ -19,7 +19,6 @@ public class EnemyEntity : Entity
         hp_manager = Resources.Load<HPManager>("ScriptableObjects/DummyHPManager");
         if (hp_manager == null) return;
 
-        /*
         // Load HPBarUI Prefab
         hpbar_prefab = Resources.Load<HPBarUI>("Prefabs/UI/HPBar/EnemyHPBarUI");
         if (hpbar_prefab == null) return;
@@ -27,7 +26,6 @@ public class EnemyEntity : Entity
         hpbar_ui = Instantiate(hpbar_prefab);
         if (hpbar_ui == null) return;
         hpbar_ui.Init(this);
-        */
 
         ResetEntity();
     }
