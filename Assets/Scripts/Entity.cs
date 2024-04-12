@@ -9,8 +9,14 @@ using UnityEngine;
  */
 public abstract class Entity : MonoBehaviour
 {
+    // HP바 UI
+    public HPBarUI hpbar_prefab;
+    public HPBarUI hpbar_ui;
+
     // Entity의 HP를 관리하는 변수
     public HPManager hp_manager;
+
+    
 
     public void SetHPManager(HPManager hp_manager)
     {
