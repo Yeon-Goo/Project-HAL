@@ -4,7 +4,7 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     // 카드 번호에 따른 스킬 실행
-    public virtual void Skill(int num, int level)
+    public virtual int Skill(int num, int level)
     {
         // 여기서 간단한 조건문을 사용하여 num에 따른 다른 스킬을 실행할 수 있습니다.
         // 예시:
@@ -21,5 +21,6 @@ public class Weapon : MonoBehaviour
                 Debug.Log($"Card {num} not implemented.");
                 break;
         }
+        return 0;
     }
 }
