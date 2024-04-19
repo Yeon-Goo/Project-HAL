@@ -61,6 +61,9 @@ public class PlayerDeck : MonoBehaviour
         for (int i = 0; i < 8; i++)
         {
             deck.Add(new Card(i, 1, 1, true));
+            private Image new_card = Resources.Load<Image>("Prefabs/UI/HPBar/PlayerHPBarUI");
+            cardImages.Add(new Image());
+            cardTexts.Add(new TextMeshProUGUI());
         }
     }
 

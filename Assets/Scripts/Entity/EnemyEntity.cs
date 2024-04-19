@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
+[RequireComponent(typeof(Rigidbody))]
 public class EnemyEntity : Entity
 {
     private int damage_scale = 1;
@@ -13,7 +14,8 @@ public class EnemyEntity : Entity
         return damage_coroutine;
     }
 
-    private void OnEnable()
+    //private void OnEnable()
+    void Start()
     {
         // Load HPManager
         hp_manager = Resources.Load<HPManager>("ScriptableObjects/DummyHPManager");
@@ -24,6 +26,9 @@ public class EnemyEntity : Entity
         if (hpbar_prefab == null) return;
         // Instantiate HPBarUI
         hpbar_ui = Instantiate(hpbar_prefab);
+        // HPBarUI를 this의 자식으로 생성
+        hpbar_ui.transform.SetParent(this.transform, false);
+
         if (hpbar_ui == null) return;
         hpbar_ui.Init(this);
 

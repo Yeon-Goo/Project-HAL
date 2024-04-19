@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VirtualCameraController : CinemachineExtension
+public class VirtualCameraManager : CinemachineExtension
 {
     // 유닛(타일) 하나의 픽셀
     private float pixelsperunit = 32.0f;
@@ -45,16 +45,15 @@ public class VirtualCameraController : CinemachineExtension
         camera_shake_initial_pos = new Vector3(0.5f, 0.5f, 0.0f);
     }
 
-    
+    /*
     private void Update()
     {
         if (Input.GetKeyUp(KeyCode.Space))
         {
             VibrateForTimeAndAmount();
         }
-
-        CameraShake();
     }
+    */
 
     // CameraShake에 필요한 변수 초기화 (default : time = 0.5f, amount = 0.0075f)
     public void VibrateForTimeAndAmount(float time = 0.5f, float amount = 0.0075f)
@@ -62,6 +61,8 @@ public class VirtualCameraController : CinemachineExtension
         //Debug.Log("vibrate for " + time + "with amount " + amount);
         camera_shake_time = time;
         camera_shake_amount = amount;
+
+        CameraShake();
     }
 
     private void CameraShake()

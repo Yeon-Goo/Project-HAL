@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -14,8 +15,8 @@ public class PlayerEntity : Entity
     //private HPBarUI hpbar_ui;
     private InventoryUI inventory_prefab;
     private InventoryUI inventory_ui;
-    //private CardUI card_prefab;
-    //private CardUI card_ui;
+    private PlayerDeck card_prefab;
+    private PlayerDeck card_ui;
 
     // Player의 속력
     private float velocity = 3.0f;
@@ -61,6 +62,8 @@ public class PlayerEntity : Entity
         if (hpbar_prefab == null) return;
         // Instantiate HPBarUI
         hpbar_ui = Instantiate(hpbar_prefab);
+        // HPBarUI를 this의 자식으로 생성
+        hpbar_ui.transform.SetParent(this.transform, false);
         if (hpbar_ui == null) return;
         hpbar_ui.Init(this);
 
@@ -69,16 +72,20 @@ public class PlayerEntity : Entity
         if (inventory_prefab == null) return;
         // Instantiate InventoryUI
         inventory_ui = Instantiate(inventory_prefab);
+        // InventoryUI를 this의 자식으로 생성
+        inventory_ui.transform.SetParent(this.transform, false);
         if (inventory_ui == null) return;
 
-        /*
+        
         // Load CardUI Prefab
-        card_prefab = Resources.Load<CardUI>("Prefabs/UI/Card/CardUI");
+        card_prefab = Resources.Load<PlayerDeck>("Prefabs/UI/Card/CardUI");
         if (card_prefab == null) return;
         // Instantiate CardUI
         card_ui = Instantiate(card_prefab);
+        // CardUI를 this의 자식으로 생성
+        card_ui.transform.SetParent(this.transform, false);
         if (card_ui == null) return;
-        */
+        
 
         // Get Components
         animator = GetComponent<Animator>();
@@ -166,6 +173,7 @@ public class PlayerEntity : Entity
     {
         is_moveable = false;
         target_pos = transform.position;
+        rigidbody.velocity = Vector2.zero;
     }
 
     private void MoveCharacter_Mouse()
@@ -253,6 +261,8 @@ public class PlayerEntity : Entity
                 //cur_hp -= damage;
                 //CharacterStop();
                 StartCoroutine(FlickEntity());
+                //GetComponent<CinemachineVirtualCamera>().VibrateForTimeAndAmount();
+
                 hp_manager.SetCurrentHP(hp_manager.GetCurrentHP() - damage);
             }
 
@@ -283,6 +293,7 @@ public class PlayerEntity : Entity
         is_alive = false;
         hp_manager.SetCurrentHP(0);
         GetComponent<SpriteRenderer>().enabled = false;
+        GameManager.sharedInstance.SpawnPlayer();
         // 미완성
     }
 

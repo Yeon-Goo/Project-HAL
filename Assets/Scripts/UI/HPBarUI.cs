@@ -12,12 +12,18 @@ public class HPBarUI : MonoBehaviour
     //[HideInInspector]
     private Entity entity;
     private HPManager hp_manager;
+    [SerializeField]
     private Image hpbar_meter;
     private Image mpbar_meter;
 
     // PlayerEntity HPBarUI Property
     private TMP_Text hpbar_text;
     private TMP_Text mpbar_text;
+
+    // EnemyEntity HPBarUI Property
+    private float width;
+    private float height;
+    private Image hpbar_mask;
 
     // Called by PlayerEntity::Start()
     public void Init(Entity entity)
@@ -41,7 +47,11 @@ public class HPBarUI : MonoBehaviour
                 mpbar_text = GetComponentsInChildren<TMP_Text>()[1];
                 break;
             case EnemyEntity :
-                hpbar_meter = GetComponentsInChildren<Image>()[1];
+                Sprite sprite = entity.GetComponent<SpriteRenderer>().sprite;
+                width = sprite.rect.width;
+                height = sprite.rect.height;
+                hpbar_mask = GetComponentsInChildren<Image>()[1];
+                hpbar_meter = GetComponentsInChildren<Image>()[2];
                 break;
             //case BossEntity:
                 //break;
@@ -64,6 +74,8 @@ public class HPBarUI : MonoBehaviour
                     mpbar_text.text = "MP:" + hp_manager.GetCurrentMP();
                     break;
                 case EnemyEntity:
+                    hpbar_mask.transform.position = Camera.main.WorldToScreenPoint(entity.transform.position) + new UnityEngine.Vector3(width * -0.5f, height * 0.5f + 30.0f, 0);
+
                     break;
                     //case BossEntity:
                     //break;
