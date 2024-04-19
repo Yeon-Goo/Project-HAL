@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
-[RequireComponent(typeof(Rigidbody))]
 public class EnemyEntity : Entity
 {
     private int damage_scale = 1;

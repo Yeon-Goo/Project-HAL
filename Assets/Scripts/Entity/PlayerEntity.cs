@@ -11,8 +11,6 @@ public class PlayerEntity : Entity
     private static string animationState = "AnimationState";
     private static string pickable_objects = "Pickable_Objects";
 
-    //private HPBarUI hpbar_prefab;
-    //private HPBarUI hpbar_ui;
     private InventoryUI inventory_prefab;
     private InventoryUI inventory_ui;
     private PlayerDeck card_prefab;
@@ -27,8 +25,11 @@ public class PlayerEntity : Entity
     [SerializeField]
     // Player가 현재 오른쪽을 바라보는지
     public bool is_looking_right = true;
+    [SerializeField]
     // Player가 현재 움직일 수 있는 상황인지
     private bool is_moveable = false;
+
+
     // Player가 살아 있는지
     private bool is_alive = true;
     [SerializeField]
@@ -48,7 +49,9 @@ public class PlayerEntity : Entity
         idle = 0,
         walk = 1,
         roll = 2,
-        throw_ = 3
+        throw_ = 3,
+        damaged = 4,
+        dead = 5
 
     }
     void Start()
@@ -76,7 +79,7 @@ public class PlayerEntity : Entity
         inventory_ui.transform.SetParent(this.transform, false);
         if (inventory_ui == null) return;
 
-        
+        /*
         // Load CardUI Prefab
         card_prefab = Resources.Load<PlayerDeck>("Prefabs/UI/Card/CardUI");
         if (card_prefab == null) return;
@@ -85,7 +88,7 @@ public class PlayerEntity : Entity
         // CardUI를 this의 자식으로 생성
         card_ui.transform.SetParent(this.transform, false);
         if (card_ui == null) return;
-        
+        */
 
         // Get Components
         animator = GetComponent<Animator>();
@@ -106,6 +109,7 @@ public class PlayerEntity : Entity
     {
         if (is_invincible)
         {
+            // 피격 시 무적 시간 계산
             interval -= Time.deltaTime;
 
             if (interval < float.Epsilon)
@@ -123,21 +127,15 @@ public class PlayerEntity : Entity
         if (!vector.Equals(Vector2.zero))
         {
             // x 방향으로 움직였을 때, x 성분의 값으로 오른쪽 왼쪽을 판단
-            if (vector.x != 0)
-            {
-                // 오른쪽을 바라봄
-                is_looking_right = vector.x > 0 ? true : false;
-            }
+            if (vector.x != 0) is_looking_right = vector.x > 0 ? true : false;
             // x 방향으로 움직이지 않았을 때, transform.localScale.x의 값으로 오른쪽 왼쪽을 판단
-            else
-            {
-                is_looking_right = transform.localScale.x.Equals(1.0f) ? true : false;
-            }
+            else is_looking_right = transform.localScale.x.Equals(1.0f) ? true : false;
             animator.SetInteger(animationState, (int)AnimationStateEnum.walk);
         }
         // ROLL
         else if (Input.GetKey(KeyCode.LeftAlt))
         {
+            is_moveable = false;
             animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
         }
         // IDLE
@@ -259,8 +257,10 @@ public class PlayerEntity : Entity
                 // this는 entity로부터 damage만큼의 피해를 interval초마다 받는다
                 //Debug.Log(this.gameObject + " Get " + damage + " Damage From " + entity.name + "(interval : " + interval + ")\n");
                 //cur_hp -= damage;
-                //CharacterStop();
+                CharacterStop();
                 StartCoroutine(FlickEntity());
+                animator.SetInteger(animationState, (int)AnimationStateEnum.damaged);
+                Debug.Log(animator.GetInteger(animationState));
                 //GetComponent<CinemachineVirtualCamera>().VibrateForTimeAndAmount();
 
                 hp_manager.SetCurrentHP(hp_manager.GetCurrentHP() - damage);
@@ -292,8 +292,9 @@ public class PlayerEntity : Entity
         CharacterStop();
         is_alive = false;
         hp_manager.SetCurrentHP(0);
-        GetComponent<SpriteRenderer>().enabled = false;
-        GameManager.sharedInstance.SpawnPlayer();
+        //GetComponent<SpriteRenderer>().enabled = false;
+        animator.SetInteger(animationState, (int)AnimationStateEnum.dead);
+        //GameManager.sharedInstance.SpawnPlayer();
         // 미완성
     }
 
