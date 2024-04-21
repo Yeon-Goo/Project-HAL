@@ -13,7 +13,8 @@ public class EnemyEntity : Entity
         return damage_coroutine;
     }
 
-    private void OnEnable()
+    //private void OnEnable()
+    void Start()
     {
         // Load HPManager
         hp_manager = Resources.Load<HPManager>("ScriptableObjects/DummyHPManager");
@@ -24,6 +25,9 @@ public class EnemyEntity : Entity
         if (hpbar_prefab == null) return;
         // Instantiate HPBarUI
         hpbar_ui = Instantiate(hpbar_prefab);
+        // HPBarUI를 this의 자식으로 생성
+        hpbar_ui.transform.SetParent(this.transform, false);
+
         if (hpbar_ui == null) return;
         hpbar_ui.Init(this);
 
