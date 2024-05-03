@@ -19,15 +19,23 @@ public class PlayerEntity : Entity
     private PlayerDeck card_prefab;
     private PlayerDeck card_ui;
 
+
+    /***
+     * Player의 좌표 관련 변수들
+     ***/
     // Player의 속력
     private float velocity = 3.0f;
     [SerializeField]
-    // Player가 움직일 방향
-    private Vector2 vector = new Vector2();
-    [SerializeField]
     // Player가 움직일 목표 좌표
     private Vector2 target_pos = new Vector2();
+    [SerializeField]
+    // Player가 움직일 방향
+    private Vector2 vector = new Vector2();
 
+
+    /***
+    * Player의 Animation 관련 변수들
+    ***/
     Coroutine animation_coroutine = null;
     // Player가 현재 오른쪽을 바라보는지
     public bool is_looking_right = true;
@@ -46,7 +54,10 @@ public class PlayerEntity : Entity
     // Player의 무적 시간
     private float interval = 0.0f;
 
-    // Component Variables
+
+    /***
+     * Player의 Components
+     ***/
     private Animator animator;
     private new Rigidbody2D rigidbody;
 
@@ -114,6 +125,16 @@ public class PlayerEntity : Entity
     // Update is called once per frame
     void Update()
     {
+        
+
+        if (Input.GetKey(KeyCode.H))
+        {
+            ResetEntity();
+        }
+    }
+
+    void FixedUpdate()
+    {
         if (is_invincible)
         {
             // 피격 시 무적 시간 계산
@@ -125,14 +146,6 @@ public class PlayerEntity : Entity
             }
         }
 
-        if (Input.GetKey(KeyCode.H))
-        {
-            ResetEntity();
-        }
-    }
-
-    void FixedUpdate()
-    {
         if (is_alive && !is_animation_playing)
         {
             // Stop Player
