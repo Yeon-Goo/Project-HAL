@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -7,12 +8,12 @@ using UnityEngine.UIElements;
 //
 // 요약:
 //     Class for a default Enums in Project.
-public class ColliderType
+public class ColliderTypeHandler
 {
     //
     // 요약:
     //     충돌체 모양을 나타냅니다.
-    public enum collidertype
+    public enum ColliderType
     {
         //
         // 요약:
@@ -35,17 +36,29 @@ public class ColliderType
     //
     // 요약:
     //     숫자를 해당 타입으로 변환합니다.
-    public static ColliderType CastFrom(byte value)
+    public static ColliderType CastFrom(int value)
     {
-        
-        return 
+        if (Enum.IsDefined(typeof(ColliderType), value))
+        {
+            return (ColliderType)value;
+        }
+        else
+        {
+            throw new ArgumentOutOfRangeException(nameof(value), "Invalid value for ColliderType");
+        }
     }
 
     // 요약:
     //     문자열을 해당 타입으로 변환합니다.
     public static ColliderType CastFrom(string value)
     {
-
-        return 
+        if (Enum.TryParse<ColliderType>(value, true, out ColliderType result))
+        {
+            return result;
+        }
+        else
+        {
+            throw new ArgumentException("Invalid name for ColliderType", nameof(value));
+        }
     }
 }
