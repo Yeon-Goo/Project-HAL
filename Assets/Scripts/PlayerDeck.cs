@@ -42,7 +42,7 @@ public class PlayerDeck : MonoBehaviour
         weapon = GameObject.Find("Archer");
         playerobject = GameObject.Find("PlayerObject");
         playerEntity = playerobject.GetComponent<PlayerEntity>();
-        hp_manager = playerEntity.GetHPManager();
+        hp_manager = playerEntity.hp_manager;
 
         InitializeDeck();
         UpdateCardDisplay();
