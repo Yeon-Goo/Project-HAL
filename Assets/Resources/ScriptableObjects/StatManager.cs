@@ -1,4 +1,10 @@
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using static Cinemachine.DocumentationSortingAttribute;
+using static UnityEngine.Rendering.DebugUI;
+using static UnityEngine.Tilemaps.Tile;
 
 [CreateAssetMenu(menuName = "Scriptable Objects/StatManager", fileName = "StatManager")]
 

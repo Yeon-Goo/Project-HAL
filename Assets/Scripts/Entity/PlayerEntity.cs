@@ -175,8 +175,8 @@ public class PlayerEntity : Entity
             {
                 MoveCharacter_Mouse();
                 vector = target_pos - new Vector2(transform.position.x, transform.position.y);
+                UpdateAnimationState();
             }
-            UpdateAnimationState();
         }
         
         // Player의 벡터 정규화
