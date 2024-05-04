@@ -35,7 +35,7 @@ public class HPBarUI : MonoBehaviour
         }
 
         this.entity = entity;
-        hp_manager = entity.GetHPManager();        
+        hp_manager = entity.hp_manager;
 
         switch (entity)
         {

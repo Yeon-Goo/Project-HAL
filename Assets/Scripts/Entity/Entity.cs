@@ -15,11 +15,8 @@ public abstract class Entity : MonoBehaviour
 
     // Entity의 HP를 관리하는 변수
     public HPManager hp_manager;
-    // Entity의 Stat을 관리하는 변수
-    public StatManager stat_manager;
 
-    
-
+    /*
     public void SetHPManager(HPManager hp_manager)
     {
         this.hp_manager = hp_manager;
@@ -29,11 +26,22 @@ public abstract class Entity : MonoBehaviour
     {
         return hp_manager;
     }
+    */
 
+    public HPManager Hp_manager
+    {
+        get;
+        set;
+    }
+
+    //
+    // 요약:
+    //     Entity가 현재 위치하고 있는 좌표를 Vector2로 반환합니다.
     public Vector2 GetPos()
     {
         return new Vector2(transform.position.x, transform.position.y);
     }
+
 
     public Vector2 GetMousePos()
     {
@@ -72,6 +80,9 @@ public abstract class Entity : MonoBehaviour
         }
     }
 
+    //
+    // 요약:
+    //     피격 시 Entity를 0.1초 동안 깜빡입니다.
     public virtual IEnumerator FlickEntity()
     {
         GetComponent<SpriteRenderer>().color = Color.red;

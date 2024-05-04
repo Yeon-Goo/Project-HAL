@@ -20,7 +20,7 @@ public class AttackComponent : MonoBehaviour
     //     반환 값이 없는 Attack 함수입니다.불필요한 table 객체 생성을 줄여 월드 성능을 개선할 수 있습니다.
     void AttackFast(ColliderType shape, string attackInfo, LayerMask collisionGroup = default(LayerMask))
     {
-        if (IsHitTarget(attackInfo))
+        //if (IsHitTarget(attackInfo))
         {
 
         }

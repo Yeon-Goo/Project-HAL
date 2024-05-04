@@ -5,6 +5,9 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class EnemyEntity : Entity
 {
+    // EnemyEntity의 Stat을 관리하는 변수
+    //public EnemyStatManager enemy_stat_manager;
+
     private int damage_scale = 1;
     Coroutine damage_coroutine;
 
@@ -19,6 +22,10 @@ public class EnemyEntity : Entity
         // Load HPManager
         hp_manager = Resources.Load<HPManager>("ScriptableObjects/DummyHPManager");
         if (hp_manager == null) return;
+
+        // Load StatManager
+        //stat_manager = Resources.Load<EnemyStatManager>("ScriptableObjects/EnemyStatManager");
+        //if (stat_manager == null) return;
 
         // Load HPBarUI Prefab
         hpbar_prefab = Resources.Load<HPBarUI>("Prefabs/UI/HPBar/EnemyHPBarUI");

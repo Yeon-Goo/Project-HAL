@@ -9,6 +9,9 @@ using UnityEngine.UIElements;
 
 public class PlayerEntity : Entity
 {
+    // Entity의 Stat을 관리하는 변수
+    //public StatManager stat_manager;
+
     // String Variables
     private static string animationState = "AnimationState";
     private static string pickable_objects = "Pickable_Objects";
@@ -78,6 +81,10 @@ public class PlayerEntity : Entity
         hp_manager = Resources.Load<HPManager>("ScriptableObjects/PlayerHPManager");
         if (hp_manager == null) return;
 
+        // Load StatManager
+        //stat_manager = Resources.Load<StatManager>("ScriptableObjects/StatManager");
+        //if (stat_manager == null) return;
+
         // Load HPBarUI Prefab
         hpbar_prefab = Resources.Load<HPBarUI>("Prefabs/UI/HPBar/PlayerHPBarUI");
         if (hpbar_prefab == null) return;
@@ -125,8 +132,6 @@ public class PlayerEntity : Entity
     // Update is called once per frame
     void Update()
     {
-        
-
         if (Input.GetKey(KeyCode.H))
         {
             ResetEntity();
@@ -135,9 +140,9 @@ public class PlayerEntity : Entity
 
     void FixedUpdate()
     {
+        // 무적 시간 계산
         if (is_invincible)
         {
-            // 피격 시 무적 시간 계산
             interval -= Time.deltaTime;
             if (interval < float.Epsilon)
             {
@@ -153,20 +158,12 @@ public class PlayerEntity : Entity
             {
                 CharacterStop();
             }
-
             // Roll
-            if (Input.GetKey(KeyCode.Space))
+            else if (Input.GetKey(KeyCode.Space))
             {
-                // 마우스가 가리키는 방향으로 구름
-                velocity = 10.0f;
-                target_pos = GetMousePos();
-                vector = target_pos - new Vector2(transform.position.x, transform.position.y);
-                
-                UpdateAnimationState();
-                animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
                 if (animation_coroutine == null)
                 {
-                    animation_coroutine = StartCoroutine(WaitForAnimation(animator));
+                    animation_coroutine = StartCoroutine(Roll(animator));
                 }
                 animation_coroutine = null;
             }
@@ -175,16 +172,18 @@ public class PlayerEntity : Entity
             {
                 MoveCharacter_Mouse();
                 vector = target_pos - new Vector2(transform.position.x, transform.position.y);
-                UpdateAnimationState();
             }
         }
-        
+
         // Player의 벡터 정규화
         if (vector.magnitude < 0.1f)
         {
             vector = Vector2.zero;
         }
-        vector.Normalize();
+        else
+        {
+            vector.Normalize();
+        }
 
         // 캐릭터의 벡터가 0이 아니면 움직이고 있는 상태
         if (!vector.Equals(Vector2.zero))
@@ -199,6 +198,8 @@ public class PlayerEntity : Entity
 
         // 캐릭터를 vector와 velocity에 맞게 움직임
         rigidbody.velocity = vector * velocity;
+
+        UpdateAnimationState();
     }
 
     public void CharacterStop()
@@ -208,10 +209,15 @@ public class PlayerEntity : Entity
         vector = Vector2.zero;
     }
 
-    IEnumerator WaitForAnimation(Animator animator)
+    IEnumerator Roll(Animator animator)
     {
-        // 애니메이션 시작
         is_animation_playing = true;
+        velocity = 4.5f;
+        vector = GetMousePos() - GetPos();
+        vector.Normalize();
+
+        // 애니메이션 시작
+        animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
         while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
         {
             yield return null;
@@ -221,24 +227,26 @@ public class PlayerEntity : Entity
         velocity = 3.0f;
         CharacterStop();
         is_animation_playing = false;
-        animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
     }
 
     private void UpdateAnimationState()
     {
-        // WALK
-        if (!vector.Equals(Vector2.zero))
+        if (!is_animation_playing)
         {
-            animator.SetInteger(animationState, (int)AnimationStateEnum.walk);
-        }
-        else if(Input.GetKey(KeyCode.Space))
-        {
-            animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
-        }
-        // IDLE
-        else
-        {
-            animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+            // WALK
+            if (!vector.Equals(Vector2.zero))
+            {
+                animator.SetInteger(animationState, (int)AnimationStateEnum.walk);
+            }
+            else if (Input.GetKey(KeyCode.Space))
+            {
+                animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
+            }
+            // IDLE
+            else
+            {
+                animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+            }
         }
     }
 
