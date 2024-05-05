@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
 
 public class PlayerEntity : Entity
@@ -26,6 +27,7 @@ public class PlayerEntity : Entity
     /***
      * Player의 좌표 관련 변수들
      ***/
+    [SerializeField]
     // Player의 속력
     private float velocity = 3.0f;
     [SerializeField]
@@ -45,6 +47,8 @@ public class PlayerEntity : Entity
     [SerializeField]
     // Player의 애니메이션이 재생 중인지
     public bool is_animation_playing = false;
+    [SerializeField]
+    public bool is_animation_ended = true;
     [SerializeField]
     // Player가 현재 움직일 수 있는 상황인지
     private bool is_moveable = false;
@@ -70,7 +74,7 @@ public class PlayerEntity : Entity
         idle = 0,
         walk = 1,
         roll = 2,
-        throw_ = 3,
+        attack = 3,
         damaged = 4,
         dead = 5
 
@@ -167,6 +171,15 @@ public class PlayerEntity : Entity
                 }
                 animation_coroutine = null;
             }
+            // Roll
+            else if (Input.GetKey(KeyCode.LeftControl))
+            {
+                if (animation_coroutine == null)
+                {
+                    animation_coroutine = StartCoroutine(Attack(animator));
+                }
+                animation_coroutine = null;
+            }
             // Walk
             else
             {
@@ -213,18 +226,46 @@ public class PlayerEntity : Entity
     {
         is_animation_playing = true;
         velocity = 4.5f;
-        vector = GetMousePos() - GetPos();
+        target_pos = GetMousePos();
+        vector = target_pos - GetPos();
         vector.Normalize();
 
-        // 애니메이션 시작
         animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
         while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
         {
             yield return null;
         }
 
-        // 애니메이션이 끝남
         velocity = 3.0f;
+        CharacterStop();
+        animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+        is_animation_playing = false;
+    }
+
+    IEnumerator Attack(Animator animator)
+    {
+        is_animation_playing = true;
+        CharacterStop();
+
+        animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
+        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        {
+            yield return null;
+        }
+        animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+        is_animation_playing = false;
+    }
+
+    IEnumerator Damaged(Animator animator)
+    {
+        is_animation_playing = true;
+        
+        animator.SetInteger(animationState, (int)AnimationStateEnum.damaged);
+        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        {
+            yield return null;
+        }
+
         CharacterStop();
         is_animation_playing = false;
     }
@@ -241,6 +282,12 @@ public class PlayerEntity : Entity
             else if (Input.GetKey(KeyCode.Space))
             {
                 animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
+                is_animation_ended = false;
+            }
+            else if (Input.GetKey(KeyCode.LeftControl))
+            {
+                animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
+                is_animation_ended = false;
             }
             // IDLE
             else
@@ -319,19 +366,17 @@ public class PlayerEntity : Entity
                 this.interval = interval;
 
                 // this는 entity로부터 damage만큼의 피해를 interval초마다 받는다
-                //Debug.Log(this.gameObject + " Get " + damage + " Damage From " + entity.name + "(interval : " + interval + ")\n");
-                //cur_hp -= damage;
                 CharacterStop();
                 StartCoroutine(FlickEntity());
-                animator.SetInteger(animationState, (int)AnimationStateEnum.damaged);
+
                 //GetComponent<CinemachineVirtualCamera>().VibrateForTimeAndAmount();
 
-                hp_manager.SetCurrentHP(hp_manager.GetCurrentHP() - damage);
+                hp_manager.Cur_hp -= damage;
             }
 
             // this의 체력이 0일 때
             //if (cur_hp <= float.Epsilon)
-            if (hp_manager.GetCurrentHP() <= float.Epsilon)
+            if (hp_manager.Cur_hp <= float.Epsilon)
             {
                 KillEntity();
                 break;
@@ -354,7 +399,7 @@ public class PlayerEntity : Entity
     {
         CharacterStop();
         is_alive = false;
-        hp_manager.SetCurrentHP(0);
+        hp_manager.Cur_hp = 0;
         //GetComponent<SpriteRenderer>().enabled = false;
         animator.SetInteger(animationState, (int)AnimationStateEnum.dead);
         //GameManager.sharedInstance.SpawnPlayer();
@@ -365,8 +410,8 @@ public class PlayerEntity : Entity
     public override void ResetEntity()
     {
         is_alive = true;
-        hp_manager.SetCurrentHP(hp_manager.GetMaxHP());
-        hp_manager.SetCurrentMP(hp_manager.GetMaxMP());
+        hp_manager.Cur_hp = hp_manager.Max_hp;
+        hp_manager.Cur_mp = hp_manager.Max_mp;
         GetComponent<SpriteRenderer>().enabled = true;
         // 미완성
     }

@@ -61,17 +61,17 @@ public class HPBarUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        hpbar_meter.fillAmount = hp_manager.GetCurrentHP() / hp_manager.GetMaxHP();
+        hpbar_meter.fillAmount = hp_manager.Cur_hp / hp_manager.Max_hp;
 
         if (entity != null)
         {
             switch (entity)
             {
                 case PlayerEntity:
-                    mpbar_meter.fillAmount = hp_manager.GetCurrentMP() / hp_manager.GetMaxMP();
+                    mpbar_meter.fillAmount = hp_manager.Cur_mp / hp_manager.Max_mp;
 
-                    hpbar_text.text = "HP:" + hp_manager.GetCurrentHP();
-                    mpbar_text.text = "MP:" + hp_manager.GetCurrentMP();
+                    hpbar_text.text = "HP:" + hp_manager.Cur_hp;
+                    mpbar_text.text = "MP:" + hp_manager.Cur_mp;
                     break;
                 case EnemyEntity:
                     hpbar_mask.transform.position = Camera.main.WorldToScreenPoint(entity.transform.position) + new UnityEngine.Vector3(width * -0.5f, height * 0.5f + 30.0f, 0);

@@ -86,13 +86,13 @@ public class PlayerDeck : MonoBehaviour
         }
 
         // 나중에 0 말고 각 스킬의 마나로 바꿔야 함
-        if (hp_manager.GetCurrentMP() > 0)
+        if (hp_manager.Cur_hp > 0)
         {
             playerEntity.is_looking_right = (playerEntity.GetMousePos().x > playerEntity.GetPos().x) ? true : false;
             playerEntity.CharacterStop();
 
             // 나중에 1 말고 각 스킬의 마나로 바꿔야 함
-            hp_manager.SetCurrentMP(hp_manager.GetCurrentMP() - 1);
+            hp_manager.Cur_mp -= 1;
 
             // Move the selected card to the end of the deck.
             Card selectedCard = deck[index];
