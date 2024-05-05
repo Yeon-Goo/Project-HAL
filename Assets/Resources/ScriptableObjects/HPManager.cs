@@ -22,7 +22,26 @@ public class HPManager : ScriptableObject
     private float cur_mp;
     
     
+    public float Max_hp
+    {
+        get { return max_hp; }
+    }
+    public float Cur_hp
+    {
+        get { return cur_hp; }
+        set { cur_hp = value; }
+    }
+    public float Max_mp
+    {
+        get { return max_mp; }
+    }
+    public float Cur_mp
+    {
+        get { return cur_mp; }
+        set { cur_mp = value; }
+    }
 
+    /*
     public void SetCurrentHP(float value)
     {
         cur_hp = value;
@@ -62,6 +81,7 @@ public class HPManager : ScriptableObject
     {
         return max_mp;
     }
+    */
 
     public bool AdjustHP(int amount)
     {

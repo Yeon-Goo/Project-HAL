@@ -44,7 +44,7 @@ public class EnemyEntity : Entity
     // 미완성
     public override void ResetEntity()
     {
-        hp_manager.SetCurrentHP(hp_manager.GetMaxHP());
+        hp_manager.Cur_hp = hp_manager.Max_hp;
     }
 
     void OnCollisionEnter2D(UnityEngine.Collision2D collision)

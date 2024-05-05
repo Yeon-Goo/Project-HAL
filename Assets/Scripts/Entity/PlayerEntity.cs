@@ -26,6 +26,7 @@ public class PlayerEntity : Entity
     /***
      * Player의 좌표 관련 변수들
      ***/
+    [SerializeField]
     // Player의 속력
     private float velocity = 3.0f;
     [SerializeField]
@@ -213,18 +214,31 @@ public class PlayerEntity : Entity
     {
         is_animation_playing = true;
         velocity = 4.5f;
-        vector = GetMousePos() - GetPos();
+        target_pos = GetMousePos();
+        vector = target_pos - GetPos();
         vector.Normalize();
 
-        // 애니메이션 시작
         animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
         while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
         {
             yield return null;
         }
 
-        // 애니메이션이 끝남
         velocity = 3.0f;
+        CharacterStop();
+        is_animation_playing = false;
+    }
+
+    IEnumerator Damaged(Animator animator)
+    {
+        is_animation_playing = true;
+        
+        animator.SetInteger(animationState, (int)AnimationStateEnum.damaged);
+        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        {
+            yield return null;
+        }
+
         CharacterStop();
         is_animation_playing = false;
     }
@@ -319,19 +333,17 @@ public class PlayerEntity : Entity
                 this.interval = interval;
 
                 // this는 entity로부터 damage만큼의 피해를 interval초마다 받는다
-                //Debug.Log(this.gameObject + " Get " + damage + " Damage From " + entity.name + "(interval : " + interval + ")\n");
-                //cur_hp -= damage;
                 CharacterStop();
                 StartCoroutine(FlickEntity());
-                animator.SetInteger(animationState, (int)AnimationStateEnum.damaged);
+
                 //GetComponent<CinemachineVirtualCamera>().VibrateForTimeAndAmount();
 
-                hp_manager.SetCurrentHP(hp_manager.GetCurrentHP() - damage);
+                hp_manager.Cur_hp -= damage;
             }
 
             // this의 체력이 0일 때
             //if (cur_hp <= float.Epsilon)
-            if (hp_manager.GetCurrentHP() <= float.Epsilon)
+            if (hp_manager.Cur_hp <= float.Epsilon)
             {
                 KillEntity();
                 break;
@@ -354,7 +366,7 @@ public class PlayerEntity : Entity
     {
         CharacterStop();
         is_alive = false;
-        hp_manager.SetCurrentHP(0);
+        hp_manager.Cur_hp = 0;
         //GetComponent<SpriteRenderer>().enabled = false;
         animator.SetInteger(animationState, (int)AnimationStateEnum.dead);
         //GameManager.sharedInstance.SpawnPlayer();
@@ -365,8 +377,8 @@ public class PlayerEntity : Entity
     public override void ResetEntity()
     {
         is_alive = true;
-        hp_manager.SetCurrentHP(hp_manager.GetMaxHP());
-        hp_manager.SetCurrentMP(hp_manager.GetMaxMP());
+        hp_manager.Cur_hp = hp_manager.Max_hp;
+        hp_manager.Cur_mp = hp_manager.Max_mp;
         GetComponent<SpriteRenderer>().enabled = true;
         // 미완성
     }

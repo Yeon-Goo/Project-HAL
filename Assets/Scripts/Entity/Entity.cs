@@ -50,7 +50,7 @@ public abstract class Entity : MonoBehaviour
 
     public virtual IEnumerator DamageEntity(int damage, float interval, GameObject entity)
     {
-        float cur_hp = hp_manager.GetCurrentHP();
+        float cur_hp = hp_manager.Cur_hp;
 
         while (true)
         {
@@ -59,7 +59,7 @@ public abstract class Entity : MonoBehaviour
             // this는 entity로부터 damage만큼의 피해를 interval초마다 받는다
             Debug.Log(this.gameObject + " Get " + damage + " Damage From " + entity.name + "(interval : " + interval + ")\n");
             cur_hp -= damage;
-            hp_manager.SetCurrentHP(cur_hp);
+            hp_manager.Cur_hp = cur_hp;
 
             // this의 체력이 0일 때
             if (cur_hp <= float.Epsilon)
@@ -92,7 +92,7 @@ public abstract class Entity : MonoBehaviour
 
     public virtual void KillEntity()
     {
-        hp_manager.SetCurrentHP(0);
+        hp_manager.Cur_hp = 0;
         Destroy(gameObject);
     }
     public abstract void ResetEntity();
