@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.UI;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
 
 public class PlayerEntity : Entity
@@ -47,6 +48,8 @@ public class PlayerEntity : Entity
     // Player의 애니메이션이 재생 중인지
     public bool is_animation_playing = false;
     [SerializeField]
+    public bool is_animation_ended = true;
+    [SerializeField]
     // Player가 현재 움직일 수 있는 상황인지
     private bool is_moveable = false;
     // Player가 살아 있는지
@@ -71,7 +74,7 @@ public class PlayerEntity : Entity
         idle = 0,
         walk = 1,
         roll = 2,
-        throw_ = 3,
+        attack = 3,
         damaged = 4,
         dead = 5
 
@@ -168,6 +171,15 @@ public class PlayerEntity : Entity
                 }
                 animation_coroutine = null;
             }
+            // Roll
+            else if (Input.GetKey(KeyCode.LeftControl))
+            {
+                if (animation_coroutine == null)
+                {
+                    animation_coroutine = StartCoroutine(Attack(animator));
+                }
+                animation_coroutine = null;
+            }
             // Walk
             else
             {
@@ -226,6 +238,21 @@ public class PlayerEntity : Entity
 
         velocity = 3.0f;
         CharacterStop();
+        animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+        is_animation_playing = false;
+    }
+
+    IEnumerator Attack(Animator animator)
+    {
+        is_animation_playing = true;
+        CharacterStop();
+
+        animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
+        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        {
+            yield return null;
+        }
+        animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
         is_animation_playing = false;
     }
 
@@ -255,6 +282,12 @@ public class PlayerEntity : Entity
             else if (Input.GetKey(KeyCode.Space))
             {
                 animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
+                is_animation_ended = false;
+            }
+            else if (Input.GetKey(KeyCode.LeftControl))
+            {
+                animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
+                is_animation_ended = false;
             }
             // IDLE
             else
