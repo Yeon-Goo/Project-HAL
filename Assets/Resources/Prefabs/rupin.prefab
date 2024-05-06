@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 6838074315101534295}
   - component: {fileID: 8339743075792588737}
   - component: {fileID: 5580090853831161128}
+  - component: {fileID: 4902141889677158516}
+  - component: {fileID: 8491133022332684238}
   m_Layer: 0
   m_Name: rupin
   m_TagString: Enemy
@@ -156,3 +158,53 @@ MonoBehaviour:
   attack_charge: 2
   attack_time: 1
   attack_delay: 2
+--- !u!114 &4902141889677158516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4890928813107072413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db167284722fb3846813f5ca5661b394, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpbar_prefab: {fileID: 0}
+  hpbar_ui: {fileID: 0}
+  hp_manager: {fileID: 0}
+--- !u!58 &8491133022332684238
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4890928813107072413}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.27
