@@ -64,51 +64,47 @@ public class PlayerDeck : MonoBehaviour
         }
     }
 
-    private void WeaponUse()
-    {
-       
-    }
     private void UseCard(int index)
     {
+        //ERROR CHECK
         if (deck.Count <= index)
         {
             Debug.LogWarning("Invalid card selection.");
             return;
         }
-
-        if (weapon != null)
-        {
-            weapon.GetComponent<Weapon>().Skill(deck[index].num, deck[index].level);
-        }
-        else
+        if (weapon == null)
         {
             Debug.LogError("Weapon object not found.");
         }
+        //-----------
 
-        // 나중에 0 말고 각 스킬의 마나로 바꿔야 함
-        if (hp_manager.Cur_hp > 0)
+        //카드 고유번호에 따른 필요 마나 확인
+        int mananeed = weapon.GetComponent<Weapon>().GetMana(deck[index].num);
+        Debug.Log(mananeed + " need");
+
+        if (hp_manager.Cur_mp >= mananeed)
         {
             playerEntity.is_looking_right = (playerEntity.GetMousePos().x > playerEntity.GetPos().x) ? true : false;
             playerEntity.CharacterStop();
 
-            // 나중에 1 말고 각 스킬의 마나로 바꿔야 함
-            hp_manager.Cur_mp -= 1;
+            hp_manager.Cur_mp -= mananeed;
 
-            // Move the selected card to the end of the deck.
-            Card selectedCard = deck[index];
-            deck.RemoveAt(index);
-            deck.Add(selectedCard);
+            weapon.GetComponent<Weapon>().Skill(deck[index].num, deck[index].level);
+            //해당 카드와 5번째 카드 스와핑
+            Card temp = deck[index];
+            deck[index] = deck[4];
+            deck[4] = temp;
 
-            /* Shift the next card (5th card, if available) to the selected position.
-            if (deck.Count > 4)
-            {
-                Card nextCard = deck[4];
-                deck.Insert(index, nextCard);
-                deck.RemoveAt(5); // Remove the shifted card from its original position.
-            }*/
+            //5번째 카드 삭제 후 맨 뒤에 추가
+            deck.RemoveAt(4);
+            deck.Add(temp);
 
             UpdateCardDisplay();
-            //Debug.Log($"Card used: Num={selectedCard.num}, Level={selectedCard.level}. Shifted to the end.");
+            Debug.Log($"Card used: Num= " + index);
+        }
+        else
+        {
+            Debug.Log(" NO MANA ");
         }
     }
 
@@ -125,5 +121,6 @@ public class PlayerDeck : MonoBehaviour
                 cardTexts[i].text = "";
             }
         }
+        UnityEngine.Debug.Log("update good?");
     }
 }

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: PlayerHPManager
   m_EditorClassIdentifier: 
   max_hp: 20
-  cur_hp: 20
+  cur_hp: 18
   max_mp: 10
   cur_mp: 8

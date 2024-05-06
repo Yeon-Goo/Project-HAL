@@ -10,10 +10,16 @@ public class Archer : Weapon
     public float arrowSpeed = 10f;
     private IObjectPool<ArrowObject> _Pool;
 
+    public override int GetMana(int cardnum)
+    {
+        return 1;
+        Debug.Log("archer get mana called");
+    }
+
 
     public override int Skill(int num, int level)
     {
-        return BaseShot(0.0f);
+        BaseShot(0.0f);
         /*switch (num)
         {
             case 1:
@@ -50,7 +56,7 @@ public class Archer : Weapon
         return 0;
     }
 
-    private int BaseShot(float angleadd)
+    private void BaseShot(float angleadd)
     {
         Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
@@ -77,7 +83,6 @@ public class Archer : Weapon
         {
             Debug.Log("Arrow prefab or object pool is not set.");
         }
-        return 1;
     }
 
 

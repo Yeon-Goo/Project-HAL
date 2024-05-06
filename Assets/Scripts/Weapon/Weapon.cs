@@ -23,4 +23,9 @@ public class Weapon : MonoBehaviour
         }
         return 0;
     }
+
+    public virtual int GetMana(int cardnum)
+    {
+        return 99;
+    }
 }
