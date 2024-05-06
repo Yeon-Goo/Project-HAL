@@ -10,12 +10,16 @@ public class Archer : Weapon
     public float arrowSpeed = 10f;
     private IObjectPool<ArrowObject> _Pool;
 
-
-    public override void Skill(int num, int level)
+    public override int GetMana(int cardnum)
     {
-        BaseShot(10.0f);
+        return 1;
+        Debug.Log("archer get mana called");
+    }
+
+
+    public override int Skill(int num, int level)
+    {
         BaseShot(0.0f);
-        BaseShot(-10.0f);
         /*switch (num)
         {
             case 1:
@@ -49,12 +53,12 @@ public class Archer : Weapon
                 Debug.Log("Unknown skill.");
                 break; 
         } */
+        return 0;
     }
 
-    void BaseShot(float angleadd)
+    private void BaseShot(float angleadd)
     {
         Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        // PlayerEntity 참조가 더 이상 사용되지 않으므로, 해당 줄은 제거되었습니다.
 
         if (arrowPrefab != null && _Pool != null)
         {
