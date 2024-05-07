@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 public class Weapon : MonoBehaviour
 {
+    protected PlayerEntity playerEntity;
+
     // 카드 번호에 따른 스킬 실행
     public virtual int Skill(int num, int level)
     {
@@ -27,5 +29,10 @@ public class Weapon : MonoBehaviour
     public virtual int GetMana(int cardnum)
     {
         return 99;
+    }
+
+    void Start()
+    {
+        playerEntity = GameObject.Find("PlayerObject").GetComponent<PlayerEntity>();
     }
 }

@@ -80,12 +80,12 @@ public class PlayerDeck : MonoBehaviour
 
         //카드 고유번호에 따른 필요 마나 확인
         int mananeed = weapon.GetComponent<Weapon>().GetMana(deck[index].num);
-        Debug.Log(mananeed + " need");
+        //Debug.Log(mananeed + " need");
 
         if (hp_manager.Cur_mp >= mananeed)
         {
             playerEntity.is_looking_right = (playerEntity.GetMousePos().x > playerEntity.GetPos().x) ? true : false;
-            playerEntity.CharacterStop();
+            //playerEntity.CharacterStop();
 
             hp_manager.Cur_mp -= mananeed;
 
@@ -100,11 +100,11 @@ public class PlayerDeck : MonoBehaviour
             deck.Add(temp);
 
             UpdateCardDisplay();
-            Debug.Log($"Card used: Num= " + index);
+            //Debug.Log($"Card used: Num= " + index);
         }
         else
         {
-            Debug.Log(" NO MANA ");
+            //Debug.Log(" NO MANA ");
         }
     }
 
@@ -121,6 +121,6 @@ public class PlayerDeck : MonoBehaviour
                 cardTexts[i].text = "";
             }
         }
-        UnityEngine.Debug.Log("update good?");
+        //UnityEngine.Debug.Log("update good");
     }
 }

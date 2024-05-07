@@ -13,13 +13,14 @@ public class Archer : Weapon
     public override int GetMana(int cardnum)
     {
         return 1;
-        Debug.Log("archer get mana called");
+        //Debug.Log("archer get mana called");
     }
 
 
     public override int Skill(int num, int level)
     {
         BaseShot(0.0f);
+        playerEntity.CharacterStop();
         /*switch (num)
         {
             case 1:
