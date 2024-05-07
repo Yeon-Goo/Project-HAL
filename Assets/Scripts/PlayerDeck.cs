@@ -54,8 +54,8 @@ public class PlayerDeck : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.W)) UseCard(1);
         else if (Input.GetKeyDown(KeyCode.E)) UseCard(2);
         else if (Input.GetKeyDown(KeyCode.R)) UseCard(3);
+        else if (Input.GetMouseButtonDown(0)) BaseAttack();
     }
-
     private void InitializeDeck()
     {
         for (int i = 0; i < 8; i++)
@@ -63,6 +63,22 @@ public class PlayerDeck : MonoBehaviour
             deck.Add(new Card(i, 1, 1, true));
         }
     }
+
+    private void BaseAttack()
+    {
+        if (weapon == null)
+        {
+            Debug.LogError("Weapon object not found.");
+        }
+
+        playerEntity.is_looking_right = (playerEntity.GetMousePos().x > playerEntity.GetPos().x) ? true : false;
+
+        if(weapon.GetComponent<Weapon>().BaseAttackAble())
+        {
+            weapon.GetComponent<Weapon>().BaseAttack();
+        }
+    }
+
 
     private void UseCard(int index)
     {
@@ -85,7 +101,6 @@ public class PlayerDeck : MonoBehaviour
         if (hp_manager.Cur_mp >= mananeed)
         {
             playerEntity.is_looking_right = (playerEntity.GetMousePos().x > playerEntity.GetPos().x) ? true : false;
-            //playerEntity.CharacterStop();
 
             hp_manager.Cur_mp -= mananeed;
 

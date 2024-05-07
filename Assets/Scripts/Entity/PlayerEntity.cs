@@ -171,15 +171,6 @@ public class PlayerEntity : Entity
                 }
                 animation_coroutine = null;
             }
-            // Roll
-            else if (Input.GetKey(KeyCode.LeftControl))
-            {
-                if (animation_coroutine == null)
-                {
-                    animation_coroutine = StartCoroutine(Attack(animator));
-                }
-                animation_coroutine = null;
-            }
             // Walk
             else
             {
@@ -215,6 +206,14 @@ public class PlayerEntity : Entity
         UpdateAnimationState();
     }
 
+    public void CharacterAttack()
+    {
+        if (animation_coroutine == null)
+        {
+            animation_coroutine = StartCoroutine(Attack(animator));
+        }
+        animation_coroutine = null;
+    }
     public void CharacterStop()
     {
         is_moveable = false;
@@ -242,7 +241,7 @@ public class PlayerEntity : Entity
         is_animation_playing = false;
     }
 
-    IEnumerator Attack(Animator animator)
+    public IEnumerator Attack(Animator animator)
     {
         is_animation_playing = true;
         CharacterStop();

@@ -16,6 +16,21 @@ public class Archer : Weapon
         //Debug.Log("archer get mana called");
     }
 
+    public override void BaseAttack()
+    {
+        BaseShot(0.0f);
+        playerEntity.CharacterAttack();
+    }
+
+
+
+    //기본 공격이 가능한지 반환
+    public override bool BaseAttackAble()
+    {
+        //weapon별로 구현
+        return true;
+    }
+
 
     public override int Skill(int num, int level)
     {
