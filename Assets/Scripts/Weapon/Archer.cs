@@ -148,6 +148,17 @@ public class Archer : Weapon
         playerObject = GameObject.Find("PlayerObject");
     }
 
+
+
+
+
+
+
+
+
+
+
+
     //------------ DONT EDIT -------------
 
     private ArrowObject CreateArrow()
