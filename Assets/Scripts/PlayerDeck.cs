@@ -55,6 +55,7 @@ public class PlayerDeck : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.E)) UseCard(2);
         else if (Input.GetKeyDown(KeyCode.R)) UseCard(3);
         else if (Input.GetMouseButtonDown(0)) BaseAttack();
+        //else if (Input.GetMouseButtonDown(0)) BaseAttack();
     }
     private void InitializeDeck()
     {

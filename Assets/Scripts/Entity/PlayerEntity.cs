@@ -53,7 +53,7 @@ public class PlayerEntity : Entity
     // Player가 현재 움직일 수 있는 상황인지
     private bool is_moveable = false;
     // Player가 살아 있는지
-    private bool is_alive = true;
+    public bool is_alive = true;
     [SerializeField]
     // Player가 무적인지
     private bool is_invincible = false;
@@ -171,6 +171,11 @@ public class PlayerEntity : Entity
                 }
                 animation_coroutine = null;
             }
+            // Attack
+            else if (Input.GetMouseButton(0))
+            {
+                CharacterAttack();
+            }
             // Walk
             else
             {
@@ -213,6 +218,8 @@ public class PlayerEntity : Entity
             animation_coroutine = StartCoroutine(Attack(animator));
         }
         animation_coroutine = null;
+
+        transform.localScale = (GetMousePos().x - GetPos().x) > 0 ? new Vector3(1.0f, 1.0f, 1.0f) : new Vector3(-1.0f, 1.0f, 1.0f);
     }
     public void CharacterStop()
     {
@@ -281,12 +288,12 @@ public class PlayerEntity : Entity
             else if (Input.GetKey(KeyCode.Space))
             {
                 animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
-                is_animation_ended = false;
+                //is_animation_ended = false;
             }
-            else if (Input.GetKey(KeyCode.LeftControl))
+            else if (Input.GetMouseButton(0))
             {
                 animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
-                is_animation_ended = false;
+                //is_animation_ended = false;
             }
             // IDLE
             else
