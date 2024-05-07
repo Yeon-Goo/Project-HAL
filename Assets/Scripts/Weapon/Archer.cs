@@ -19,7 +19,8 @@ public class Archer : Weapon
     public override void BaseAttack()
     {
         BaseShot(0.0f);
-        playerEntity.CharacterAttack();
+        //if (playerEntity.is_alive && !playerEntity.is_animation_playing)
+        //    playerEntity.CharacterAttack();
     }
 
 
