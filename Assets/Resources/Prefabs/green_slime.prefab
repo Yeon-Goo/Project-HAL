@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 744833061194964841}
   - component: {fileID: 3864113972635817214}
   - component: {fileID: 6706992823711617004}
-  m_Layer: 6
+  - component: {fileID: -4712814985362056978}
+  m_Layer: 8
   m_Name: green_slime
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -138,7 +139,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -192,3 +193,18 @@ MonoBehaviour:
   attack_charge: 1
   attack_time: 1
   attack_delay: 2.5
+--- !u!114 &-4712814985362056978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3640349500752462225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db167284722fb3846813f5ca5661b394, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpbar_prefab: {fileID: 0}
+  hpbar_ui: {fileID: 0}
+  hp_manager: {fileID: 0}

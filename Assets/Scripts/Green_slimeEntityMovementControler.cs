@@ -101,7 +101,7 @@ public class MonsterTracking : MonoBehaviour
             {
                 monster_state = (int)StateEnum.delay;
                 transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-                animator.SetInteger(animationState, monster_state);
+                animator.SetInteger(animationState, (int)StateEnum.idle);
             }
         }
 

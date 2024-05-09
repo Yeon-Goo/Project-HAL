@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     // 게임 매니저는 오직 하나여야 한다
     public static GameManager sharedInstance = null;
+    public static VirtualCameraManager virtualcameracontroller = null;
 
     public SpawnPoint playerSpawnPoint;
 
@@ -29,7 +31,21 @@ public class GameManager : MonoBehaviour
 
     public void SetupScene()
     {
+        SetupVirtualCameraController();
         SpawnPlayer();
+    }
+
+    private void SetupVirtualCameraController()
+    {
+        if (virtualcameracontroller != null && virtualcameracontroller != this)
+        {
+            Debug.Log("Destroy virtual camera controller\n");
+            Destroy(virtualcameracontroller);
+        }
+        else
+        {
+            virtualcameracontroller = GetComponent<VirtualCameraManager>();
+        }
     }
 
     public void SpawnPlayer()

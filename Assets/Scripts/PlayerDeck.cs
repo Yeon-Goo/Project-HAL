@@ -32,7 +32,9 @@ public class PlayerDeck : MonoBehaviour
 
     private GameObject weapon;
     private GameObject playerobject;
-    PlayerEntity playerEntity;
+    private PlayerEntity playerEntity;
+    private HPManager hp_manager;
+    
 
     void Start()
     {
@@ -40,6 +42,7 @@ public class PlayerDeck : MonoBehaviour
         weapon = GameObject.Find("Archer");
         playerobject = GameObject.Find("PlayerObject");
         playerEntity = playerobject.GetComponent<PlayerEntity>();
+        hp_manager = playerEntity.hp_manager;
 
         InitializeDeck();
         UpdateCardDisplay();
@@ -51,8 +54,9 @@ public class PlayerDeck : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.W)) UseCard(1);
         else if (Input.GetKeyDown(KeyCode.E)) UseCard(2);
         else if (Input.GetKeyDown(KeyCode.R)) UseCard(3);
+        else if (Input.GetMouseButtonDown(0)) BaseAttack();
+        //else if (Input.GetMouseButtonDown(0)) BaseAttack();
     }
-
     private void InitializeDeck()
     {
         for (int i = 0; i < 8; i++)
@@ -61,44 +65,63 @@ public class PlayerDeck : MonoBehaviour
         }
     }
 
-    private void WeaponUse()
+    private void BaseAttack()
     {
-       
-    }
-    private void UseCard(int index)
-    {
-        if (deck.Count <= index)
-        {
-            Debug.LogWarning("Invalid card selection.");
-            return;
-        }
-
-        if (weapon != null)
-        {
-            weapon.GetComponent<Weapon>().Skill(deck[index].num, deck[index].level);
-        }
-        else
+        if (weapon == null)
         {
             Debug.LogError("Weapon object not found.");
         }
 
         playerEntity.is_looking_right = (playerEntity.GetMousePos().x > playerEntity.GetPos().x) ? true : false;
-        playerEntity.CharacterStop();
-        // Move the selected card to the end of the deck.
-        Card selectedCard = deck[index];
-        deck.RemoveAt(index);
-        deck.Add(selectedCard);
 
-        /* Shift the next card (5th card, if available) to the selected position.
-        if (deck.Count > 4)
+        if(weapon.GetComponent<Weapon>().BaseAttackAble())
         {
-            Card nextCard = deck[4];
-            deck.Insert(index, nextCard);
-            deck.RemoveAt(5); // Remove the shifted card from its original position.
-        }*/
+            weapon.GetComponent<Weapon>().BaseAttack();
+        }
+    }
 
-        UpdateCardDisplay();
-        //Debug.Log($"Card used: Num={selectedCard.num}, Level={selectedCard.level}. Shifted to the end.");
+
+    private void UseCard(int index)
+    {
+        //ERROR CHECK
+        if (deck.Count <= index)
+        {
+            Debug.LogWarning("Invalid card selection.");
+            return;
+        }
+        if (weapon == null)
+        {
+            Debug.LogError("Weapon object not found.");
+        }
+        //-----------
+
+        //카드 고유번호에 따른 필요 마나 확인
+        int mananeed = weapon.GetComponent<Weapon>().GetMana(deck[index].num);
+        //Debug.Log(mananeed + " need");
+
+        if (hp_manager.Cur_mp >= mananeed)
+        {
+            playerEntity.is_looking_right = (playerEntity.GetMousePos().x > playerEntity.GetPos().x) ? true : false;
+
+            hp_manager.Cur_mp -= mananeed;
+
+            weapon.GetComponent<Weapon>().Skill(deck[index].num, deck[index].level);
+            //해당 카드와 5번째 카드 스와핑
+            Card temp = deck[index];
+            deck[index] = deck[4];
+            deck[4] = temp;
+
+            //5번째 카드 삭제 후 맨 뒤에 추가
+            deck.RemoveAt(4);
+            deck.Add(temp);
+
+            UpdateCardDisplay();
+            //Debug.Log($"Card used: Num= " + index);
+        }
+        else
+        {
+            //Debug.Log(" NO MANA ");
+        }
     }
 
     private void UpdateCardDisplay()
@@ -114,5 +137,6 @@ public class PlayerDeck : MonoBehaviour
                 cardTexts[i].text = "";
             }
         }
+        //UnityEngine.Debug.Log("update good");
     }
 }

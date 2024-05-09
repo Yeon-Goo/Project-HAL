@@ -9,9 +9,14 @@ using UnityEngine;
  */
 public abstract class Entity : MonoBehaviour
 {
+    // Entity's UIs
+    public HPBarUI hpbar_prefab;
+    public HPBarUI hpbar_ui;
+
     // Entity의 HP를 관리하는 변수
     public HPManager hp_manager;
 
+    /*
     public void SetHPManager(HPManager hp_manager)
     {
         this.hp_manager = hp_manager;
@@ -21,11 +26,22 @@ public abstract class Entity : MonoBehaviour
     {
         return hp_manager;
     }
+    */
 
+    public HPManager Hp_manager
+    {
+        get;
+        set;
+    }
+
+    //
+    // 요약:
+    //     Entity가 현재 위치하고 있는 좌표를 Vector2로 반환합니다.
     public Vector2 GetPos()
     {
         return new Vector2(transform.position.x, transform.position.y);
     }
+
 
     public Vector2 GetMousePos()
     {
@@ -34,7 +50,7 @@ public abstract class Entity : MonoBehaviour
 
     public virtual IEnumerator DamageEntity(int damage, float interval, GameObject entity)
     {
-        float cur_hp = hp_manager.GetCurrentHP();
+        float cur_hp = hp_manager.Cur_hp;
 
         while (true)
         {
@@ -43,7 +59,7 @@ public abstract class Entity : MonoBehaviour
             // this는 entity로부터 damage만큼의 피해를 interval초마다 받는다
             Debug.Log(this.gameObject + " Get " + damage + " Damage From " + entity.name + "(interval : " + interval + ")\n");
             cur_hp -= damage;
-            hp_manager.SetCurrentHP(cur_hp);
+            hp_manager.Cur_hp = cur_hp;
 
             // this의 체력이 0일 때
             if (cur_hp <= float.Epsilon)
@@ -64,6 +80,9 @@ public abstract class Entity : MonoBehaviour
         }
     }
 
+    //
+    // 요약:
+    //     피격 시 Entity를 0.1초 동안 깜빡입니다.
     public virtual IEnumerator FlickEntity()
     {
         GetComponent<SpriteRenderer>().color = Color.red;
@@ -73,7 +92,7 @@ public abstract class Entity : MonoBehaviour
 
     public virtual void KillEntity()
     {
-        hp_manager.SetCurrentHP(0);
+        hp_manager.Cur_hp = 0;
         Destroy(gameObject);
     }
     public abstract void ResetEntity();

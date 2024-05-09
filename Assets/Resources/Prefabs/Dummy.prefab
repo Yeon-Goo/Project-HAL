@@ -183,4 +183,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db167284722fb3846813f5ca5661b394, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hpbar_prefab: {fileID: 0}
+  hpbar_ui: {fileID: 0}
   hp_manager: {fileID: 11400000, guid: 134991b163e249e4c8f6b68f88ca9bee, type: 2}
