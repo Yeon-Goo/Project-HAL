@@ -42,18 +42,16 @@ public class PlayerEntity : Entity
     * Player의 Animation 관련 변수들
     ***/
     Coroutine animation_coroutine = null;
+    // Player가 살아 있는지
+    public bool is_alive = true;
+    [SerializeField]
+    // Player가 현재 움직일 수 있는 상황인지
+    private bool is_moveable = false;
     // Player가 현재 오른쪽을 바라보는지
     public bool is_looking_right = true;
     [SerializeField]
     // Player의 애니메이션이 재생 중인지
     public bool is_animation_playing = false;
-    [SerializeField]
-    public bool is_animation_ended = true;
-    [SerializeField]
-    // Player가 현재 움직일 수 있는 상황인지
-    private bool is_moveable = false;
-    // Player가 살아 있는지
-    public bool is_alive = true;
     [SerializeField]
     // Player가 무적인지
     private bool is_invincible = false;
@@ -165,16 +163,12 @@ public class PlayerEntity : Entity
             // Roll
             else if (Input.GetKey(KeyCode.Space))
             {
-                if (animation_coroutine == null)
-                {
-                    animation_coroutine = StartCoroutine(Roll(animator));
-                }
-                animation_coroutine = null;
+                PlayAnimation("Roll");
             }
             // Attack
             else if (Input.GetMouseButton(0))
             {
-                CharacterAttack();
+                PlayAnimation("Attack");
             }
             // Walk
             else
@@ -184,6 +178,12 @@ public class PlayerEntity : Entity
             }
         }
 
+        UpdateMovement();
+        UpdateAnimationState();
+    }
+
+    private void UpdateMovement()
+    {
         // Player의 벡터 정규화
         if (vector.magnitude < 0.1f)
         {
@@ -207,73 +207,6 @@ public class PlayerEntity : Entity
 
         // 캐릭터를 vector와 velocity에 맞게 움직임
         rigidbody.velocity = vector * velocity;
-
-        UpdateAnimationState();
-    }
-
-    public void CharacterAttack()
-    {
-        if (animation_coroutine == null)
-        {
-            animation_coroutine = StartCoroutine(Attack(animator));
-        }
-        animation_coroutine = null;
-
-        transform.localScale = (GetMousePos().x - GetPos().x) > 0 ? new Vector3(1.0f, 1.0f, 1.0f) : new Vector3(-1.0f, 1.0f, 1.0f);
-    }
-    public void CharacterStop()
-    {
-        is_moveable = false;
-        target_pos = transform.position;
-        vector = Vector2.zero;
-    }
-
-    IEnumerator Roll(Animator animator)
-    {
-        is_animation_playing = true;
-        velocity = 4.5f;
-        target_pos = GetMousePos();
-        vector = target_pos - GetPos();
-        vector.Normalize();
-
-        animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
-        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
-        {
-            yield return null;
-        }
-
-        velocity = 3.0f;
-        CharacterStop();
-        animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
-        is_animation_playing = false;
-    }
-
-    public IEnumerator Attack(Animator animator)
-    {
-        is_animation_playing = true;
-        CharacterStop();
-
-        animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
-        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
-        {
-            yield return null;
-        }
-        animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
-        is_animation_playing = false;
-    }
-
-    IEnumerator Damaged(Animator animator)
-    {
-        is_animation_playing = true;
-        
-        animator.SetInteger(animationState, (int)AnimationStateEnum.damaged);
-        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
-        {
-            yield return null;
-        }
-
-        CharacterStop();
-        is_animation_playing = false;
     }
 
     private void UpdateAnimationState()
@@ -301,6 +234,75 @@ public class PlayerEntity : Entity
                 animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
             }
         }
+    }
+
+    public void CharacterStop()
+    {
+        is_moveable = false;
+        target_pos = transform.position;
+        vector = Vector2.zero;
+    }
+
+    public void PlayAnimation(string action)
+    {
+        if (animation_coroutine == null)
+        {
+            animation_coroutine = StartCoroutine(action, animator);
+        }
+        animation_coroutine = null;
+
+        transform.localScale = (GetMousePos().x - GetPos().x) > 0 ? new Vector3(1.0f, 1.0f, 1.0f) : new Vector3(-1.0f, 1.0f, 1.0f);
+    }
+
+    IEnumerator Roll(Animator animator)
+    {
+        is_moveable = false;
+        is_animation_playing = true;
+
+        velocity = 4.5f;
+        target_pos = GetMousePos();
+        vector = target_pos - GetPos();
+        vector.Normalize();
+
+        animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
+        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        {
+            yield return null;
+        }
+
+        velocity = 3.0f;
+        CharacterStop();
+        animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+        is_animation_playing = false;
+    }
+
+    public IEnumerator Attack(Animator animator)
+    {
+        is_moveable = false;
+        is_animation_playing = true;
+        CharacterStop();
+
+        animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
+        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        {
+            yield return null;
+        }
+        animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+        is_animation_playing = false;
+    }
+
+    IEnumerator Damaged(Animator animator)
+    {
+        is_animation_playing = true;
+        
+        animator.SetInteger(animationState, (int)AnimationStateEnum.damaged);
+        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        {
+            yield return null;
+        }
+
+        CharacterStop();
+        is_animation_playing = false;
     }
 
     private void MoveCharacter_Mouse()
