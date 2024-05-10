@@ -393,7 +393,7 @@ public class PlayerEntity : Entity
             if (!vector.Equals(Vector2.zero))
             {
                 animator.SetInteger(animationState, (int)AnimationStateEnum.walk);
-                is_animation_ended = true;
+                
             }
             /*
             else if (Input.GetKey(KeyCode.Space))
@@ -412,17 +412,18 @@ public class PlayerEntity : Entity
             // IDLE
             else
             {
-                Debug.Log("idle");
-                DebugAnimation();
+                //Debug.Log("idle");
+                //DebugAnimation();
                 animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
-                is_animation_ended = true;
+                
                 //is_idle = true;
-                Debug.Log("idle turns");
-                DebugAnimation();
+                //Debug.Log("idle turns");
+                //DebugAnimation();
                 
 
                 //yield return new WaitForSeconds(interval);
             }
+            is_animation_ended = true;
         }
         /*
         else
@@ -456,15 +457,16 @@ public class PlayerEntity : Entity
     public void PlayAnimation(string action)
     {
         //is_idle = false;
-        Debug.Log("PlayAnimation(" + action + ")");
+        //Debug.Log("PlayAnimation(" + action + ")");
         animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
-        if (is_animation_ended)
+        //if (is_animation_ended)
+        if (!is_animation_playing)
         {
             is_animation_started = true;
             is_animation_ended = false;
         }
 
-        DebugAnimation();
+        //DebugAnimation();
         if (animation_coroutine == null)
         {
             animation_coroutine = StartCoroutine(action, animator);
@@ -476,22 +478,27 @@ public class PlayerEntity : Entity
 
     IEnumerator Roll(Animator animator)
     {
-        Debug.Log("Roll start");
-        DebugAnimation();
-        if (is_animation_started && !is_animation_playing)
+        //Debug.Log("Roll start");
+        //DebugAnimation();
+        //if (is_animation_started && !is_animation_playing)
+        if (!is_animation_playing)
         {
-            Debug.Log("Roll Animation Start");
-            DebugAnimation();
+            //Debug.Log("Roll Animation Start");
+            //DebugAnimation();
             velocity = 4.5f;
             target_pos = GetMousePos();
             vector = target_pos - GetPos();
             vector.Normalize();
 
-            animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
+            if (!is_animation_ended)
+            {
+                animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
+            }
+            
             while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
             {
-                DebugAnimation();
-                Debug.Log(animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                //DebugAnimation();
+                //Debug.Log(animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
                 //is_moveable = false;
                 is_animation_playing = true;
                 //is_animation_ended = false;
@@ -503,31 +510,37 @@ public class PlayerEntity : Entity
 
             if (is_animation_playing)
             {
-                //animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+                animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
                 is_animation_started = false;
                 is_animation_playing = false;
-                DebugAnimation();
-                Debug.Log("Roll Animation End");
+                is_animation_ended = true;
+                //DebugAnimation();
+                //Debug.Log("Roll Animation End");
             }
-            //animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
-            //is_animation_playing = false;
         }
-        Debug.Log("Roll end");
-        DebugAnimation();
+        is_animation_started = false;
+        
+        //animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+        //Debug.Log("Roll end");
+        //DebugAnimation();
     }
 
     public IEnumerator Attack(Animator animator)
     {
-        Debug.Log("Attack start");
-        if (is_animation_started && !is_animation_playing)
+        //Debug.Log("Attack start");
+        if (!is_animation_playing)
         {
-            Debug.Log("Attack Animation Start");
+            //Debug.Log("Attack Animation Start");
             CharacterStop();
 
-            animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
+            if (!is_animation_ended)
+            {
+                animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
+            }
+
             while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
             {
-                Debug.Log(animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                //Debug.Log(animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
                 //is_moveable = false;
                 is_animation_playing = true;
                 //is_animation_ended = false;
@@ -539,14 +552,15 @@ public class PlayerEntity : Entity
 
             if (is_animation_playing)
             {
-                //animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+                animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
                 is_animation_started = false;
                 is_animation_playing = false;
-                Debug.Log("Attack Animation End");
+                is_animation_ended = true;
+                //Debug.Log("Attack Animation End");
             }
-            //animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
         }
-        Debug.Log("Attack end");
+        is_animation_started = false;
+        //Debug.Log("Attack end");
     }
 
     IEnumerator Damaged(Animator animator)
