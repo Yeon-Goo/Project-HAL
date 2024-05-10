@@ -9,6 +9,7 @@ public class Archer : Weapon
     private GameObject playerObject;
     public float arrowSpeed = 10f;
     private IObjectPool<ArrowObject> _Pool;
+    private float baseAttackCooltime = 0.5f;
 
     public override int GetMana(int cardnum)
     {
@@ -18,12 +19,14 @@ public class Archer : Weapon
 
     public override void BaseAttack()
     {
-        if (playerEntity.is_alive && (playerEntity.is_animation_started ^ playerEntity.is_animation_playing ^ playerEntity.is_animation_ended))
+        BaseShot(0.0f);
+        playerEntity.PlayAnimation("Attack");
+        /*if (playerEntity.is_alive && (playerEntity.is_animation_started ^ playerEntity.is_animation_playing ^ playerEntity.is_animation_ended))
         //if (playerEntity.is_alive && (playerEntity.is_animation_started || playerEntity.is_animation_playing || playerEntity.is_animation_ended))
         {
             BaseShot(0.0f);
             playerEntity.PlayAnimation("Attack");
-        }
+        }*/
     }
 
 
@@ -31,8 +34,15 @@ public class Archer : Weapon
     //기본 공격이 가능한지 반환
     public override bool BaseAttackAble()
     {
-        //weapon별로 구현
-        return true;
+        if(Time.time > lastUseTime + baseAttackCooltime)
+        {
+            lastUseTime = Time.time;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 
@@ -150,6 +160,7 @@ public class Archer : Weapon
     {
         _Pool = new ObjectPool<ArrowObject>(CreateArrow, OnGetArrow, OnReleaseArrow, OnDestroyArrow, maxSize: 30);
         playerObject = GameObject.Find("PlayerObject");
+        lastUseTime = -1 * baseAttackCooltime;
     }
 
 
