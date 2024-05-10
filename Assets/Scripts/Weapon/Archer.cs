@@ -48,15 +48,13 @@ public class Archer : Weapon
 
     public override int Skill(int num, int level)
     {
-        BaseShot(0.0f);
-        playerEntity.CharacterStop();
-        /*switch (num)
+        switch (num)
         {
             case 1:
-                BaseShot();
+                BaseShot(0.0f);
                 break;
             case 2:
-                Barrage();
+                Space();
                 break;
             case 3:
                 PiercingArrow();
@@ -82,9 +80,24 @@ public class Archer : Weapon
             default:
                 Debug.Log("Unknown skill.");
                 break; 
-        } */
+        }
         return 0;
     }
+
+    private void Space()
+    {
+        //if (playerEntity.is_alive && !(playerEntity.is_animation_started & playerEntity.is_animation_ended))
+        if (playerEntity.is_alive && (playerEntity.is_animation_started ^ playerEntity.is_animation_playing ^ playerEntity.is_animation_ended))
+        //if (playerEntity.is_alive && (playerEntity.is_animation_started || playerEntity.is_animation_playing || playerEntity.is_animation_ended))
+        {
+            //if (!playerEntity.is_animation_playing)
+            //{
+            //playerEntity.PlayAnimation("Roll");
+            //}
+        }
+        playerEntity.PlayAnimation("Roll");
+    }
+
 
     private void BaseShot(float angleadd)
     {

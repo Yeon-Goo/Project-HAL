@@ -54,7 +54,7 @@ public class PlayerDeck : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.W)) UseCard(1);
         else if (Input.GetKeyDown(KeyCode.E)) UseCard(2);
         else if (Input.GetKeyDown(KeyCode.R)) UseCard(3);
-        else if (Input.GetKey(KeyCode.Space))
+        /*else if (Input.GetKey(KeyCode.Space))
         {
             //if (playerEntity.is_alive && !(playerEntity.is_animation_started & playerEntity.is_animation_ended))
             if (playerEntity.is_alive && (playerEntity.is_animation_started ^ playerEntity.is_animation_playing ^ playerEntity.is_animation_ended))
@@ -65,7 +65,7 @@ public class PlayerDeck : MonoBehaviour
                     playerEntity.PlayAnimation("Roll");
                 //}
             }
-        }
+        }*/
         else if (Input.GetMouseButton(0)) BaseAttack();
         //else if (Input.GetMouseButtonDown(0)) BaseAttack();
     }
