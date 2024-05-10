@@ -9,6 +9,7 @@ public class EnemyEntity : Entity
     //public EnemyStatManager enemy_stat_manager;
 
     private int damage_scale = 1;
+    public int arrowstack = 0;
     Coroutine damage_coroutine;
 
     public Coroutine GetDamageCoroutine()
