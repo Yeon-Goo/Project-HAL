@@ -393,6 +393,7 @@ public class PlayerEntity : Entity
             if (!vector.Equals(Vector2.zero))
             {
                 animator.SetInteger(animationState, (int)AnimationStateEnum.walk);
+                is_animation_ended = true;
             }
             /*
             else if (Input.GetKey(KeyCode.Space))
