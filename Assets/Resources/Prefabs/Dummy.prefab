@@ -11,11 +11,12 @@ GameObject:
   - component: {fileID: 2829079264406940393}
   - component: {fileID: 2840895945615932077}
   - component: {fileID: 2521688437642920338}
-  - component: {fileID: -2511049888769542345}
+  - component: {fileID: 3994052153404409520}
   - component: {fileID: 6302642211256728217}
+  - component: {fileID: 6692563113932395249}
   m_Layer: 8
   m_Name: Dummy
-  m_TagString: Player
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,8 +109,8 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!61 &-2511049888769542345
-BoxCollider2D:
+--- !u!58 &3994052153404409520
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -140,19 +141,9 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.53125, y: 2.65625}
-    newSize: {x: 2.53125, y: 2.65625}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 0, y: -0.05}
   serializedVersion: 2
-  m_Size: {x: 2.53125, y: 2.65625}
-  m_EdgeRadius: 0
+  m_Radius: 1.25
 --- !u!50 &6302642211256728217
 Rigidbody2D:
   serializedVersion: 4
@@ -180,3 +171,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &6692563113932395249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7686292543535944707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db167284722fb3846813f5ca5661b394, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpbar_prefab: {fileID: 0}
+  hpbar_ui: {fileID: 0}
+  hp_manager: {fileID: 11400000, guid: 134991b163e249e4c8f6b68f88ca9bee, type: 2}

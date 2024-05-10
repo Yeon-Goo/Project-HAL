@@ -44,16 +44,23 @@ public class PlayerEntity : Entity
     Coroutine animation_coroutine = null;
     // Player가 살아 있는지
     public bool is_alive = true;
-    // Player가 현재 오른쪽을 바라보는지
-    public bool is_looking_right = true;
     [SerializeField]
     // Player가 현재 움직일 수 있는 상황인지
     private bool is_moveable = false;
+    // Player가 현재 오른쪽을 바라보는지
+    public bool is_looking_right = true;
+    [SerializeField]
+    // Player의 애니메이션이 시작했는지
+    public bool is_animation_started = false;
     [SerializeField]
     // Player의 애니메이션이 재생 중인지
     public bool is_animation_playing = false;
     [SerializeField]
-    public bool is_idle = true;
+    // Player의 애니메이션이 끝났는지
+    public bool is_animation_ended = true;
+    //[SerializeField]
+    // Player가 Idle인지
+    //public bool is_idle = true;
     [SerializeField]
     // Player가 무적인지
     private bool is_invincible = false;
@@ -155,38 +162,38 @@ public class PlayerEntity : Entity
             }
         }
 
-        if (is_alive)
+        if (is_alive && !is_animation_started)
         {
-            if (!is_animation_playing)
+            // Stop Player
+            if (Input.GetKey(KeyCode.S))
             {
-                // Stop Player
-                if (Input.GetKey(KeyCode.S))
-                {
-                    CharacterStop();
-                }
-                // Roll
-                else if (Input.GetKey(KeyCode.Space))
-                {
-                    PlayAnimation("Roll");
-                }
-                // Attack
-                else if (Input.GetMouseButton(0))
-                {
-                    //PlayAnimation("Attack");
-                }
-                // Walk
-                else
-                {
-                    MoveCharacter_Mouse();
-                    vector = target_pos - new Vector2(transform.position.x, transform.position.y);
-                }
+                CharacterStop();
             }
-
-            UpdateAnimationState();
+            /*
+            // Roll
+            else if (Input.GetKey(KeyCode.Space))
+            {
+                //PlayAnimation("Roll");
+            }
+            // Attack
+            else if (Input.GetMouseButton(0))
+            {
+                //PlayAnimation("Attack");
+            }
+            */
+            // Walk
+            else
+            {
+                MoveCharacter_Mouse();
+                vector = target_pos - new Vector2(transform.position.x, transform.position.y);
+            }
         }
+
+        UpdateMovement();
+        UpdateAnimationState();
     }
 
-    private void UpdateAnimationState()
+    private void UpdateMovement()
     {
         // Player의 벡터 정규화
         if (vector.magnitude < 0.1f)
@@ -211,61 +218,230 @@ public class PlayerEntity : Entity
 
         // 캐릭터를 vector와 velocity에 맞게 움직임
         rigidbody.velocity = vector * velocity;
+    }
 
-        if (!is_animation_playing)
+    public void DebugAnimation()
+    {
+        if (is_animation_started)
         {
-            // WALK
-            if (is_moveable && !vector.Equals(Vector2.zero))
+            if (is_animation_playing)
             {
-                animator.SetInteger(animationState, (int)AnimationStateEnum.walk);
+                if (is_animation_ended)
+                {
+                    Debug.Log("T T T");
+                }
+                else
+                {
+                    Debug.Log("T T F");
+                }
             }
-            // Roll
-            else if (Input.GetKey(KeyCode.Space))
-            {
-                animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
-            }
-            // Attack
-            else if (Input.GetMouseButton(0))
-            {
-                animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
-            }
-            // IDLE
             else
             {
-                animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+                if (is_animation_ended)
+                {
+                    Debug.Log("T F T");
+                }
+                else
+                {
+                    Debug.Log("T F F");
+                }
             }
         }
         else
         {
-
-        }
-
-        /*
-        if (animation_coroutine != null)
-        {
-            Debug.Log("animation_coroutine is not null");
-            if (Input.GetKey(KeyCode.Space))
+            if (is_animation_playing)
             {
-                animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
-                //is_animation_ended = false;
+                if (is_animation_ended)
+                {
+                    Debug.Log("F T T");
+                }
+                else
+                {
+                    Debug.Log("F T F");
+                }
             }
-            else if (Input.GetMouseButton(0))
+            else
             {
-                animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
-                //is_animation_ended = false;
+                if (is_animation_ended)
+                {
+                    Debug.Log("F F T");
+                }
+                else
+                {
+                    Debug.Log("F F F");
+                }
+            }
+        }
+    }
+    /*
+    public void DebugAnimationWithIdle()
+    {
+        if (is_animation_started)
+        {
+            if (is_animation_playing)
+            {
+                if (is_animation_ended)
+                {
+                    if (is_idle)
+                    {
+                        Debug.Log("T T T T");
+                    }
+                    else
+                    {
+                        Debug.Log("T T T F");
+                    }
+                }
+                else
+                {
+                    if (is_idle)
+                    {
+                        Debug.Log("T T F T");
+                    }
+                    else
+                    {
+                        Debug.Log("T T F F");
+                    }
+                }
+            }
+            else
+            {
+                if (is_animation_ended)
+                {
+                    if (is_idle)
+                    {
+                        Debug.Log("T F T T");
+                    }
+                    else
+                    {
+                        Debug.Log("T F T F");
+                    }
+                }
+                else
+                {
+                    if (is_idle)
+                    {
+                        Debug.Log("T F F T");
+                    }
+                    else
+                    {
+                        Debug.Log("T F F F");
+                    }
+                }
             }
         }
         else
+        {
+            if (is_animation_playing)
+            {
+                if (is_animation_ended)
+                {
+                    if (is_idle)
+                    {
+                        Debug.Log("F T T T");
+                    }
+                    else
+                    {
+                        Debug.Log("F T T F");
+                    }
+                }
+                else
+                {
+                    if (is_idle)
+                    {
+                        Debug.Log("F T F T");
+                    }
+                    else
+                    {
+                        Debug.Log("F T F F");
+                    }
+                }
+            }
+            else
+            {
+                if (is_animation_ended)
+                {
+                    if (is_idle)
+                    {
+                        Debug.Log("F F T T");
+                    }
+                    else
+                    {
+                        Debug.Log("F F T F");
+                    }
+                }
+                else
+                {
+                    if (is_idle)
+                    {
+                        Debug.Log("F F F T");
+                    }
+                    else
+                    {
+                        Debug.Log("F F F F");
+                    }
+                }
+            }
+        }
+    }
+    */
+
+    private void UpdateAnimationState()
+    {
+        if (!is_animation_started)
         {
             // WALK
             if (!vector.Equals(Vector2.zero))
             {
                 animator.SetInteger(animationState, (int)AnimationStateEnum.walk);
+                
             }
+            /*
+            else if (Input.GetKey(KeyCode.Space))
+            {
+                Debug.Log("UpdateAnimation Space");
+                //animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
+                //is_animation_ended = false;
+            }
+            else if (Input.GetMouseButton(0))
+            {
+                Debug.Log("UpdateAnimation Mouse Left");
+                //animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
+                //is_animation_ended = false;
+            }
+            */
             // IDLE
             else
             {
+                //Debug.Log("idle");
+                //DebugAnimation();
                 animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+                
+                //is_idle = true;
+                //Debug.Log("idle turns");
+                //DebugAnimation();
+                
+
+                //yield return new WaitForSeconds(interval);
+            }
+            is_animation_ended = true;
+        }
+        /*
+        else
+        {
+            if (!is_animation_ended)
+            {
+                if (Input.GetKey(KeyCode.Space))
+                {
+                    Debug.Log("UpdateAnimation Else Space");
+                    animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
+                    //is_animation_ended = false;
+                }
+                else if (Input.GetMouseButton(0))
+                {
+                    Debug.Log("UpdateAnimation Else Mouse Left");
+                    animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
+                    //is_animation_ended = false;
+                }
             }
         }
         */
@@ -277,8 +453,20 @@ public class PlayerEntity : Entity
         target_pos = transform.position;
         vector = Vector2.zero;
     }
+
     public void PlayAnimation(string action)
     {
+        //is_idle = false;
+        //Debug.Log("PlayAnimation(" + action + ")");
+        animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+        //if (is_animation_ended)
+        if (!is_animation_playing)
+        {
+            is_animation_started = true;
+            is_animation_ended = false;
+        }
+
+        //DebugAnimation();
         if (animation_coroutine == null)
         {
             animation_coroutine = StartCoroutine(action, animator);
@@ -286,69 +474,115 @@ public class PlayerEntity : Entity
         animation_coroutine = null;
 
         transform.localScale = (GetMousePos().x - GetPos().x) > 0 ? new Vector3(1.0f, 1.0f, 1.0f) : new Vector3(-1.0f, 1.0f, 1.0f);
-        is_animation_playing = false;
     }
 
     IEnumerator Roll(Animator animator)
     {
-        velocity = 4.5f;
-        target_pos = GetMousePos();
-        vector = target_pos - GetPos();
-        vector.Normalize();
-
-        animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
-        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        //Debug.Log("Roll start");
+        //DebugAnimation();
+        //if (is_animation_started && !is_animation_playing)
+        if (!is_animation_playing)
         {
-            is_moveable = false;
-            is_animation_playing = true;
-            animator.SetBool("IsAnimationPlaying", true);
-            yield return null;
-        }
+            //Debug.Log("Roll Animation Start");
+            //DebugAnimation();
+            velocity = 4.5f;
+            target_pos = GetMousePos();
+            vector = target_pos - GetPos();
+            vector.Normalize();
 
-        velocity = 3.0f;
-        CharacterStop();
-        animator.SetBool("IsAnimationPlaying", false);
+            if (!is_animation_ended)
+            {
+                animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
+            }
+            
+            while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+            {
+                //DebugAnimation();
+                //Debug.Log(animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                //is_moveable = false;
+                is_animation_playing = true;
+                //is_animation_ended = false;
+                yield return null;
+            }
+
+            velocity = 3.0f;
+            CharacterStop();
+
+            if (is_animation_playing)
+            {
+                animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+                is_animation_started = false;
+                is_animation_playing = false;
+                is_animation_ended = true;
+                //DebugAnimation();
+                //Debug.Log("Roll Animation End");
+            }
+        }
+        is_animation_started = false;
+        
         //animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
-        is_animation_playing = false;
+        //Debug.Log("Roll end");
+        //DebugAnimation();
     }
-    IEnumerator Attack(Animator animator)
+
+    public IEnumerator Attack(Animator animator)
     {
-        CharacterStop();
-
-        animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
-        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        //Debug.Log("Attack start");
+        if (!is_animation_playing)
         {
-            is_moveable = false;
-            is_animation_playing = true;
-            animator.SetBool("IsAnimationPlaying", true);
-            yield return null;
-        }
+            //Debug.Log("Attack Animation Start");
+            CharacterStop();
 
-        CharacterStop();
-        animator.SetBool("IsAnimationPlaying", false);
-        //animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
-        is_animation_playing = false;
+            if (!is_animation_ended)
+            {
+                animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
+            }
+
+            while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+            {
+                //Debug.Log(animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                //is_moveable = false;
+                is_animation_playing = true;
+                //is_animation_ended = false;
+                yield return null;
+            }
+
+            velocity = 3.0f;
+            CharacterStop();
+
+            if (is_animation_playing)
+            {
+                animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+                is_animation_started = false;
+                is_animation_playing = false;
+                is_animation_ended = true;
+                //Debug.Log("Attack Animation End");
+            }
+        }
+        is_animation_started = false;
+        //Debug.Log("Attack end");
     }
 
     IEnumerator Damaged(Animator animator)
     {
-        is_animation_playing = true;
+        is_animation_started = true;
         
         animator.SetInteger(animationState, (int)AnimationStateEnum.damaged);
         while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
         {
-            is_animation_playing = true;
+            Debug.Log(animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            is_animation_started = false;
             yield return null;
         }
 
         CharacterStop();
-        is_animation_playing = false;
+        
     }
 
     private void MoveCharacter_Mouse()
     {
         // 마우스 오른쪽 버튼을 뗐을 때 || 마우스 오른쪽 버튼을 누르고 있는 상태에서 마우스를 움직였을 때
-        if (!is_animation_playing && !Input.GetMouseButton(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f))
+        if (!Input.GetMouseButton(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f))
         //if (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f)
         {
             is_moveable = true;

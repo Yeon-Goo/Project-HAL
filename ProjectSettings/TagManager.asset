@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Pickable_Objects
+  - Enemy
+  - Player_Attack
+  - Enemy_Attack
+  - player_attack
   layers:
   - Default
   - TransparentFX
@@ -15,7 +19,7 @@ TagManager:
   - Blocking
   - Pickable_Objects
   - Enemies
-  - 
+  - Player_Attack
   - 
   - 
   - 

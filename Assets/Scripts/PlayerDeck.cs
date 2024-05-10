@@ -4,13 +4,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[Serializable]
+//[Serializable]
 public class Card
 {
-    public int num; // Ä«µå °íÀ¯ ¹øÈ£
-    public int level; // Ä«µå ·¹º§
-    public int count; // ÇØ´ç Ä«µåÀÇ °³¼ö
-    public bool isUnlocked; // Ä«µåÀÇ ÇØ±İ ¿©ºÎ
+    public int num; // ì¹´ë“œ ê³ ìœ  ë²ˆí˜¸
+    public int level; // ì¹´ë“œ ë ˆë²¨
+    public int count; // í•´ë‹¹ ì¹´ë“œì˜ ê°œìˆ˜
+    public bool isUnlocked; // ì¹´ë“œì˜ í•´ê¸ˆ ì—¬ë¶€
 
     public Card(int num, int level, int count = 1, bool isUnlocked = false)
     {
@@ -24,17 +24,26 @@ public class Card
 public class PlayerDeck : MonoBehaviour
 {
     [SerializeField]
-    private List<Card> deck = new List<Card>(); // Ä«µå µ¦
+    private List<Card> deck = new List<Card>(); // ì¹´ë“œ ë±
     [SerializeField]
-    private List<Image> cardImages = new List<Image>(); // Ä«µå ÀÌ¹ÌÁö ¿ÀºêÁ§Æ® ¸®½ºÆ®
+    private List<Image> cardImages = new List<Image>(); // ì¹´ë“œ ì´ë¯¸ì§€ ì˜¤ë¸Œì íŠ¸ ë¦¬ìŠ¤íŠ¸
     [SerializeField]
-    private List<TextMeshProUGUI> cardTexts = new List<TextMeshProUGUI>(); // Ä«µå ÅØ½ºÆ® ¿ÀºêÁ§Æ® ¸®½ºÆ®
+    private List<TextMeshProUGUI> cardTexts = new List<TextMeshProUGUI>(); // ì¹´ë“œ í…ìŠ¤íŠ¸ ì˜¤ë¸Œì íŠ¸ ë¦¬ìŠ¤íŠ¸
 
     private GameObject weapon;
+    private GameObject playerobject;
+    private PlayerEntity playerEntity;
+    private HPManager hp_manager;
+    
 
     void Start()
     {
-        weapon = GameObject.Find("Arrow");
+        //need to fix - can select weapon
+        weapon = GameObject.Find("Archer");
+        playerobject = GameObject.Find("PlayerObject");
+        playerEntity = playerobject.GetComponent<PlayerEntity>();
+        hp_manager = playerEntity.hp_manager;
+
         InitializeDeck();
         UpdateCardDisplay();
     }
@@ -45,8 +54,21 @@ public class PlayerDeck : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.W)) UseCard(1);
         else if (Input.GetKeyDown(KeyCode.E)) UseCard(2);
         else if (Input.GetKeyDown(KeyCode.R)) UseCard(3);
+        else if (Input.GetKey(KeyCode.Space))
+        {
+            //if (playerEntity.is_alive && !(playerEntity.is_animation_started & playerEntity.is_animation_ended))
+            if (playerEntity.is_alive && (playerEntity.is_animation_started ^ playerEntity.is_animation_playing ^ playerEntity.is_animation_ended))
+            //if (playerEntity.is_alive && (playerEntity.is_animation_started || playerEntity.is_animation_playing || playerEntity.is_animation_ended))
+            {
+                //if (!playerEntity.is_animation_playing)
+                //{
+                    playerEntity.PlayAnimation("Roll");
+                //}
+            }
+        }
+        else if (Input.GetMouseButton(0)) BaseAttack();
+        //else if (Input.GetMouseButtonDown(0)) BaseAttack();
     }
-
     private void InitializeDeck()
     {
         for (int i = 0; i < 8; i++)
@@ -55,39 +77,63 @@ public class PlayerDeck : MonoBehaviour
         }
     }
 
+    private void BaseAttack()
+    {
+        if (weapon == null)
+        {
+            Debug.LogError("Weapon object not found.");
+        }
+
+        playerEntity.is_looking_right = (playerEntity.GetMousePos().x > playerEntity.GetPos().x) ? true : false;
+
+        if(weapon.GetComponent<Weapon>().BaseAttackAble())
+        {
+            weapon.GetComponent<Weapon>().BaseAttack();
+        }
+    }
+
+
     private void UseCard(int index)
     {
+        //ERROR CHECK
         if (deck.Count <= index)
         {
             Debug.LogWarning("Invalid card selection.");
             return;
         }
-
-        if (weapon != null)
-        {
-            weapon.GetComponent<Weapon>().Skill(deck[index].num, deck[index].level);
-        }
-        else
+        if (weapon == null)
         {
             Debug.LogError("Weapon object not found.");
         }
+        //-----------
 
-        // Move the selected card to the end of the deck.
-        Card selectedCard = deck[index];
-        deck.RemoveAt(index);
-        deck.Add(selectedCard);
+        //ì¹´ë“œ ê³ ìœ ë²ˆí˜¸ì— ë”°ë¥¸ í•„ìš” ë§ˆë‚˜ í™•ì¸
+        int mananeed = weapon.GetComponent<Weapon>().GetMana(deck[index].num);
+        //Debug.Log(mananeed + " need");
 
-        // Shift the next card (5th card, if available) to the selected position.
-        if (deck.Count > 4)
+        if (hp_manager.Cur_mp >= mananeed)
         {
-            Card nextCard = deck[4];
-            deck.Insert(index, nextCard);
-            deck.RemoveAt(5); // Remove the shifted card from its original position.
+            playerEntity.is_looking_right = (playerEntity.GetMousePos().x > playerEntity.GetPos().x) ? true : false;
+
+            hp_manager.Cur_mp -= mananeed;
+
+            weapon.GetComponent<Weapon>().Skill(deck[index].num, deck[index].level);
+            //í•´ë‹¹ ì¹´ë“œì™€ 5ë²ˆì§¸ ì¹´ë“œ ìŠ¤ì™€í•‘
+            Card temp = deck[index];
+            deck[index] = deck[4];
+            deck[4] = temp;
+
+            //5ë²ˆì§¸ ì¹´ë“œ ì‚­ì œ í›„ ë§¨ ë’¤ì— ì¶”ê°€
+            deck.RemoveAt(4);
+            deck.Add(temp);
+
+            UpdateCardDisplay();
+            //Debug.Log($"Card used: Num= " + index);
         }
-
-        UpdateCardDisplay();
-
-        Debug.Log($"Card used: Num={selectedCard.num}, Level={selectedCard.level}. Shifted to the end.");
+        else
+        {
+            //Debug.Log(" NO MANA ");
+        }
     }
 
     private void UpdateCardDisplay()
@@ -103,5 +149,6 @@ public class PlayerDeck : MonoBehaviour
                 cardTexts[i].text = "";
             }
         }
+        //UnityEngine.Debug.Log("update good");
     }
 }
