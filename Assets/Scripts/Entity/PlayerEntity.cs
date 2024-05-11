@@ -424,7 +424,7 @@ public class PlayerEntity : Entity
 
                 //yield return new WaitForSeconds(interval);
             }
-            is_animation_ended = true;
+            //is_animation_ended = true;
         }
         /*
         else
@@ -492,14 +492,16 @@ public class PlayerEntity : Entity
             vector = target_pos - GetPos();
             vector.Normalize();
 
+            /*
             if (!is_animation_ended)
             {
                 animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
             }
+            */
 
             while (!animator.GetCurrentAnimatorStateInfo(0).IsName("player_roll"))
             {
-                //animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
+                animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
                 yield return null;
             }
 
@@ -543,14 +545,16 @@ public class PlayerEntity : Entity
             //DebugAnimation();
             CharacterStop();
 
+            /*
             if (!is_animation_ended)
             {
                 animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
             }
+            */
 
             while (!animator.GetCurrentAnimatorStateInfo(0).IsName("player_attack"))
             {
-                //animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
+                animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
                 yield return null;
             }
 
