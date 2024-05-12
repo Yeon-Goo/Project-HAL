@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class king_slimeEntity : MonoBehaviour
-{/*
+{
+    public GameObject rupinPrefab;
     public Transform player;
     public float speed = 2f;
-    public float range = 4f;
-    public float tracking_range = 7f;
-    public float attack_range = 2f;
-    public float attack_speed = 5f;
-    public float attack_charge = 2f;
-    public float attack_time = 1f;
-    public float attack_delay = 2f;
+    public float range = 10f;
+    public float barrage_time = 7f;
+    public float rush_time = 5f;
+    public float summon_time = 3f;
     private int monster_state = 0;
     private float tempTime = 0f;
     private Vector2 initial_pos;
@@ -34,8 +32,10 @@ public class king_slimeEntity : MonoBehaviour
     }
     void Start()
     {
-        initial_pos = transform.position;
         animator = GetComponent<Animator>();
+        monster_state = (int)StateEnum.idle;
+        transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
+        animator.SetInteger(animationState, monster_state);
     }
     void FixedUpdate()
     {
@@ -83,11 +83,12 @@ public class king_slimeEntity : MonoBehaviour
 
         if (monster_state == (int)StateEnum.barrage) // 탄막 피하기
         {
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero; // 대기
-            if(Time.time - tempTime >= attack_charge) // 차지시간이 지났으면 공격상태로 전환
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero; // 정지
+            // TODO : 탄막 나오는 알고리즘
+            if(Time.time - tempTime >= barrage_time) // 탄막 지속시간이 지났으면 추격 상태로 전환
             {
                 tempTime = Time.time;
-                monster_state = (int)StateEnum.attack;
+                monster_state = (int)StateEnum.move;
                 transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
                 animator.SetInteger(animationState, monster_state);
             }
@@ -95,10 +96,11 @@ public class king_slimeEntity : MonoBehaviour
         
         if (monster_state == (int)StateEnum.rush) // 돌진
         {
-            transform.position = Vector2.MoveTowards(transform.position, target_pos, attack_speed * Time.deltaTime);
-            if(Time.time - tempTime > attack_time) // 공격이 끝나고 딜레이로 전환
+            // TODO : 돌진하는 알고리즘
+            if(Time.time - tempTime > rush_time) // 공격이 끝나고 딜레이로 전환
             {
-                monster_state = (int)StateEnum.summon;
+                tempTime = Time.time;
+                monster_state = (int)StateEnum.move;
                 transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
                 animator.SetInteger(animationState, (int)StateEnum.idle);
             }
@@ -106,16 +108,17 @@ public class king_slimeEntity : MonoBehaviour
 
         if(monster_state == (int)StateEnum.summon) // 소환
         {
+            // TODO : 소환하는 알고리즘
             GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            if(Time.time - tempTime > attack_delay) // 딜레이 시간이 끝나고
+            if(Time.time - tempTime > summon_time) // 딜레이 시간이 끝나고
             {
-                if(distance < tracking_range)   // 돌진 후 가까우면 추격상태로 전환
-                {
-                    monster_state = (int)StateEnum.move;
-                    transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
-                    animator.SetInteger(animationState, monster_state);
-                }
+                GameObject rupin = Instantiate(rupinPrefab);
+                rupin.transform.position = transform.position;
+                tempTime = Time.time;
+                monster_state = (int)StateEnum.move;
+                transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
+                animator.SetInteger(animationState, (int)StateEnum.idle);
             }
         }
     }
-*/}
+}
