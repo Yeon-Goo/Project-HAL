@@ -21,7 +21,7 @@ public class Archer : Weapon
     public override void BaseAttack()
     {
         BaseShot(0.0f, 0, 1);
-        playerEntity.PlayAnimation("Attack");
+        //playerEntity.PlayAnimation("Attack");
         /*if (playerEntity.is_alive && (playerEntity.is_animation_started ^ playerEntity.is_animation_playing ^ playerEntity.is_animation_ended))
         //if (playerEntity.is_alive && (playerEntity.is_animation_started || playerEntity.is_animation_playing || playerEntity.is_animation_ended))
         {
@@ -56,7 +56,7 @@ public class Archer : Weapon
             //playerEntity.PlayAnimation("Roll");
             //}
         }
-        playerEntity.PlayAnimation("Roll");
+        //playerEntity.PlayAnimation("Roll");
         return 1;
     }
 

@@ -16604,6 +16604,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 4433742476008746867, guid: a20a4bfc6b5917b4892752116f281e96, type: 3}
+      propertyPath: m_LocalScale.x
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4433742476008746867, guid: a20a4bfc6b5917b4892752116f281e96, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4545437377063504853, guid: a20a4bfc6b5917b4892752116f281e96, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -16783,6 +16791,14 @@ PrefabInstance:
     - target: {fileID: 8604449362642741014, guid: a20a4bfc6b5917b4892752116f281e96, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8720809281258890983, guid: a20a4bfc6b5917b4892752116f281e96, type: 3}
+      propertyPath: m_SortingLayer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8720809281258890983, guid: a20a4bfc6b5917b4892752116f281e96, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1164277935
       objectReference: {fileID: 0}
     - target: {fileID: 8762728091413784809, guid: a20a4bfc6b5917b4892752116f281e96, type: 3}
       propertyPath: _horse
