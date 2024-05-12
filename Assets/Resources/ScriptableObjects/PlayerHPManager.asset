@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   max_hp: 20
   cur_hp: 20
-  max_mp: 10
+  max_mp: 20
   cur_mp: 10
