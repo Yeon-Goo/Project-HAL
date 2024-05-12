@@ -8,6 +8,9 @@ public class ArrowObject : MonoBehaviour
     private int dmg;
     private float armor_de, speed;
     private Vector3 shootvector = Vector3.zero;
+    //  0-스택 충전    1-스택 사용     2-스택 전체 사용
+    private int attacktype = 0;
+    private int damage_per_stack = 1;
 
     // 화살 객체 풀링
     private IObjectPool<ArrowObject> _ManagedPool;
@@ -24,7 +27,23 @@ public class ArrowObject : MonoBehaviour
 
             if (damage_coroutine == null)
             {
-                // 1.0f의 딜레이마다 damage_scale의 피해를 입힌다
+                if(attacktype == 0)
+                {
+                    enemy.arrowstack += 1;
+                }
+                else if(attacktype == 1)
+                {
+                    if (enemy.arrowstack > 0)
+                    {
+                        enemy.arrowstack -= 1;
+                        dmg += damage_per_stack;
+                    }
+                }
+                else if(attacktype == 2)
+                {
+                    dmg += damage_per_stack * enemy.arrowstack;
+                    enemy.arrowstack = 0;
+                }
                 damage_coroutine = StartCoroutine(enemy.DamageEntity(dmg, 0.0f, this.gameObject));
                 DestroyArrow();
             }
@@ -55,11 +74,12 @@ public class ArrowObject : MonoBehaviour
         transform.Translate(new Vector3(0.0f, 1.0f, 0.0f) * Time.deltaTime * speed);
     }
 
-    public void SetArrowData(int damage, float decrease, float shootspeed)
+    public void SetArrowData(int damage, float decrease, float shootspeed, int arrowtype)
     {
         dmg = damage;
         armor_de = decrease;
         speed = shootspeed;
+        attacktype = arrowtype;
     }
 
 

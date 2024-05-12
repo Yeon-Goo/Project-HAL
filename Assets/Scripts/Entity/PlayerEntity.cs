@@ -414,6 +414,7 @@ public class PlayerEntity : Entity
             {
                 //Debug.Log("idle");
                 //DebugAnimation();
+                //Debug.Log("animator set to idle in IDLE");
                 animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
                 
                 //is_idle = true;
@@ -423,7 +424,7 @@ public class PlayerEntity : Entity
 
                 //yield return new WaitForSeconds(interval);
             }
-            is_animation_ended = true;
+            //is_animation_ended = true;
         }
         /*
         else
@@ -458,7 +459,8 @@ public class PlayerEntity : Entity
     {
         //is_idle = false;
         //Debug.Log("PlayAnimation(" + action + ")");
-        animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+        //DebugAnimation();
+        //animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
         //if (is_animation_ended)
         if (!is_animation_playing)
         {
@@ -490,11 +492,19 @@ public class PlayerEntity : Entity
             vector = target_pos - GetPos();
             vector.Normalize();
 
+            /*
             if (!is_animation_ended)
             {
                 animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
             }
-            
+            */
+
+            while (!animator.GetCurrentAnimatorStateInfo(0).IsName("player_roll"))
+            {
+                animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
+                yield return null;
+            }
+
             while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
             {
                 //DebugAnimation();
@@ -528,14 +538,24 @@ public class PlayerEntity : Entity
     public IEnumerator Attack(Animator animator)
     {
         //Debug.Log("Attack start");
+        //DebugAnimation();
         if (!is_animation_playing)
         {
             //Debug.Log("Attack Animation Start");
+            //DebugAnimation();
             CharacterStop();
 
+            /*
             if (!is_animation_ended)
             {
                 animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
+            }
+            */
+
+            while (!animator.GetCurrentAnimatorStateInfo(0).IsName("player_attack"))
+            {
+                animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
+                yield return null;
             }
 
             while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
@@ -552,15 +572,18 @@ public class PlayerEntity : Entity
 
             if (is_animation_playing)
             {
+                //Debug.Log("animator set to idle");
                 animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
                 is_animation_started = false;
                 is_animation_playing = false;
                 is_animation_ended = true;
                 //Debug.Log("Attack Animation End");
+                //DebugAnimation();
             }
         }
         is_animation_started = false;
         //Debug.Log("Attack end");
+        //DebugAnimation();
     }
 
     IEnumerator Damaged(Animator animator)

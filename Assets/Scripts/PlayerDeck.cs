@@ -54,7 +54,7 @@ public class PlayerDeck : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.W)) UseCard(1);
         else if (Input.GetKeyDown(KeyCode.E)) UseCard(2);
         else if (Input.GetKeyDown(KeyCode.R)) UseCard(3);
-        else if (Input.GetKey(KeyCode.Space))
+        /*else if (Input.GetKey(KeyCode.Space))
         {
             //if (playerEntity.is_alive && !(playerEntity.is_animation_started & playerEntity.is_animation_ended))
             if (playerEntity.is_alive && (playerEntity.is_animation_started ^ playerEntity.is_animation_playing ^ playerEntity.is_animation_ended))
@@ -65,7 +65,7 @@ public class PlayerDeck : MonoBehaviour
                     playerEntity.PlayAnimation("Roll");
                 //}
             }
-        }
+        }*/
         else if (Input.GetMouseButton(0)) BaseAttack();
         //else if (Input.GetMouseButtonDown(0)) BaseAttack();
     }
@@ -115,9 +115,7 @@ public class PlayerDeck : MonoBehaviour
         {
             playerEntity.is_looking_right = (playerEntity.GetMousePos().x > playerEntity.GetPos().x) ? true : false;
 
-            hp_manager.Cur_mp -= mananeed;
-
-            weapon.GetComponent<Weapon>().Skill(deck[index].num, deck[index].level);
+            hp_manager.Cur_mp -= weapon.GetComponent<Weapon>().Skill(deck[index].num, deck[index].level);
             //해당 카드와 5번째 카드 스와핑
             Card temp = deck[index];
             deck[index] = deck[4];
