@@ -115,9 +115,7 @@ public class PlayerDeck : MonoBehaviour
         {
             playerEntity.is_looking_right = (playerEntity.GetMousePos().x > playerEntity.GetPos().x) ? true : false;
 
-            hp_manager.Cur_mp -= mananeed;
-
-            weapon.GetComponent<Weapon>().Skill(deck[index].num, deck[index].level);
+            hp_manager.Cur_mp -= weapon.GetComponent<Weapon>().Skill(deck[index].num, deck[index].level);
             //해당 카드와 5번째 카드 스와핑
             Card temp = deck[index];
             deck[index] = deck[4];

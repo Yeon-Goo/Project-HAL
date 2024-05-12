@@ -5,6 +5,7 @@ public class Weapon : MonoBehaviour
 {
     protected PlayerEntity playerEntity;
     protected float lastUseTime;
+    //0~11 Archer 12~23 Gunner
 
 
 
