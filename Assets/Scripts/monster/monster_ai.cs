@@ -1,7 +1,9 @@
 using UnityEngine;
 
-public class MonsterTracking : MonoBehaviour
+public class monster_ai : MonoBehaviour
 {
+    int isattack = 0;
+    public GameObject BananaPrefab;
     public Transform player;
     public float speed = 2f;
     public float range = 4f;
@@ -44,7 +46,7 @@ public class MonsterTracking : MonoBehaviour
             if(distance < range) // 거리가 가까워지면 추격상태로 전환
             {
                 monster_state = (int)StateEnum.move;
-                transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                transform.localScale = new Vector3(2.0f, 2.0f, 1.0f);
                 animator.SetInteger(animationState, monster_state);
             }
             else if(Time.time - tempTime > 1f) // 평상시 상태가 1초 이상 지속시 탐색상태로 전환
@@ -67,16 +69,16 @@ public class MonsterTracking : MonoBehaviour
             if (distance <= attack_range) // 공격 사거리가 됐을 경우 차지상태로 전환
             {
                 move_direction = (player.position - transform.position).normalized;
-                target_pos = transform.position + (Vector3)move_direction * 3;
+                target_pos = transform.position + (Vector3)move_direction * 5;
                 monster_state = (int)StateEnum.charge;
-                transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                transform.localScale = new Vector3(2.0f, 2.0f, 1.0f);
                 animator.SetInteger(animationState, monster_state);
                 tempTime = Time.time;
             }
             if(distance > tracking_range) // 시야 사거리가 멀어졌을 경우 평상시로 전환
             {
                 monster_state = (int)StateEnum.idle;
-                transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                transform.localScale = new Vector3(2.0f, 2.0f, 1.0f);
                 animator.SetInteger(animationState, monster_state);
                 tempTime = Time.time;
             }
@@ -89,19 +91,28 @@ public class MonsterTracking : MonoBehaviour
             {
                 tempTime = Time.time;
                 monster_state = (int)StateEnum.attack;
-                transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                transform.localScale = new Vector3(2.0f, 2.0f, 1.0f);
                 animator.SetInteger(animationState, monster_state);
             }
         }
         
         if (monster_state == (int)StateEnum.attack) // 공격
         {
-            transform.position = Vector2.MoveTowards(transform.position, target_pos, attack_speed * Time.deltaTime);
+            if(isattack == 0)
+            {
+                GameObject Banana = Instantiate(BananaPrefab);
+                isattack += 1;
+                Banana.transform.position = transform.position;
+                Banana.GetComponent<Rigidbody2D>().AddForce((target_pos-transform.position).normalized * 1000);
+            }
+            //transform.position = Vector2.MoveTowards(transform.position, target_pos, attack_speed * Time.deltaTime);
             if(Time.time - tempTime > attack_time) // 공격이 끝나고 딜레이로 전환
             {
+                isattack = 0;
                 monster_state = (int)StateEnum.delay;
-                transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-                animator.SetInteger(animationState, (int)StateEnum.idle);
+                transform.localScale = new Vector3(2.0f, 2.0f, 1.0f);
+                animator.SetInteger(animationState, monster_state);
+                tempTime = Time.time;
             }
         }
 
@@ -110,16 +121,19 @@ public class MonsterTracking : MonoBehaviour
             GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             if(Time.time - tempTime > attack_delay) // 딜레이 시간이 끝나고
             {
-                if(distance < tracking_range)   // 돌진 후 가까우면 추격상태로 전환
+                if(distance < tracking_range)   // 돌진 후 가까우면 차지상태로 전환
                 {
-                    monster_state = (int)StateEnum.move;
-                    transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                    move_direction = (player.position - transform.position).normalized;
+                    target_pos = transform.position + (Vector3)move_direction * 5;
+                    monster_state = (int)StateEnum.charge;
+                    transform.localScale = new Vector3(2.0f, 2.0f, 1.0f);
                     animator.SetInteger(animationState, monster_state);
+                    tempTime = Time.time;
                 }
                 else  // 돌진 후 멀면 평상시로 전환
                 {
                     monster_state = (int)StateEnum.idle;
-                    transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                    transform.localScale = new Vector3(2.0f, 2.0f, 1.0f);
                     animator.SetInteger(animationState, monster_state);
                     tempTime = Time.time;
                 }
