@@ -20,9 +20,7 @@ public class Item : ScriptableObject
     public enum ItemTypeEnum
     {
         COIN,
-        HEALTH,
-        Stone,
-        Glass
+        HEALTH
     }
     // Item의 타입
     public ItemTypeEnum itemType;
