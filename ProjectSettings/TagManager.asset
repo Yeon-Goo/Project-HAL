@@ -3,7 +3,18 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
+<<<<<<< Updated upstream
   tags: []
+=======
+  tags:
+  - Pickable_Objects
+  - Enemy
+  - Player_Attack
+  - Enemy_Attack
+  - player_attack
+  - Stone
+  - Glass
+>>>>>>> Stashed changes
   layers:
   - Default
   - TransparentFX
