@@ -202,7 +202,7 @@ public class Archer : Weapon
 
 
 
-    //No.2 화살 세례 / 스택 사용 스킬
+    //No.2 화살 세례 / 스택 사용 스킬ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     public int ArrowBarrage(int slevel)
     {
         mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
