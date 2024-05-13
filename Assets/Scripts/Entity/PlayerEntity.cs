@@ -36,6 +36,9 @@ public class PlayerEntity : Entity
     [SerializeField]
     // Player가 움직일 방향
     private Vector2 vector = new Vector2();
+    // Player 크기 설정
+    [SerializeField]
+    private float playerscale = 1.5f;
 
 
     /***
@@ -214,7 +217,7 @@ public class PlayerEntity : Entity
             // x 방향으로 움직이지 않았을 때, transform.localScale.x의 값으로 오른쪽 왼쪽을 판단
             else is_looking_right = transform.localScale.x.Equals(1.0f) ? true : false;
             // 캐릭터가 바라보는 방향을 움직이는 방향에 맞게 바꿈
-            transform.localScale = is_looking_right ? new Vector3(1.0f, 1.0f, 1.0f) : new Vector3(-1.0f, 1.0f, 1.0f);
+            transform.localScale = is_looking_right ? new Vector3(playerscale, playerscale, 1.0f) : new Vector3(-playerscale, playerscale, 1.0f);
         }
 
         // 캐릭터를 vector와 velocity에 맞게 움직임
@@ -430,7 +433,7 @@ public class PlayerEntity : Entity
         }
         animation_coroutine = null;
 
-        transform.localScale = (GetMousePos().x - GetPos().x) > 0 ? new Vector3(1.0f, 1.0f, 1.0f) : new Vector3(-1.0f, 1.0f, 1.0f);
+        transform.localScale = (GetMousePos().x - GetPos().x) > 0 ? new Vector3(playerscale, playerscale, 1.0f) : new Vector3(-playerscale, playerscale, 1.0f);
     }
 
     IEnumerator Roll(Animator animator)
@@ -470,6 +473,7 @@ public class PlayerEntity : Entity
 
     public IEnumerator Attack(Animator animator)
     {
+
         if (!is_animation_playing)
         {
             CharacterStop();
@@ -631,7 +635,7 @@ public class PlayerEntity : Entity
         is_alive = true;
         hp_manager.Cur_hp = hp_manager.Max_hp;
         hp_manager.Cur_mp = hp_manager.Max_mp;
-        GetComponent<SpriteRenderer>().enabled = true;
+        //GetComponent<SpriteRenderer>().enabled = true;
         // 미완성
     }
 }

@@ -34,12 +34,23 @@ public class PlayerDeck : MonoBehaviour
     private GameObject playerobject;
     private PlayerEntity playerEntity;
     private HPManager hp_manager;
-    
 
+    private bool allLock = false;
+    
+    public void allLockOn()
+    {
+        allLock = true;
+    }
+
+    public void allLockOff()
+    {
+        allLock = false;
+    }
     void Start()
     {
-        //need to fix - can select weapon
+        //need to fix - can select weapon-----
         weapon = GameObject.Find("Archer");
+        //------------------------------------
         playerobject = GameObject.Find("PlayerObject");
         playerEntity = playerobject.GetComponent<PlayerEntity>();
         hp_manager = playerEntity.hp_manager;
@@ -50,10 +61,10 @@ public class PlayerDeck : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q)) UseCard(0);
-        else if (Input.GetKeyDown(KeyCode.W)) UseCard(1);
-        else if (Input.GetKeyDown(KeyCode.E)) UseCard(2);
-        else if (Input.GetKeyDown(KeyCode.R)) UseCard(3);
+        if (Input.GetKeyDown(KeyCode.Q) && !allLock) UseCard(0);
+        else if (Input.GetKeyDown(KeyCode.W) && !allLock) UseCard(1);
+        else if (Input.GetKeyDown(KeyCode.E) && !allLock) UseCard(2);
+        else if (Input.GetKeyDown(KeyCode.R) && !allLock) UseCard(3);
         /*else if (Input.GetKey(KeyCode.Space))
         {
             //if (playerEntity.is_alive && !(playerEntity.is_animation_started & playerEntity.is_animation_ended))
@@ -66,7 +77,7 @@ public class PlayerDeck : MonoBehaviour
                 //}
             }
         }*/
-        else if (Input.GetMouseButton(0)) BaseAttack();
+        else if (Input.GetMouseButton(0) && !allLock) BaseAttack();
         //else if (Input.GetMouseButtonDown(0)) BaseAttack();
     }
     private void InitializeDeck()
@@ -93,6 +104,7 @@ public class PlayerDeck : MonoBehaviour
     }
 
 
+    //차징 공격도 수행할 수 있도록 코드 수정해야 함. 오래 입력되면 차징 스킬로 간주하고 사용
     private void UseCard(int index)
     {
         //ERROR CHECK
