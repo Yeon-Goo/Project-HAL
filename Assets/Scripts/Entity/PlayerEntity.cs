@@ -216,174 +216,6 @@ public class PlayerEntity : Entity
         // 캐릭터를 vector와 velocity에 맞게 움직임
         rigidbody.velocity = vector * velocity;
     }
-
-    /*
-    public void DebugAnimation()
-    {
-        if (is_animation_started)
-        {
-            if (is_animation_playing)
-            {
-                if (is_animation_ended)
-                {
-                    Debug.Log("T T T");
-                }
-                else
-                {
-                    Debug.Log("T T F");
-                }
-            }
-            else
-            {
-                if (is_animation_ended)
-                {
-                    Debug.Log("T F T");
-                }
-                else
-                {
-                    Debug.Log("T F F");
-                }
-            }
-        }
-        else
-        {
-            if (is_animation_playing)
-            {
-                if (is_animation_ended)
-                {
-                    Debug.Log("F T T");
-                }
-                else
-                {
-                    Debug.Log("F T F");
-                }
-            }
-            else
-            {
-                if (is_animation_ended)
-                {
-                    Debug.Log("F F T");
-                }
-                else
-                {
-                    Debug.Log("F F F");
-                }
-            }
-        }
-    }
-    */
-    /*
-    public void DebugAnimationWithIdle()
-    {
-        if (is_animation_started)
-        {
-            if (is_animation_playing)
-            {
-                if (is_animation_ended)
-                {
-                    if (is_idle)
-                    {
-                        Debug.Log("T T T T");
-                    }
-                    else
-                    {
-                        Debug.Log("T T T F");
-                    }
-                }
-                else
-                {
-                    if (is_idle)
-                    {
-                        Debug.Log("T T F T");
-                    }
-                    else
-                    {
-                        Debug.Log("T T F F");
-                    }
-                }
-            }
-            else
-            {
-                if (is_animation_ended)
-                {
-                    if (is_idle)
-                    {
-                        Debug.Log("T F T T");
-                    }
-                    else
-                    {
-                        Debug.Log("T F T F");
-                    }
-                }
-                else
-                {
-                    if (is_idle)
-                    {
-                        Debug.Log("T F F T");
-                    }
-                    else
-                    {
-                        Debug.Log("T F F F");
-                    }
-                }
-            }
-        }
-        else
-        {
-            if (is_animation_playing)
-            {
-                if (is_animation_ended)
-                {
-                    if (is_idle)
-                    {
-                        Debug.Log("F T T T");
-                    }
-                    else
-                    {
-                        Debug.Log("F T T F");
-                    }
-                }
-                else
-                {
-                    if (is_idle)
-                    {
-                        Debug.Log("F T F T");
-                    }
-                    else
-                    {
-                        Debug.Log("F T F F");
-                    }
-                }
-            }
-            else
-            {
-                if (is_animation_ended)
-                {
-                    if (is_idle)
-                    {
-                        Debug.Log("F F T T");
-                    }
-                    else
-                    {
-                        Debug.Log("F F T F");
-                    }
-                }
-                else
-                {
-                    if (is_idle)
-                    {
-                        Debug.Log("F F F T");
-                    }
-                    else
-                    {
-                        Debug.Log("F F F F");
-                    }
-                }
-            }
-        }
-    }
-    */
-
     
     private void UpdateAnimationState()
     {
@@ -402,6 +234,13 @@ public class PlayerEntity : Entity
         }
     }
     
+    public void CharacterIdleSet()
+    {
+        animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+        is_animation_started = false;
+        is_animation_playing = false;
+        is_animation_ended = true;
+    }
 
     public void CharacterStop()
     {
@@ -477,11 +316,12 @@ public class PlayerEntity : Entity
             while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
             {
                 is_animation_playing = true;
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f)
+                {
+                    is_moveable = true;
+                }
                 yield return null;
             }
-
-            velocity = 3.0f;
-            CharacterStop();
 
             if (is_animation_playing)
             {
