@@ -36,6 +36,9 @@ public class PlayerEntity : Entity
     [SerializeField]
     // Player가 움직일 방향
     private Vector2 vector = new Vector2();
+    [SerializeField]
+    // Player가 움직일 방향
+    private float vector_;
     // Player 크기 설정
     [SerializeField]
     private float playerscale = 1.5f;
@@ -151,6 +154,8 @@ public class PlayerEntity : Entity
         {
             ResetEntity();
         }
+
+        vector_ = vector.magnitude;
     }
 
     void FixedUpdate()
@@ -173,18 +178,6 @@ public class PlayerEntity : Entity
             {
                 CharacterStop();
             }
-            /*
-            // Roll
-            else if (Input.GetKey(KeyCode.Space))
-            {
-                //PlayAnimation("Roll");
-            }
-            // Attack
-            else if (Input.GetMouseButton(0))
-            {
-                //PlayAnimation("Attack");
-            }
-            */
             // Walk
             else
             {
@@ -399,9 +392,7 @@ public class PlayerEntity : Entity
             // WALK
             if (!vector.Equals(Vector2.zero))
             {
-                Debug.Log("Walk");
                 animator.SetInteger(animationState, (int)AnimationStateEnum.walk);
-                
             }
             // IDLE
             else
@@ -473,12 +464,11 @@ public class PlayerEntity : Entity
 
     public IEnumerator Attack(Animator animator)
     {
-
         if (!is_animation_playing)
         {
             CharacterStop();
 
-            while (!animator.GetCurrentAnimatorStateInfo(0).IsName("player_attack"))
+            while (!animator.GetCurrentAnimatorStateInfo(0).IsName("2_Attack_Bow"))
             {
                 animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
                 yield return null;
