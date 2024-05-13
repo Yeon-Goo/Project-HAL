@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 31912327}
   - component: {fileID: 31912326}
   m_Layer: 0
-  m_Name: BlockMaker
+  m_Name: BlockMaker(LeftDown)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -273,10 +273,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GlassPrefab: {fileID: 5243113922171995371, guid: 1682c7ef9342fba49982bb909ef3b98d, type: 3}
   StonePrefab: {fileID: 9186026973448678746, guid: b8239fd9f8453b24e91c40d35adc0a45, type: 3}
-  Test_GlassSpawnCount: 5
-  Test_StoneSpawnCount: 5
+  Test_GlassSpawnCount: 3
+  Test_StoneSpawnCount: 3
   Test_respawnTime: 5
-  map_left_down: {x: -7, y: -5}
+  map_left_down: {x: -9.2, y: -5}
   map_width: 14
   map_hight: 10
 --- !u!4 &31912327
@@ -15632,6 +15632,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1028866630
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1028866632}
+  - component: {fileID: 1028866631}
+  m_Layer: 0
+  m_Name: BlockMaker (LeftUp)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1028866631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028866630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5872df60a5521c54398ebc6b8431cf5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlassPrefab: {fileID: 5243113922171995371, guid: 1682c7ef9342fba49982bb909ef3b98d, type: 3}
+  StonePrefab: {fileID: 9186026973448678746, guid: b8239fd9f8453b24e91c40d35adc0a45, type: 3}
+  Test_GlassSpawnCount: 3
+  Test_StoneSpawnCount: 3
+  Test_respawnTime: 5
+  map_left_down: {x: -9.2, y: 10.7}
+  map_width: 14
+  map_hight: 10
+--- !u!4 &1028866632
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028866630}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 22.85871, y: 0.48118562, z: 0.062150594}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1081355956
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15927,6 +15979,58 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1177991904950066686, guid: 69b46e81ce146834a96c6e54b9f30dde, type: 3}
   m_PrefabInstance: {fileID: 747236003}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1221143739
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1221143741}
+  - component: {fileID: 1221143740}
+  m_Layer: 0
+  m_Name: BlockMaker (RightDown)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1221143740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1221143739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5872df60a5521c54398ebc6b8431cf5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlassPrefab: {fileID: 5243113922171995371, guid: 1682c7ef9342fba49982bb909ef3b98d, type: 3}
+  StonePrefab: {fileID: 9186026973448678746, guid: b8239fd9f8453b24e91c40d35adc0a45, type: 3}
+  Test_GlassSpawnCount: 3
+  Test_StoneSpawnCount: 3
+  Test_respawnTime: 5
+  map_left_down: {x: 13.6, y: -5}
+  map_width: 14
+  map_hight: 10
+--- !u!4 &1221143741
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1221143739}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 22.85871, y: 0.48118562, z: 0.062150594}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1224794367
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18003,6 +18107,58 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1 &1663245178
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1663245180}
+  - component: {fileID: 1663245179}
+  m_Layer: 0
+  m_Name: BlockMaker (RightUp)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1663245179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663245178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5872df60a5521c54398ebc6b8431cf5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlassPrefab: {fileID: 5243113922171995371, guid: 1682c7ef9342fba49982bb909ef3b98d, type: 3}
+  StonePrefab: {fileID: 9186026973448678746, guid: b8239fd9f8453b24e91c40d35adc0a45, type: 3}
+  Test_GlassSpawnCount: 3
+  Test_StoneSpawnCount: 3
+  Test_respawnTime: 5
+  map_left_down: {x: 13.7, y: 10.2}
+  map_width: 14
+  map_hight: 10
+--- !u!4 &1663245180
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1663245178}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 22.85871, y: 0.48118562, z: 0.062150594}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1671617973
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32160,3 +32316,6 @@ SceneRoots:
   - {fileID: 1231227927}
   - {fileID: 743973850}
   - {fileID: 31912327}
+  - {fileID: 1028866632}
+  - {fileID: 1221143741}
+  - {fileID: 1663245180}
