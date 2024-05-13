@@ -70,7 +70,7 @@ public class BlockMaker : MonoBehaviour
     public IEnumerator RespawnResources(string destroy_ob)
     {
         //yield return new WaitForSecondsRealtime(Test_respawnTime); // respawnTime만큼 시간 대기
-        
+        Debug.Log("here2");
         if(destroy_ob=="Glass")
         {
             SpawnGlassResources(); 
@@ -87,6 +87,7 @@ public class BlockMaker : MonoBehaviour
     void SpawnGlassResources()
     {
         // GlassPrefab 생성
+        Debug.Log("here3");
             spawnPosition = GetRandomSpawnPosition();
            GameObject glass = Instantiate(GlassPrefab, spawnPosition, Quaternion.identity);
             glass.tag = "Glass"; // 없어진 후 새로 생성되는 GlassPrefab의 태그 설정
@@ -95,6 +96,7 @@ public class BlockMaker : MonoBehaviour
     void SpawnStoneResources()
     {
         // StonePrefab 생성
+        Debug.Log("here4");
             spawnPosition = GetRandomSpawnPosition();
             GameObject stone = Instantiate(StonePrefab, spawnPosition, Quaternion.identity);
             stone.tag = "Stone"; // 없어진 후 새로 생성되는 StonePrefab의 태그 설정

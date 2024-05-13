@@ -242,6 +242,58 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1177991904950066686, guid: 69b46e81ce146834a96c6e54b9f30dde, type: 3}
   m_PrefabInstance: {fileID: 1196290911}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &31912325
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 31912327}
+  - component: {fileID: 31912326}
+  m_Layer: 0
+  m_Name: BlockMaker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &31912326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31912325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5872df60a5521c54398ebc6b8431cf5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlassPrefab: {fileID: 5243113922171995371, guid: 1682c7ef9342fba49982bb909ef3b98d, type: 3}
+  StonePrefab: {fileID: 9186026973448678746, guid: b8239fd9f8453b24e91c40d35adc0a45, type: 3}
+  Test_GlassSpawnCount: 5
+  Test_StoneSpawnCount: 5
+  Test_respawnTime: 5
+  map_left_down: {x: -7, y: -5}
+  map_width: 14
+  map_hight: 10
+--- !u!4 &31912327
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31912325}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 22.85871, y: 0.48118562, z: 0.062150594}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &75764249 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7692286754580168946, guid: 8ab02351029a97c4da6433307841baaf, type: 3}
@@ -16628,6 +16680,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 4826817792503487762, guid: a20a4bfc6b5917b4892752116f281e96, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 5060678252524039788, guid: a20a4bfc6b5917b4892752116f281e96, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -32198,3 +32254,4 @@ SceneRoots:
   - {fileID: 4502369999754690045}
   - {fileID: 1231227927}
   - {fileID: 743973850}
+  - {fileID: 31912327}

@@ -41,6 +41,7 @@ public class BlockObject : MonoBehaviour
     {
         if ((Time.time - lastContactTime) >= Test_contactDuration && lastContactTime != 0f)
         {
+            Debug.Log("here1");
             destroy_tag = gameObject.tag; // 태그 수정해서, Un-combat으로 통일하고 그 안에서 프리팹 이름으로 구분해야 할듯
             StartCoroutine(blockMaker.RespawnResources(destroy_tag));
             Destroy(gameObject);
