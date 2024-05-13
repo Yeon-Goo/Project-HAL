@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 2ae1b019af6252240930c00980edcce9
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - GlassPrefab: {fileID: 5243113922171995371, guid: 1682c7ef9342fba49982bb909ef3b98d, type: 3}
+  - StonePrefab: {fileID: 9186026973448678746, guid: b8239fd9f8453b24e91c40d35adc0a45, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

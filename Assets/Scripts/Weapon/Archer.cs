@@ -1,16 +1,19 @@
 using UnityEngine;
 using UnityEngine.Pool;
-
+using System.Collections;
 
 public class Archer : Weapon
 {
     [SerializeField]
     private GameObject arrowPrefab;
     private GameObject playerObject;
-    public float arrowSpeed = 10f;
+    private float arrowSpeed = 25.0f;
     private IObjectPool<ArrowObject> _Pool;
     private float baseAttackCooltime = 0.5f;
-    int[] skillMana = new int[] {1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    [SerializeField]
+    private bool isCharging = false;
+    private Coroutine chargingCoroutine;
+    int[] skillMana = new int[] {1, 4, 8, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
 
     public override int GetMana(int cardnum)
@@ -45,28 +48,16 @@ public class Archer : Weapon
             return false;
         }
     }
-    private int Space(int slevel)
-    {
-        //if (playerEntity.is_alive && !(playerEntity.is_animation_started & playerEntity.is_animation_ended))
-        if (playerEntity.is_alive && (playerEntity.is_animation_started ^ playerEntity.is_animation_playing ^ playerEntity.is_animation_ended))
-        //if (playerEntity.is_alive && (playerEntity.is_animation_started || playerEntity.is_animation_playing || playerEntity.is_animation_ended))
-        {
-            //if (!playerEntity.is_animation_playing)
-            //{
-            //playerEntity.PlayAnimation("Roll");
-            //}
-        }
-        //playerEntity.PlayAnimation("Roll");
-        return 1;
-    }
+    
 
 
     private void BaseShot(float angleadd, int type, int damage)
     {
         Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
+        
         if (arrowPrefab != null && _Pool != null)
         {
+            playerEntity.CharacterStop();
             // 화살 발사 방향 계산 (Vector2 to Vector3 변환)
             Vector3 targetVec = mouseWorldPosition - new Vector2(playerObject.transform.position.x, playerObject.transform.position.y);
             targetVec.z = 0; // Vector3 변환 시 z 축 값은 0으로 설정
@@ -77,12 +68,14 @@ public class Archer : Weapon
             // 화살 위치 설정
             arrow.transform.position = playerObject.transform.position; // Archer의 현재 위치를 기준으로 설정
             arrow.transform.rotation = Quaternion.identity; // 초기 회전 상태를 기본 값으로 설정
-
-            // 화살 발사 (Shoot 메서드 내부에서 화살의 방향과 속도 처리)
-            arrow.Shoot(targetVec.normalized * arrowSpeed, angleadd); // Shoot 메서드가 방향 벡터를 받아 처리하도록 가정
+            arrow.transform.position += new Vector3(0.0f, 0.25f, 0.0f);
 
             // 필요한 경우, 화살의 데이터 설정 메서드 호출
             arrow.SetArrowData(damage, 0, arrowSpeed, type); // 화살에 대한 추가 정보 설정
+
+            // 화살 발사 (Shoot 메서드 내부에서 화살의 방향과 속도 처리)
+            arrow.Shoot(targetVec.normalized, angleadd); // Shoot 메서드가 방향 벡터를 받아 처리하도록 가정
+
         }
         else
         {
@@ -137,10 +130,27 @@ public class Archer : Weapon
         }
         return manaused;
     }
+    
+    //No. 0 구르기
+    private int Space(int slevel)
+    {
+        //if (playerEntity.is_alive && !(playerEntity.is_animation_started & playerEntity.is_animation_ended))
+        if (playerEntity.is_alive && (playerEntity.is_animation_started ^ playerEntity.is_animation_playing ^ playerEntity.is_animation_ended))
+        //if (playerEntity.is_alive && (playerEntity.is_animation_started || playerEntity.is_animation_playing || playerEntity.is_animation_ended))
+        {
+            //if (!playerEntity.is_animation_playing)
+            //{
+            //playerEntity.PlayAnimation("Roll");
+            //}
+        }
+        //playerEntity.PlayAnimation("Roll");
+        return 1;
+    }
 
-    //No.0 ==== 갈래 화살, 스택 사용 스킬
+    //No.1 갈래 화살, 스택 사용 스킬
     private int FanArrows(int slevel)
     {
+        playerEntity.CharacterStop();
         int arrowdamage = 1;
         
         if (slevel >= 1)
@@ -163,11 +173,96 @@ public class Archer : Weapon
         return skillMana[1];
     }
 
-    private int ArrowBarrage(int slevel)
+    //No.2 화살 세례 / 스택 사용 스킬
+    public int ArrowBarrage(int slevel)
     {
-        Debug.Log("Performing Arrow Barrage (타겟 연사 챠지+말뚝딜)");
-        // Arrow Barrage implementation
-        return 0;
+        playerObject.GetComponent<PlayerDeck>().allLockOn();
+
+        float chargingtime = 1.0f;
+        isCharging = true;
+
+        // chargingtime동안 아무 입력도 들어오지 않으면 실행
+        chargingCoroutine = StartCoroutine(ChargingAndExecute(chargingtime, slevel));
+
+        return skillMana[2];
+    }
+
+    private IEnumerator ChargingAndExecute(float chargingtime, int slevel)
+    {
+        float elapsedTime = 0f;
+
+        yield return new WaitForSeconds(0.1f);
+
+        while (elapsedTime < chargingtime)
+        {
+            if (Input.anyKeyDown)
+            {
+                CancelCharging();
+                yield break;
+            }
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        StartCoroutine(ArrowBarrageCoroutine(slevel));
+
+        playerObject.GetComponent<PlayerDeck>().allLockOff();
+        isCharging = false;
+    }
+
+    private void CancelCharging()
+    {
+        if (isCharging)
+        {
+            if (chargingCoroutine != null)
+            {
+                StopCoroutine(chargingCoroutine);
+                chargingCoroutine = null;
+            }
+            playerObject.GetComponent<PlayerDeck>().allLockOff();
+            isCharging = false;
+            Debug.Log("Charging cancelled due to input.");
+        }
+    }
+
+    private IEnumerator ArrowBarrageCoroutine(int slevel)
+    {
+        playerEntity.CharacterStop();
+
+        int arrowdamage = 1;
+        int arrownum = 8;
+        Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        for (int i = 0; i < arrownum; i++)
+        {
+            if (arrowPrefab != null && _Pool != null)
+            {
+                playerEntity.CharacterStop();
+                // 화살 발사 방향 계산 (Vector2 to Vector3 변환)
+                Vector3 targetVec = mouseWorldPosition - new Vector2(playerObject.transform.position.x, playerObject.transform.position.y);
+                targetVec.z = 0; // Vector3 변환 시 z 축 값은 0으로 설정
+
+                // 오브젝트 풀에서 화살 객체 가져오기
+                ArrowObject arrow = _Pool.Get();
+
+                // 화살 위치 설정
+                arrow.transform.position = playerObject.transform.position; // Archer의 현재 위치를 기준으로 설정
+                arrow.transform.rotation = Quaternion.identity; // 초기 회전 상태를 기본 값으로 설정
+                arrow.transform.position += new Vector3(0.0f, 0.25f, 0.0f);
+
+                // 화살 발사 (Shoot 메서드 내부에서 화살의 방향과 속도 처리)
+                arrow.Shoot(targetVec.normalized * arrowSpeed, 0.0f); // Shoot 메서드가 방향 벡터를 받아 처리하도록 가정
+
+                // 필요한 경우, 화살의 데이터 설정 메서드 호출
+                arrow.SetArrowData(arrowdamage, 0, arrowSpeed, 1); // 화살에 대한 추가 정보 설정
+            }
+            else
+            {
+                Debug.Log("Arrow prefab or object pool is not set.");
+            }
+            yield return new WaitForSeconds(0.1f); // 0.1초 대기
+        }
     }
 
     private int PiercingArrow(int slevel)
