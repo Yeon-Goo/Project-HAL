@@ -35,6 +35,7 @@ public class monster_ai : MonoBehaviour
     }
     void Start()
     {
+        player = GameObject.Find("PlayerObject").transform;
         initial_pos = transform.position;
         animator = GetComponent<Animator>();
     }

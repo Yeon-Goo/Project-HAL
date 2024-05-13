@@ -15184,7 +15184,15 @@ PrefabInstance:
     - target: {fileID: 2510663624873542490, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 3116142021323770694}
+      objectReference: {fileID: 220558570}
+    - target: {fileID: 2510663624873542490, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
+      propertyPath: rupinPrefab
+      value: 
+      objectReference: {fileID: 1936899450}
+    - target: {fileID: 2510663624873542490, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
+      propertyPath: BananaPrefab
+      value: 
+      objectReference: {fileID: 9109811338446579067, guid: e4bfce5ef0377c64bbedc4e097861d7d, type: 3}
     - target: {fileID: 2510663624873542490, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
       propertyPath: attack_range
       value: 6
@@ -16635,6 +16643,10 @@ PrefabInstance:
     - target: {fileID: 4826817792503487762, guid: a20a4bfc6b5917b4892752116f281e96, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4826817792503487762, guid: a20a4bfc6b5917b4892752116f281e96, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5060678252524039788, guid: a20a4bfc6b5917b4892752116f281e96, type: 3}
       propertyPath: m_Layer
@@ -19449,6 +19461,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1936899450 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4890928813107072413, guid: b51b5b11b4f11864187a7d83c5e150ce, type: 3}
+  m_PrefabInstance: {fileID: 1283773465}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1960354369
 PrefabInstance:
   m_ObjectHideFlags: 0
