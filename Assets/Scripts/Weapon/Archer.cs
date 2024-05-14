@@ -195,9 +195,14 @@ public class Archer : Weapon
     {
         playerEntity.CharacterStop();
         playerObject.GetComponent<PlayerDeck>().allLockOn();
-        playerEntity.PlayAnimation("Attack");
         mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
+        while (!BaseAttackAble())
+        {
+            yield return new WaitForSeconds(0.1f); // 0.1초 대기 후 다시 체크
+        }
+
+        playerEntity.PlayAnimation("Attack");
         yield return new WaitForSeconds(0.5f);
         int arrowdamage = 1;
 
@@ -227,8 +232,12 @@ public class Archer : Weapon
     //No.2 화살 세례 / 스택 사용 차징 스킬ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     public int ArrowBarrage(int slevel)
     {
-        mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         playerEntity.CharacterStop();
+        playerEntity.CharacterIdleSet();
+        playerEntity.is_animation_started = true;
+        playerEntity.is_moveable = false;
+        mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //playerEntity.CharacterStop();
         playerObject.GetComponent<PlayerDeck>().allLockOn();
 
         float chargingtime = 1.0f;
@@ -239,6 +248,7 @@ public class Archer : Weapon
         // chargingtime동안 아무 입력도 들어오지 않으면 실행
         chargingCoroutine = StartCoroutine(ChargingAndExecute(chargingtime, slevel));
 
+        playerEntity.is_moveable = true;
         return skillMana[2];
     }
     private IEnumerator ChargingAndExecute(float chargingtime, int slevel)

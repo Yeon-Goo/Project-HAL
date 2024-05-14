@@ -311,21 +311,7 @@ public class PlayerEntity : Entity
 
     public void PlayAnimation(string action)
     {
-        if (!is_animation_playing)
-        {
-            //Debug.Log("Play " + action + "(animation is not playing)");
-            is_animation_started = true;
-            //is_animation_cancelable = false;
-
-            if (animation_coroutine == null)
-            {
-                animation_coroutine = StartCoroutine(action, animator);
-            }
-            // animation_coroutine = null;
-
-            transform.localScale = (GetMousePos().x - GetPos().x) > 0 ? new Vector3(playerscale, playerscale, 1.0f) : new Vector3(-playerscale, playerscale, 1.0f);
-        }
-        else if (is_animation_cancelable)
+        if (is_animation_cancelable)
         {
             //Debug.Log("Play " + action + "(animation is cancelable)");
             CharacterIdleSet();
@@ -339,6 +325,20 @@ public class PlayerEntity : Entity
                 animation_coroutine = StartCoroutine(action, animator);
             }
             //animation_coroutine = null;
+
+            transform.localScale = (GetMousePos().x - GetPos().x) > 0 ? new Vector3(playerscale, playerscale, 1.0f) : new Vector3(-playerscale, playerscale, 1.0f);
+        }
+        else
+        {
+            //Debug.Log("Play " + action + "(animation is not playing)");
+            is_animation_started = true;
+            //is_animation_cancelable = false;
+
+            if (animation_coroutine == null)
+            {
+                animation_coroutine = StartCoroutine(action, animator);
+            }
+            // animation_coroutine = null;
 
             transform.localScale = (GetMousePos().x - GetPos().x) > 0 ? new Vector3(playerscale, playerscale, 1.0f) : new Vector3(-playerscale, playerscale, 1.0f);
         }
@@ -425,7 +425,7 @@ public class PlayerEntity : Entity
     private void MoveCharacter_Mouse()
     {
         // 마우스 오른쪽 버튼을 뗐을 때 || 마우스 오른쪽 버튼을 누르고 있는 상태에서 마우스를 움직였을 때
-        if (!Input.GetMouseButton(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f))
+        if (!is_animation_started && (!Input.GetMouseButton(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f)))
         //if (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f)
         {
             is_moveable = true;
