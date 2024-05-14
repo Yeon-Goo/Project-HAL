@@ -20,7 +20,6 @@ public class king_slimeEntity : MonoBehaviour
     private Vector2 move_direction;
     private Vector3 target_pos;
     int barrage_count = 4;
-    float r;
     public static Vector3 AngleToVector(float angleDegrees)
     {
         // 각도를 라디안으로 변환
@@ -54,39 +53,7 @@ public class king_slimeEntity : MonoBehaviour
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("UpWall"))
-        {
-            // 랜덤하게 슬라임이 발사됨
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            r = Random.Range(210, 330);
-            Vector3 NewDirection = AngleToVector(r);
-            GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 500000);
-        }
-        else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("DownWall"))
-        {
-            // 랜덤하게 슬라임이 발사됨
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            r = Random.Range(30, 150);
-            Vector3 NewDirection = AngleToVector(r);
-            GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 500000);
-        }
-        else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("LeftWall"))
-        {
-            // 랜덤하게 슬라임이 발사됨
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            r = Random.Range(-30, 30);
-            Vector3 NewDirection = AngleToVector(r);
-            GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 500000);
-        }
-        else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("RightWall"))
-        {
-            // 랜덤하게 슬라임이 발사됨
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            r = Random.Range(150, 210);
-            Vector3 NewDirection = AngleToVector(r);
-            GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 500000);
-        }
-        else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Blocking") || collision.collider.gameObject.layer == LayerMask.NameToLayer("Enemies")) // 'Blocking' 레이어의 오브젝트와 충돌했을 때
+        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Blocking")) // 'Blocking' 레이어의 오브젝트와 충돌했을 때
         {
             Vector2 incomingVector = rb.velocity; // 입사 벡터는 현재 속도 벡터
             Vector2 normalVector = collision.contacts[0].normal; // 충돌 지점의 첫 번째 접촉 정보로부터 법선 벡터를 얻음
@@ -118,23 +85,22 @@ public class king_slimeEntity : MonoBehaviour
             if(Time.time - tempTime > 3.0f)
             {
                 int rand = Random.Range(1, 11);
-                if(rand < 5)
+                if(rand < 4)
                 {
                     monster_state = (int)StateEnum.barrage;
                     transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
                     animator.SetInteger(animationState, monster_state);
                     tempTime = Time.time;
                 }
-                else if(rand < 9)
+                else if(rand < 8)
                 {
                     monster_state = (int)StateEnum.rush;
                     transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
                     animator.SetInteger(animationState, monster_state);
                     tempTime = Time.time;
-                    r = Random.Range(0, 360);
-                    r = 270;
+                    float r = Random.Range(0, 360);
                     Vector3 NewDirection = AngleToVector(r);
-                    GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 500000);
+                    GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 700);
                 }
                 else
                 {
@@ -158,7 +124,7 @@ public class king_slimeEntity : MonoBehaviour
                     GameObject Banana = Instantiate(BananaPrefab);
                     Banana.transform.position = transform.position;
                     Vector3 NewDirection = AngleToVector(36*i + 18*barrage_count + rand);
-                    Banana.GetComponent<Rigidbody2D>().AddForce((NewDirection).normalized * 900);
+                    Banana.GetComponent<Rigidbody2D>().AddForce((NewDirection).normalized * 800);
                 }
                 barrage_count++;
             }
@@ -177,7 +143,6 @@ public class king_slimeEntity : MonoBehaviour
             // TODO : 돌진하는 알고리즘
             if(Time.time - tempTime > rush_time) // 돌진이 끝나고 추격상태로 전환
             {
-                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 tempTime = Time.time;
                 monster_state = (int)StateEnum.move;
                 transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
