@@ -1,9 +1,11 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Rendering.UI;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UIElements;
@@ -20,6 +22,12 @@ public class PlayerEntity : Entity
     // Player's UIs
     private InventoryUI inventory_prefab;
     private InventoryUI inventory_ui;
+    private GameObject HPBar;
+    private GameObject MPBar;
+    private TextMeshProUGUI HPBarText;
+    private TextMeshProUGUI MPBarText;
+    private UnityEngine.UI.Image HPBarFill;
+    private UnityEngine.UI.Image MPBarFill;
     private PlayerDeck card_prefab;
     private PlayerDeck card_ui;
 
@@ -99,22 +107,22 @@ public class PlayerEntity : Entity
     void Start()
     {
         // Load HPManager
-        hp_manager = Resources.Load<HPManager>("ScriptableObjects/PlayerHPManager");
-        if (hp_manager == null) return;
+        stat_manager = Resources.Load<StatManager>("ScriptableObjects/StatManager");
+        if (stat_manager == null) return;
 
         // Load StatManager
         //stat_manager = Resources.Load<StatManager>("ScriptableObjects/StatManager");
         //if (stat_manager == null) return;
 
         // Load HPBarUI Prefab
-        hpbar_prefab = Resources.Load<HPBarUI>("Prefabs/UI/HPBar/PlayerHPBarUI");
-        if (hpbar_prefab == null) return;
+        //hpbar_prefab = Resources.Load<HPBarUI>("Prefabs/UI/HPBar/PlayerHPBarUI");
+        //if (hpbar_prefab == null) return;
         // Instantiate HPBarUI
-        hpbar_ui = Instantiate(hpbar_prefab);
+        /*hpbar_ui = Instantiate(hpbar_prefab);
         // HPBarUI를 this의 자식으로 생성
         hpbar_ui.transform.SetParent(this.transform, false);
         if (hpbar_ui == null) return;
-        hpbar_ui.Init(this);
+        hpbar_ui.Init(this);*/
 
         // Load InventoryUI Prefab
         inventory_prefab = Resources.Load<InventoryUI>("Prefabs/UI/Inventory/InventoryUI");
@@ -138,6 +146,12 @@ public class PlayerEntity : Entity
 
         // Get Components
         //animator = GetComponent<Animator>();
+        HPBar = GameObject.Find("HPBar");
+        MPBar = GameObject.Find("MPBar");
+        HPBarText = HPBar.transform.Find("HPPercent").GetComponent<TextMeshProUGUI>();
+        MPBarText = MPBar.transform.Find("MPPercent").GetComponent<TextMeshProUGUI>();
+        HPBarFill = HPBar.transform.Find("Fill").GetComponent<UnityEngine.UI.Image>();
+        MPBarFill = MPBar.transform.Find("Fill").GetComponent<UnityEngine.UI.Image>();
         animator = GetComponentsInChildren<Animator>()[0];
         rigidbody = GetComponent<Rigidbody2D>();
         particleSystem = transform.Find("afterimage System").GetComponent<ParticleSystem>();
@@ -163,6 +177,7 @@ public class PlayerEntity : Entity
         }
 
         vector_ = vector.magnitude;
+        HPMPUpdate();
     }
 
     void FixedUpdate()
@@ -229,6 +244,20 @@ public class PlayerEntity : Entity
         rigidbody.velocity = vector * velocity;
     }
     
+    private void HPMPUpdate()
+    {
+        if(HPBarText == null || MPBarText == null)
+        {
+            Debug.Log("error");
+            return;
+        }
+        HPBarText.text = $"{stat_manager.Cur_hp} / {stat_manager.Max_hp}";
+        MPBarText.text = $"{stat_manager.Cur_mp} / {stat_manager.Max_mp}";
+        HPBarFill.fillAmount = (float)(stat_manager.Cur_hp / stat_manager.Max_hp);
+        MPBarFill.fillAmount = (float)(stat_manager.Cur_mp / stat_manager.Max_mp);
+    }
+
+
     private void UpdateAnimationState()
     {
         if (!is_animation_started)
@@ -324,41 +353,6 @@ public class PlayerEntity : Entity
         */
     }
 
-    IEnumerator Roll(Animator animator)
-    {
-        if (!is_animation_playing)
-        {
-            velocity = 4.5f;
-            target_pos = GetMousePos();
-            vector = target_pos - GetPos();
-            vector.Normalize();
-
-            while (!animator.GetCurrentAnimatorStateInfo(0).IsName("player_roll"))
-            {
-                animator.SetInteger(animationState, (int)AnimationStateEnum.roll);
-                yield return null;
-            }
-
-            while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
-            {
-                is_animation_playing = true;
-                yield return null;
-            }
-
-            velocity = 3.0f;
-            CharacterStop();
-
-            if (is_animation_playing)
-            {
-                animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
-                is_animation_started = false;
-                is_animation_playing = false;
-                is_animation_cancelable = true;
-            }
-        }
-        is_animation_started = false;
-    }
-
     public IEnumerator Attack(Animator animator)
     {
         //Debug.Log("Attack Start");
@@ -392,7 +386,7 @@ public class PlayerEntity : Entity
             {
                 //Debug.Log(animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
                 is_animation_playing = true;
-                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f)
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f)
                 {
                     is_animation_cancelable = true;
                 }
@@ -471,7 +465,7 @@ public class PlayerEntity : Entity
                         should_disappear = inventory_ui.AddItem(hitObject);
                         break;
                     case Item.ItemTypeEnum.HEALTH:
-                        should_disappear = hp_manager.AdjustHP(hitObject.GetQuantity());
+                        should_disappear = stat_manager.AdjustHP(hitObject.GetQuantity());
                         break;
                 }
 
@@ -500,12 +494,12 @@ public class PlayerEntity : Entity
 
                 //GetComponent<CinemachineVirtualCamera>().VibrateForTimeAndAmount();
 
-                hp_manager.Cur_hp -= damage;
+                stat_manager.Cur_hp -= damage;
             }
 
             // this의 체력이 0일 때
             //if (cur_hp <= float.Epsilon)
-            if (hp_manager.Cur_hp <= float.Epsilon)
+            if (stat_manager.Cur_hp <= float.Epsilon)
             {
                 KillEntity();
                 break;
@@ -528,7 +522,7 @@ public class PlayerEntity : Entity
     {
         CharacterStop();
         is_alive = false;
-        hp_manager.Cur_hp = 0;
+        stat_manager.Cur_hp = 0;
         //GetComponent<SpriteRenderer>().enabled = false;
         animator.SetInteger(animationState, (int)AnimationStateEnum.dead);
         //GameManager.sharedInstance.SpawnPlayer();
@@ -539,8 +533,8 @@ public class PlayerEntity : Entity
     public override void ResetEntity()
     {
         is_alive = true;
-        hp_manager.Cur_hp = hp_manager.Max_hp;
-        hp_manager.Cur_mp = hp_manager.Max_mp;
+        stat_manager.Cur_hp = stat_manager.Max_hp;
+        stat_manager.Cur_mp = stat_manager.Max_mp;
         //GetComponent<SpriteRenderer>().enabled = true;
         // 미완성
     }
