@@ -18,7 +18,7 @@ public class Archer : Weapon
 
     
 
-    int[] skillMana = new int[] {1, 4, 8, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    int[] skillMana = new int[] {1, 4, 8, 6, 1, 1, 1, 1, 1, 1, 1, 1 };
     private Vector2 mouseWorldPosition;
 
     public override int GetMana(int cardnum)
@@ -81,7 +81,7 @@ public class Archer : Weapon
             arrow.transform.position += new Vector3(0.0f, 0.25f, 0.0f);
 
             // 필요한 경우, 화살의 데이터 설정 메서드 호출
-            arrow.SetArrowData(damage, 0, arrowSpeed, type); // 화살에 대한 추가 정보 설정
+            arrow.SetArrowData(damage, 1, 0, arrowSpeed, type); // 화살에 대한 추가 정보 설정
 
             // 화살 발사 (Shoot 메서드 내부에서 화살의 방향과 속도 처리)
             arrow.Shoot(targetVec.normalized, angleadd); // Shoot 메서드가 방향 벡터를 받아 처리하도록 가정
@@ -338,7 +338,7 @@ public class Archer : Weapon
                 arrow.Shoot(targetVec.normalized * arrowSpeed, 0.0f); // Shoot 메서드가 방향 벡터를 받아 처리하도록 가정
 
                 // 필요한 경우, 화살의 데이터 설정 메서드 호출
-                arrow.SetArrowData(arrowdamage, 0, arrowSpeed, 1); // 화살에 대한 추가 정보 설정
+                arrow.SetArrowData(arrowdamage, 1, 0, arrowSpeed, 1); // 화살에 대한 추가 정보 설정
             }
             else
             {
@@ -353,13 +353,33 @@ public class Archer : Weapon
 
 
 
-
+    //No.3 꿰뚫는 화살 / 스택 전부 사용 스킬ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     private int PiercingArrow(int slevel)
     {
-        Debug.Log("Performing Piercing Arrow (장거리 일자 관통형 투사체)");
-        // Piercing Arrow implementation
-        return 0;
+        StartCoroutine(PiercingArrowCoroutine(slevel));
+
+        return skillMana[3];
     }
+
+    private IEnumerator PiercingArrowCoroutine(int slevel)
+    {
+        playerEntity.CharacterStop();
+        playerObject.GetComponent<PlayerDeck>().allLockOn();
+        mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        while (!BaseAttackAble())
+        {
+            yield return new WaitForSeconds(0.1f); // 0.1초 대기 후 다시 체크
+        }
+
+        playerEntity.PlayAnimation("Attack");
+        yield return new WaitForSeconds(0.5f);
+        int arrowdamage = 1;
+        BaseShot(0.0f, 2, arrowdamage);
+
+        playerObject.GetComponent<PlayerDeck>().allLockOff();
+    }
+    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
     private int BombArrow(int slevel)
     {
