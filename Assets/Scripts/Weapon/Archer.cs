@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.Pool;
 using System.Collections;
+using TMPro;
+using UnityEngine.UI;
 
 public class Archer : Weapon
 {
@@ -13,8 +15,11 @@ public class Archer : Weapon
     [SerializeField]
     private bool isCharging = false;
     private Coroutine chargingCoroutine;
-    int[] skillMana = new int[] {1, 4, 8, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
+    
+
+    int[] skillMana = new int[] {1, 4, 8, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+    private Vector2 mouseWorldPosition;
 
     public override int GetMana(int cardnum)
     {
@@ -23,14 +28,20 @@ public class Archer : Weapon
 
     public override void BaseAttack()
     {
-        //BaseShot(0.0f, 0, 1);
-        //playerEntity.PlayAnimation("Attack");
-        if (playerEntity.is_alive && (playerEntity.is_animation_started ^ playerEntity.is_animation_playing ^ playerEntity.is_animation_ended))
-        //if (playerEntity.is_alive && (playerEntity.is_animation_started || playerEntity.is_animation_playing || playerEntity.is_animation_ended))
-        {
-            BaseShot(0.0f, 0, 1);
-            playerEntity.PlayAnimation("Attack");
-        }
+        //if (playerEntity.is_alive && (playerEntity.is_animation_started ^ playerEntity.is_animation_playing ^ playerEntity.is_animation_cancelable))
+        //if (playerEntity.is_alive && !(playerEntity.is_animation_playing ^ playerEntity.is_animation_cancelable))
+        //{
+            StartCoroutine(BaseAttackCoroutine());
+        //}
+    }
+
+    private IEnumerator BaseAttackCoroutine()
+    {
+        playerEntity.PlayAnimation("Attack");
+        mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        yield return new WaitForSeconds(baseAttackCooltime); // 0.5초 대기 / 공속에 비례하게 줄어듬
+
+        BaseShot(0.0f, 0, 1);
     }
 
 
@@ -41,20 +52,19 @@ public class Archer : Weapon
         if (Time.time > lastUseTime + baseAttackCooltime)
         {
             lastUseTime = Time.time;
-            return true;
+
+            if (playerEntity.is_alive && !(playerEntity.is_animation_playing ^ playerEntity.is_animation_cancelable))
+            {
+                return true;
+            }
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
     
 
 
     private void BaseShot(float angleadd, int type, int damage)
     {
-        Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        
         if (arrowPrefab != null && _Pool != null)
         {
             playerEntity.CharacterStop();
@@ -130,29 +140,42 @@ public class Archer : Weapon
         }
         return manaused;
     }
-    
-    //No. 0 구르기
+
+
+
+    //No. 0 구르기 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     private int Space(int slevel)
     {
-        //if (playerEntity.is_alive && !(playerEntity.is_animation_started & playerEntity.is_animation_ended))
-        if (playerEntity.is_alive && (playerEntity.is_animation_started ^ playerEntity.is_animation_playing ^ playerEntity.is_animation_ended))
-        //if (playerEntity.is_alive && (playerEntity.is_animation_started || playerEntity.is_animation_playing || playerEntity.is_animation_ended))
-        {
-            //if (!playerEntity.is_animation_playing)
-            //{
-            //playerEntity.PlayAnimation("Roll");
-            //}
-        }
-        //playerEntity.PlayAnimation("Roll");
+        playerEntity.EnableafterimageSystem();
+
         return 1;
     }
+    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
-    //No.1 갈래 화살, 스택 사용 스킬
-    private int FanArrows(int slevel)
+
+
+
+    //No.1 갈래 화살, 스택 사용 스킬ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    public int FanArrows(int slevel)
+    {
+        //if (playerEntity.is_alive && !(playerEntity.is_animation_playing ^ playerEntity.is_animation_cancelable))
+        //{
+            StartCoroutine(FanArrowsCoroutine(slevel));
+        //}
+
+        return skillMana[1];
+    }
+
+    private IEnumerator FanArrowsCoroutine(int slevel)
     {
         playerEntity.CharacterStop();
+        playerObject.GetComponent<PlayerDeck>().allLockOn();
+        playerEntity.PlayAnimation("Attack");
+        mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        yield return new WaitForSeconds(0.5f);
         int arrowdamage = 1;
-        
+
         if (slevel >= 1)
         {
             BaseShot(0.0f, 1, arrowdamage);
@@ -164,32 +187,51 @@ public class Archer : Weapon
             BaseShot(8.0f, 1, arrowdamage);
             BaseShot(-8.0f, 1, arrowdamage);
         }
-        if(slevel >= 3)
+        if (slevel >= 3)
         {
-            BaseShot(-12.0f, 1, arrowdamage);
+            BaseShot(12.0f, 1, arrowdamage);
             BaseShot(-12.0f, 1, arrowdamage);
         }
-       
-        return skillMana[1];
+        playerObject.GetComponent<PlayerDeck>().allLockOff();
     }
+    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
-    //No.2 화살 세례 / 스택 사용 스킬
+
+
+
+    //No.2 화살 세례 / 스택 사용 스킬ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     public int ArrowBarrage(int slevel)
     {
+        mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        playerEntity.CharacterStop();
         playerObject.GetComponent<PlayerDeck>().allLockOn();
 
         float chargingtime = 1.0f;
         isCharging = true;
+        SetFillAmount(0.0f);
+        ShowCastingBar();
 
         // chargingtime동안 아무 입력도 들어오지 않으면 실행
         chargingCoroutine = StartCoroutine(ChargingAndExecute(chargingtime, slevel));
 
         return skillMana[2];
     }
-
     private IEnumerator ChargingAndExecute(float chargingtime, int slevel)
     {
         float elapsedTime = 0f;
+        bool attackanimationstarted = false;
+        if(slevel == 1)
+        {
+            SetSpellName("화살 세례 I");
+        }
+        else if(slevel == 2)
+        {
+            SetSpellName("화살 세례 II");
+        }
+        else if (slevel == 3)
+        {
+            SetSpellName("화살 세례 III");
+        }
 
         yield return new WaitForSeconds(0.1f);
 
@@ -198,19 +240,27 @@ public class Archer : Weapon
             if (Input.anyKeyDown)
             {
                 CancelCharging();
+                HideCastingBar();
+                playerEntity.CharacterIdleSet();
                 yield break;
             }
-
+            if (elapsedTime >= chargingtime - baseAttackCooltime && !attackanimationstarted)
+            {
+                playerEntity.PlayAnimation("Attack");
+                attackanimationstarted = true;
+            }
             elapsedTime += Time.deltaTime;
+            SetCastTime(elapsedTime.ToString("F1"));
+            SetFillAmount(elapsedTime);
             yield return null;
         }
 
         StartCoroutine(ArrowBarrageCoroutine(slevel));
 
+        HideCastingBar();
         playerObject.GetComponent<PlayerDeck>().allLockOff();
         isCharging = false;
     }
-
     private void CancelCharging()
     {
         if (isCharging)
@@ -225,14 +275,12 @@ public class Archer : Weapon
             Debug.Log("Charging cancelled due to input.");
         }
     }
-
     private IEnumerator ArrowBarrageCoroutine(int slevel)
     {
         playerEntity.CharacterStop();
 
         int arrowdamage = 1;
         int arrownum = 8;
-        Vector2 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         for (int i = 0; i < arrownum; i++)
         {
@@ -264,6 +312,12 @@ public class Archer : Weapon
             yield return new WaitForSeconds(0.1f); // 0.1초 대기
         }
     }
+    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+
+
+
+
 
     private int PiercingArrow(int slevel)
     {

@@ -62,8 +62,8 @@ public class PlayerEntity : Entity
     // Player의 애니메이션이 재생 중인지
     public bool is_animation_playing = false;
     [SerializeField]
-    // Player의 애니메이션이 끝났는지
-    public bool is_animation_ended = true;
+    // Player의 애니메이션을 끝낼 수 있는지 (후딜 캔슬)
+    public bool is_animation_cancelable = false;
     //[SerializeField]
     // Player가 Idle인지
     //public bool is_idle = true;
@@ -80,6 +80,7 @@ public class PlayerEntity : Entity
      ***/
     private Animator animator;
     private new Rigidbody2D rigidbody;
+    private ParticleSystem particleSystem;
 
     // Player가 현재 어떤 애니메이션을 재생해야 하는지 저장하는 변수
     enum AnimationStateEnum
@@ -136,7 +137,10 @@ public class PlayerEntity : Entity
         //animator = GetComponent<Animator>();
         animator = GetComponentsInChildren<Animator>()[0];
         rigidbody = GetComponent<Rigidbody2D>();
-
+        particleSystem = transform.Find("afterimage System").GetComponent<ParticleSystem>();
+        if (particleSystem == null)
+            Debug.LogError("Particle System not found!");
+        DisableafterimageSystem();
         //ResetEntity();
     }
 
@@ -171,7 +175,7 @@ public class PlayerEntity : Entity
             }
         }
 
-        if (is_alive && !is_animation_started)
+        if (is_alive && !(is_animation_started ^ is_animation_cancelable))
         {
             // Stop Player
             if (Input.GetKey(KeyCode.S))
@@ -216,174 +220,6 @@ public class PlayerEntity : Entity
         // 캐릭터를 vector와 velocity에 맞게 움직임
         rigidbody.velocity = vector * velocity;
     }
-
-    /*
-    public void DebugAnimation()
-    {
-        if (is_animation_started)
-        {
-            if (is_animation_playing)
-            {
-                if (is_animation_ended)
-                {
-                    Debug.Log("T T T");
-                }
-                else
-                {
-                    Debug.Log("T T F");
-                }
-            }
-            else
-            {
-                if (is_animation_ended)
-                {
-                    Debug.Log("T F T");
-                }
-                else
-                {
-                    Debug.Log("T F F");
-                }
-            }
-        }
-        else
-        {
-            if (is_animation_playing)
-            {
-                if (is_animation_ended)
-                {
-                    Debug.Log("F T T");
-                }
-                else
-                {
-                    Debug.Log("F T F");
-                }
-            }
-            else
-            {
-                if (is_animation_ended)
-                {
-                    Debug.Log("F F T");
-                }
-                else
-                {
-                    Debug.Log("F F F");
-                }
-            }
-        }
-    }
-    */
-    /*
-    public void DebugAnimationWithIdle()
-    {
-        if (is_animation_started)
-        {
-            if (is_animation_playing)
-            {
-                if (is_animation_ended)
-                {
-                    if (is_idle)
-                    {
-                        Debug.Log("T T T T");
-                    }
-                    else
-                    {
-                        Debug.Log("T T T F");
-                    }
-                }
-                else
-                {
-                    if (is_idle)
-                    {
-                        Debug.Log("T T F T");
-                    }
-                    else
-                    {
-                        Debug.Log("T T F F");
-                    }
-                }
-            }
-            else
-            {
-                if (is_animation_ended)
-                {
-                    if (is_idle)
-                    {
-                        Debug.Log("T F T T");
-                    }
-                    else
-                    {
-                        Debug.Log("T F T F");
-                    }
-                }
-                else
-                {
-                    if (is_idle)
-                    {
-                        Debug.Log("T F F T");
-                    }
-                    else
-                    {
-                        Debug.Log("T F F F");
-                    }
-                }
-            }
-        }
-        else
-        {
-            if (is_animation_playing)
-            {
-                if (is_animation_ended)
-                {
-                    if (is_idle)
-                    {
-                        Debug.Log("F T T T");
-                    }
-                    else
-                    {
-                        Debug.Log("F T T F");
-                    }
-                }
-                else
-                {
-                    if (is_idle)
-                    {
-                        Debug.Log("F T F T");
-                    }
-                    else
-                    {
-                        Debug.Log("F T F F");
-                    }
-                }
-            }
-            else
-            {
-                if (is_animation_ended)
-                {
-                    if (is_idle)
-                    {
-                        Debug.Log("F F T T");
-                    }
-                    else
-                    {
-                        Debug.Log("F F T F");
-                    }
-                }
-                else
-                {
-                    if (is_idle)
-                    {
-                        Debug.Log("F F F T");
-                    }
-                    else
-                    {
-                        Debug.Log("F F F F");
-                    }
-                }
-            }
-        }
-    }
-    */
-
     
     private void UpdateAnimationState()
     {
@@ -392,6 +228,7 @@ public class PlayerEntity : Entity
             // WALK
             if (!vector.Equals(Vector2.zero))
             {
+
                 animator.SetInteger(animationState, (int)AnimationStateEnum.walk);
             }
             // IDLE
@@ -401,7 +238,32 @@ public class PlayerEntity : Entity
             }
         }
     }
-    
+
+
+    // 파티클 시스템을 켜는 메서드
+    public void EnableafterimageSystem()
+    {
+        if (particleSystem != null)
+        {
+            particleSystem.Play();
+        }
+    }
+    // 파티클 시스템을 끄는 메서드
+    public void DisableafterimageSystem()
+    {
+        if (particleSystem != null)
+        {
+            particleSystem.Stop();
+        }
+    }
+
+    public void CharacterIdleSet()
+    {
+        animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+        is_animation_started = false;
+        is_animation_playing = false;
+        is_animation_cancelable = false;
+    }
 
     public void CharacterStop()
     {
@@ -414,10 +276,36 @@ public class PlayerEntity : Entity
     {
         if (!is_animation_playing)
         {
+            //Debug.Log("Play " + action + "(animation is not playing)");
             is_animation_started = true;
-            is_animation_ended = false;
-        }
+            //is_animation_cancelable = false;
 
+            if (animation_coroutine == null)
+            {
+                animation_coroutine = StartCoroutine(action, animator);
+            }
+            // animation_coroutine = null;
+
+            transform.localScale = (GetMousePos().x - GetPos().x) > 0 ? new Vector3(playerscale, playerscale, 1.0f) : new Vector3(-playerscale, playerscale, 1.0f);
+        }
+        else if (is_animation_cancelable)
+        {
+            //Debug.Log("Play " + action + "(animation is cancelable)");
+            CharacterIdleSet();
+            is_animation_started = true;
+            is_animation_cancelable = true;
+            StopCoroutine(animation_coroutine);
+            animation_coroutine = null;
+
+            if (animation_coroutine == null)
+            {
+                animation_coroutine = StartCoroutine(action, animator);
+            }
+            //animation_coroutine = null;
+
+            transform.localScale = (GetMousePos().x - GetPos().x) > 0 ? new Vector3(playerscale, playerscale, 1.0f) : new Vector3(-playerscale, playerscale, 1.0f);
+        }
+        /*
         if (animation_coroutine == null)
         {
             animation_coroutine = StartCoroutine(action, animator);
@@ -425,6 +313,7 @@ public class PlayerEntity : Entity
         animation_coroutine = null;
 
         transform.localScale = (GetMousePos().x - GetPos().x) > 0 ? new Vector3(playerscale, playerscale, 1.0f) : new Vector3(-playerscale, playerscale, 1.0f);
+        */
     }
 
     IEnumerator Roll(Animator animator)
@@ -456,7 +345,7 @@ public class PlayerEntity : Entity
                 animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
                 is_animation_started = false;
                 is_animation_playing = false;
-                is_animation_ended = true;
+                is_animation_cancelable = true;
             }
         }
         is_animation_started = false;
@@ -464,34 +353,54 @@ public class PlayerEntity : Entity
 
     public IEnumerator Attack(Animator animator)
     {
+        //Debug.Log("Attack Start");
         if (!is_animation_playing)
         {
             CharacterStop();
 
+            // 이전에 재생되던 애니메이션이 존재 (캔슬한 경우)
+            if (is_animation_cancelable)
+            {
+                while (!animator.GetCurrentAnimatorStateInfo(0).IsName("0_idle"))
+                {
+                    //Debug.Log("set to idle " + animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                    animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+                    yield return null;
+                }
+                //Debug.Log("Set to Idle");
+                is_animation_cancelable = false;
+            }
+
             while (!animator.GetCurrentAnimatorStateInfo(0).IsName("2_Attack_Bow"))
             {
+                //Debug.Log("set to attack " + animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
                 animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
                 yield return null;
             }
+            //Debug.Log("Set to Attack");
 
+            //Debug.Log("Animation Start");
             while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
             {
+                //Debug.Log(animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
                 is_animation_playing = true;
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f)
+                {
+                    is_animation_cancelable = true;
+                }
                 yield return null;
             }
 
-            velocity = 3.0f;
-            CharacterStop();
-
             if (is_animation_playing)
             {
-                animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
-                is_animation_started = false;
-                is_animation_playing = false;
-                is_animation_ended = true;
+                //Debug.Log("Animation End");
+                CharacterIdleSet();
+                //Debug.Log("Set to Idle");
             }
         }
         is_animation_started = false;
+        animation_coroutine = null;
+        //Debug.Log("Attack End");
     }
 
     IEnumerator Damaged(Animator animator)
@@ -513,7 +422,7 @@ public class PlayerEntity : Entity
     private void MoveCharacter_Mouse()
     {
         // 마우스 오른쪽 버튼을 뗐을 때 || 마우스 오른쪽 버튼을 누르고 있는 상태에서 마우스를 움직였을 때
-        if (!Input.GetMouseButton(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f))
+        if (!is_animation_started && (!Input.GetMouseButton(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f)))
         //if (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f)
         {
             is_moveable = true;

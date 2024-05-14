@@ -65,18 +65,6 @@ public class PlayerDeck : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.W) && !allLock) UseCard(1);
         else if (Input.GetKeyDown(KeyCode.E) && !allLock) UseCard(2);
         else if (Input.GetKeyDown(KeyCode.R) && !allLock) UseCard(3);
-        /*else if (Input.GetKey(KeyCode.Space))
-        {
-            //if (playerEntity.is_alive && !(playerEntity.is_animation_started & playerEntity.is_animation_ended))
-            if (playerEntity.is_alive && (playerEntity.is_animation_started ^ playerEntity.is_animation_playing ^ playerEntity.is_animation_ended))
-            //if (playerEntity.is_alive && (playerEntity.is_animation_started || playerEntity.is_animation_playing || playerEntity.is_animation_ended))
-            {
-                //if (!playerEntity.is_animation_playing)
-                //{
-                    playerEntity.PlayAnimation("Roll");
-                //}
-            }
-        }*/
         else if (Input.GetMouseButton(0) && !allLock) BaseAttack();
         //else if (Input.GetMouseButtonDown(0)) BaseAttack();
     }
@@ -97,6 +85,7 @@ public class PlayerDeck : MonoBehaviour
 
         playerEntity.is_looking_right = (playerEntity.GetMousePos().x > playerEntity.GetPos().x) ? true : false;
 
+        Debug.Log("Base Attack");
         if(weapon.GetComponent<Weapon>().BaseAttackAble())
         {
             weapon.GetComponent<Weapon>().BaseAttack();
