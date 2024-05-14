@@ -29,10 +29,10 @@ public class Archer : Weapon
     public override void BaseAttack()
     {
         //if (playerEntity.is_alive && (playerEntity.is_animation_started ^ playerEntity.is_animation_playing ^ playerEntity.is_animation_cancelable))
-        if (playerEntity.is_alive && !(playerEntity.is_animation_playing ^ playerEntity.is_animation_cancelable))
-        {
+        //if (playerEntity.is_alive && !(playerEntity.is_animation_playing ^ playerEntity.is_animation_cancelable))
+        //{
             StartCoroutine(BaseAttackCoroutine());
-        }
+        //}
     }
 
     private IEnumerator BaseAttackCoroutine()
@@ -52,12 +52,13 @@ public class Archer : Weapon
         if (Time.time > lastUseTime + baseAttackCooltime)
         {
             lastUseTime = Time.time;
-            return true;
+
+            if (playerEntity.is_alive && !(playerEntity.is_animation_playing ^ playerEntity.is_animation_cancelable))
+            {
+                return true;
+            }
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
     
 
@@ -189,10 +190,10 @@ public class Archer : Weapon
     //No.1 갈래 화살, 스택 사용 스킬ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     public int FanArrows(int slevel)
     {
-        if (playerEntity.is_alive && !(playerEntity.is_animation_playing ^ playerEntity.is_animation_cancelable))
-        {
+        //if (playerEntity.is_alive && !(playerEntity.is_animation_playing ^ playerEntity.is_animation_cancelable))
+        //{
             StartCoroutine(FanArrowsCoroutine(slevel));
-        }
+        //}
 
         return skillMana[1];
     }
