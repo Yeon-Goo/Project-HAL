@@ -13,7 +13,7 @@ public class Banana_Object : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Invoke("DestroySelf", 1.5f);
+        Invoke("DestroySelf", 3f);
     }
     private void OnTriggerEnter2D(Collider2D coll)
     {
