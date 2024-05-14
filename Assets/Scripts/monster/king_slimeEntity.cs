@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class king_slimeEntity : MonoBehaviour
 {
+    public Rigidbody2D rb;
     public GameObject rupinPrefab;
     public GameObject BananaPrefab;
     public Transform player;
@@ -19,7 +20,6 @@ public class king_slimeEntity : MonoBehaviour
     private Vector2 move_direction;
     private Vector3 target_pos;
     int barrage_count = 4;
-
     public static Vector3 AngleToVector(float angleDegrees)
     {
         // 각도를 라디안으로 변환
@@ -45,10 +45,25 @@ public class king_slimeEntity : MonoBehaviour
     }
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         monster_state = (int)StateEnum.idle;
         transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
         animator.SetInteger(animationState, monster_state);
+    }
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Blocking")) // 'Blocking' 레이어의 오브젝트와 충돌했을 때
+        {
+            Vector2 incomingVector = rb.velocity; // 입사 벡터는 현재 속도 벡터
+            Vector2 normalVector = collision.contacts[0].normal; // 충돌 지점의 첫 번째 접촉 정보로부터 법선 벡터를 얻음
+            Vector2 reflectVector = Vector2.Reflect(incomingVector, normalVector).normalized; // 반사 벡터 계산
+
+            float speedReduction = 0.3f; // 감소할 속도의 크기
+            float newSpeed = Mathf.Max(0, incomingVector.magnitude - speedReduction); // 새로운 속도 크기 계산 (0보다 작아지지 않도록)
+
+            rb.velocity = reflectVector * newSpeed; // 반사 방향으로 새로운 속도를 업데이트
+        }
     }
     void FixedUpdate()
     {
@@ -77,12 +92,15 @@ public class king_slimeEntity : MonoBehaviour
                     animator.SetInteger(animationState, monster_state);
                     tempTime = Time.time;
                 }
-                else if(rand < 0)
+                else if(rand < 11)
                 {
                     monster_state = (int)StateEnum.rush;
                     transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
                     animator.SetInteger(animationState, monster_state);
                     tempTime = Time.time;
+                    float r = Random.Range(0, 360);
+                    Vector3 NewDirection = AngleToVector(r);
+                    GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 700);
                 }
                 else
                 {
@@ -123,7 +141,7 @@ public class king_slimeEntity : MonoBehaviour
         if (monster_state == (int)StateEnum.rush) // 돌진
         {
             // TODO : 돌진하는 알고리즘
-            if(Time.time - tempTime > rush_time) // 공격이 끝나고 딜레이로 전환
+            if(Time.time - tempTime > rush_time) // 돌진이 끝나고 추격상태로 전환
             {
                 tempTime = Time.time;
                 monster_state = (int)StateEnum.move;
@@ -136,7 +154,7 @@ public class king_slimeEntity : MonoBehaviour
         {
             // TODO : 소환하는 알고리즘
             GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            if(Time.time - tempTime > summon_time) // 딜레이 시간이 끝나고
+            if(Time.time - tempTime > summon_time) // 소환 후 추격상태로 전환
             {
                 GameObject rupin = Instantiate(rupinPrefab);
                 rupin.transform.position = transform.position;

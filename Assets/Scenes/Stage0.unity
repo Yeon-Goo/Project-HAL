@@ -13671,10 +13671,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 35.798824, y: 25.024233}
-      - {x: -12.97419, y: 24.998192}
-      - {x: -12.916382, y: -19.786732}
-      - {x: 35.845806, y: -20.13335}
+    - - {x: 35.999992, y: 24.999949}
+      - {x: -13.000066, y: 24.999994}
+      - {x: -13.000128, y: -22.000277}
+      - {x: 35.999783, y: -22.000801}
   m_UseDelaunayMesh: 0
 --- !u!195 &184444249
 NavMeshAgent:
@@ -13750,6 +13750,7 @@ MonoBehaviour:
   velocity: 3
   target_pos: {x: 0, y: 0}
   vector: {x: 0, y: 0}
+  vector_: 0
   playerscale: 1.5
   is_alive: 1
   is_moveable: 0
@@ -15115,6 +15116,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69b46e81ce146834a96c6e54b9f30dde, type: 3}
+--- !u!50 &645760760 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 3864113972635817214, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
+  m_PrefabInstance: {fileID: 743973850}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &654254878
 GameObject:
   m_ObjectHideFlags: 0
@@ -15127,7 +15133,7 @@ GameObject:
   - component: {fileID: 654254879}
   m_Layer: 0
   m_Name: Grid
-  m_TagString: Untagged
+  m_TagString: water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15246,6 +15252,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2510663624873542490, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
+      propertyPath: rb
+      value: 
+      objectReference: {fileID: 645760760}
+    - target: {fileID: 2510663624873542490, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 220558570}
@@ -15264,6 +15274,18 @@ PrefabInstance:
     - target: {fileID: 3640349500752462225, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
       propertyPath: m_Name
       value: king_slime
+      objectReference: {fileID: 0}
+    - target: {fileID: 3864113972635817214, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3864113972635817214, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3864113972635817214, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
+      propertyPath: m_Constraints
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5629181804875455175, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
       propertyPath: m_Controller
