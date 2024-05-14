@@ -227,8 +227,12 @@ public class Archer : Weapon
     //No.2 화살 세례 / 스택 사용 차징 스킬ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     public int ArrowBarrage(int slevel)
     {
-        mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         playerEntity.CharacterStop();
+        playerEntity.CharacterIdleSet();
+        playerEntity.is_animation_started = true;
+        playerEntity.is_moveable = false;
+        mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //playerEntity.CharacterStop();
         playerObject.GetComponent<PlayerDeck>().allLockOn();
 
         float chargingtime = 1.0f;
