@@ -171,7 +171,7 @@ public class PlayerEntity : Entity
             }
         }
 
-        if (is_alive && !is_animation_started)
+        if (is_alive && !(is_animation_started ^ is_animation_cancelable))
         {
             // Stop Player
             if (Input.GetKey(KeyCode.S))
@@ -181,6 +181,7 @@ public class PlayerEntity : Entity
             // Walk
             else
             {
+                Debug.Log("Walk");
                 MoveCharacter_Mouse();
                 vector = target_pos - new Vector2(transform.position.x, transform.position.y);
             }
@@ -224,6 +225,7 @@ public class PlayerEntity : Entity
             // WALK
             if (!vector.Equals(Vector2.zero))
             {
+
                 animator.SetInteger(animationState, (int)AnimationStateEnum.walk);
             }
             // IDLE
@@ -361,7 +363,7 @@ public class PlayerEntity : Entity
             {
                 Debug.Log(animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
                 is_animation_playing = true;
-                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f)
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f)
                 {
                     is_animation_cancelable = true;
                 }
