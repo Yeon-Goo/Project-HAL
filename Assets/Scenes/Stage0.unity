@@ -13869,7 +13869,7 @@ MonoBehaviour:
   is_looking_right: 1
   is_animation_started: 0
   is_animation_playing: 0
-  is_animation_ended: 1
+  is_animation_cancelable: 0
   is_invincible: 0
   interval: 0
 --- !u!50 &220558567
@@ -14569,7 +14569,7 @@ GameObject:
   - component: {fileID: 432288390}
   - component: {fileID: 432288389}
   m_Layer: 6
-  m_Name: Particle System
+  m_Name: afterimage System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

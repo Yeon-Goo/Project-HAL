@@ -146,9 +146,41 @@ public class Archer : Weapon
     //No. 0 구르기 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     private int Space(int slevel)
     {
-        playerEntity.EnableafterimageSystem();
+        mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        return 1;
+        StartCoroutine(DashCoroutine());
+
+        return skillMana[0];
+    }
+
+    private IEnumerator DashCoroutine()
+    {
+        playerEntity.EnableafterimageSystem();
+        float dashDuration = 0.3f; // 총 대쉬 시간
+        float dashInterval = 0.01f; // 대쉬 간격
+        float dashDistance = 3.0f; // 대쉬 거리
+        float elapsedTime = 0f;
+        Vector2 startPosition = playerObject.transform.position;
+        Vector2 dashDirection = (mouseWorldPosition - startPosition).normalized;
+        Vector2 targetPosition = startPosition + dashDirection * dashDistance;
+
+        while (elapsedTime < dashDuration)
+        {
+            float t = elapsedTime / dashDuration;
+            playerObject.transform.position = Vector2.Lerp(startPosition, targetPosition, t);
+            if(targetPosition.x > startPosition.x)
+            {
+                playerEntity.is_looking_right = false;
+            }
+            else
+            {
+                playerEntity.is_looking_right = true;
+            }
+            elapsedTime += dashInterval;
+            yield return new WaitForSeconds(dashInterval);
+        }
+        playerEntity.DisableafterimageSystem();
+        playerEntity.CharacterStop();
     }
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
