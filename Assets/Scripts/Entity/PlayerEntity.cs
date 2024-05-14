@@ -29,10 +29,13 @@ public class PlayerEntity : Entity
      ***/
     [SerializeField]
     // Player의 속력
-    private float velocity = 3.0f;
-    [SerializeField]
+    public float velocity = 3.0f;
+
+
     // Player가 움직일 목표 좌표
-    private Vector2 target_pos = new Vector2();
+    public Vector2 target_pos = new Vector2();
+
+
     [SerializeField]
     // Player가 움직일 방향
     private Vector2 vector = new Vector2();
@@ -52,7 +55,7 @@ public class PlayerEntity : Entity
     public bool is_alive = true;
     [SerializeField]
     // Player가 현재 움직일 수 있는 상황인지
-    private bool is_moveable = false;
+    public bool is_moveable = false;
     // Player가 현재 오른쪽을 바라보는지
     public bool is_looking_right = true;
     [SerializeField]
@@ -186,12 +189,17 @@ public class PlayerEntity : Entity
             else
             {
                 MoveCharacter_Mouse();
-                vector = target_pos - new Vector2(transform.position.x, transform.position.y);
+                vectorreset();
             }
         }
 
         UpdateMovement();
         UpdateAnimationState();
+    }
+
+    public void vectorreset()
+    {
+        vector = target_pos - new Vector2(transform.position.x, transform.position.y);
     }
 
     private void UpdateMovement()
