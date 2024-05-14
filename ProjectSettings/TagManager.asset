@@ -9,6 +9,9 @@ TagManager:
   - Player_Attack
   - Enemy_Attack
   - player_attack
+  - Glass
+  - Stone
+  - water
   layers:
   - Default
   - TransparentFX

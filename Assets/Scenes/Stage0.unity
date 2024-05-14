@@ -13976,10 +13976,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 35.798824, y: 25.024233}
-      - {x: -12.97419, y: 24.998192}
-      - {x: -12.916382, y: -19.786732}
-      - {x: 35.845806, y: -20.13335}
+    - - {x: 35.999992, y: 24.999949}
+      - {x: -13.000066, y: 24.999994}
+      - {x: -13.000128, y: -22.000277}
+      - {x: 35.999783, y: -22.000801}
   m_UseDelaunayMesh: 0
 --- !u!195 &184444249
 NavMeshAgent:
@@ -15008,7 +15008,7 @@ GameObject:
   - component: {fileID: 432288390}
   - component: {fileID: 432288389}
   m_Layer: 6
-  m_Name: Particle System
+  m_Name: afterimage System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15944,7 +15944,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 50
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -20702,6 +20702,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 69b46e81ce146834a96c6e54b9f30dde, type: 3}
+--- !u!50 &645760760 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 3864113972635817214, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
+  m_PrefabInstance: {fileID: 743973850}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &654254878
 GameObject:
   m_ObjectHideFlags: 0
@@ -20714,7 +20719,7 @@ GameObject:
   - component: {fileID: 654254879}
   m_Layer: 0
   m_Name: Grid
-  m_TagString: Untagged
+  m_TagString: water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20833,6 +20838,22 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2510663624873542490, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
+      propertyPath: rb
+      value: 
+      objectReference: {fileID: 645760760}
+    - target: {fileID: 2510663624873542490, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 220558570}
+    - target: {fileID: 2510663624873542490, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
+      propertyPath: rupinPrefab
+      value: 
+      objectReference: {fileID: 1936899450}
+    - target: {fileID: 2510663624873542490, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
+      propertyPath: BananaPrefab
+      value: 
+      objectReference: {fileID: 9109811338446579067, guid: e4bfce5ef0377c64bbedc4e097861d7d, type: 3}
+    - target: {fileID: 2510663624873542490, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
       propertyPath: attack_range
       value: 6
       objectReference: {fileID: 0}
@@ -20840,6 +20861,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: king_slime
       objectReference: {fileID: 0}
+    - target: {fileID: 3864113972635817214, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3864113972635817214, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3864113972635817214, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5629181804875455175, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: e6d7bff82d5209941bbe84006b4fc84f, type: 2}
     - target: {fileID: 7218880375851442912, guid: f528085ed10e2bc4c8759b1f462ff95e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.5
@@ -25927,6 +25964,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1936899450 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4890928813107072413, guid: b51b5b11b4f11864187a7d83c5e150ce, type: 3}
+  m_PrefabInstance: {fileID: 1283773465}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1960354369
 PrefabInstance:
   m_ObjectHideFlags: 0

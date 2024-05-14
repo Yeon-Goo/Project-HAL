@@ -29,10 +29,13 @@ public class PlayerEntity : Entity
      ***/
     [SerializeField]
     // Player의 속력
-    private float velocity = 3.0f;
-    [SerializeField]
+    public float velocity = 3.0f;
+
+
     // Player가 움직일 목표 좌표
-    private Vector2 target_pos = new Vector2();
+    public Vector2 target_pos = new Vector2();
+
+
     [SerializeField]
     // Player가 움직일 방향
     private Vector2 vector = new Vector2();
@@ -52,7 +55,7 @@ public class PlayerEntity : Entity
     public bool is_alive = true;
     [SerializeField]
     // Player가 현재 움직일 수 있는 상황인지
-    private bool is_moveable = false;
+    public bool is_moveable = false;
     // Player가 현재 오른쪽을 바라보는지
     public bool is_looking_right = true;
     [SerializeField]
@@ -80,6 +83,7 @@ public class PlayerEntity : Entity
      ***/
     private Animator animator;
     private new Rigidbody2D rigidbody;
+    private ParticleSystem particleSystem;
 
     // Player가 현재 어떤 애니메이션을 재생해야 하는지 저장하는 변수
     enum AnimationStateEnum
@@ -136,7 +140,10 @@ public class PlayerEntity : Entity
         //animator = GetComponent<Animator>();
         animator = GetComponentsInChildren<Animator>()[0];
         rigidbody = GetComponent<Rigidbody2D>();
-
+        particleSystem = transform.Find("afterimage System").GetComponent<ParticleSystem>();
+        if (particleSystem == null)
+            Debug.LogError("Particle System not found!");
+        DisableafterimageSystem();
         //ResetEntity();
     }
 
@@ -182,12 +189,17 @@ public class PlayerEntity : Entity
             else
             {
                 MoveCharacter_Mouse();
-                vector = target_pos - new Vector2(transform.position.x, transform.position.y);
+                vectorreset();
             }
         }
 
         UpdateMovement();
         UpdateAnimationState();
+    }
+
+    public void vectorreset()
+    {
+        vector = target_pos - new Vector2(transform.position.x, transform.position.y);
     }
 
     private void UpdateMovement()
@@ -234,7 +246,25 @@ public class PlayerEntity : Entity
             }
         }
     }
-    
+
+
+    // 파티클 시스템을 켜는 메서드
+    public void EnableafterimageSystem()
+    {
+        if (particleSystem != null)
+        {
+            particleSystem.Play();
+        }
+    }
+    // 파티클 시스템을 끄는 메서드
+    public void DisableafterimageSystem()
+    {
+        if (particleSystem != null)
+        {
+            particleSystem.Stop();
+        }
+    }
+
     public void CharacterIdleSet()
     {
         animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
@@ -362,9 +392,10 @@ public class PlayerEntity : Entity
             {
                 //Debug.Log(animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
                 is_animation_playing = true;
-                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f)
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f)
                 {
                     is_animation_cancelable = true;
+                    is_moveable = true;
                 }
                 yield return null;
             }
@@ -467,7 +498,6 @@ public class PlayerEntity : Entity
 
                 // this는 entity로부터 damage만큼의 피해를 interval초마다 받는다
                 CharacterStop();
-                StartCoroutine(FlickEntity());
 
                 //GetComponent<CinemachineVirtualCamera>().VibrateForTimeAndAmount();
 

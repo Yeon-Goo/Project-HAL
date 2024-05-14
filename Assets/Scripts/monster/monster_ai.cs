@@ -35,6 +35,7 @@ public class monster_ai : MonoBehaviour
     }
     void Start()
     {
+        player = GameObject.Find("PlayerObject").transform;
         initial_pos = transform.position;
         animator = GetComponent<Animator>();
     }
@@ -105,7 +106,6 @@ public class monster_ai : MonoBehaviour
                 Banana.transform.position = transform.position;
                 Banana.GetComponent<Rigidbody2D>().AddForce((target_pos-transform.position).normalized * 1000);
             }
-            //transform.position = Vector2.MoveTowards(transform.position, target_pos, attack_speed * Time.deltaTime);
             if(Time.time - tempTime > attack_time) // 공격이 끝나고 딜레이로 전환
             {
                 isattack = 0;

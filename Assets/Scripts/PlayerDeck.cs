@@ -92,7 +92,6 @@ public class PlayerDeck : MonoBehaviour
     }
 
 
-    //차징 공격도 수행할 수 있도록 코드 수정해야 함. 오래 입력되면 차징 스킬로 간주하고 사용
     private void UseCard(int index)
     {
         //ERROR CHECK
