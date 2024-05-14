@@ -80,6 +80,7 @@ public class PlayerEntity : Entity
      ***/
     private Animator animator;
     private new Rigidbody2D rigidbody;
+    private ParticleSystem particleSystem;
 
     // Player가 현재 어떤 애니메이션을 재생해야 하는지 저장하는 변수
     enum AnimationStateEnum
@@ -136,7 +137,10 @@ public class PlayerEntity : Entity
         //animator = GetComponent<Animator>();
         animator = GetComponentsInChildren<Animator>()[0];
         rigidbody = GetComponent<Rigidbody2D>();
-
+        particleSystem = transform.Find("afterimage System").GetComponent<ParticleSystem>();
+        if (particleSystem == null)
+            Debug.LogError("Particle System not found!");
+        DisableafterimageSystem();
         //ResetEntity();
     }
 
@@ -234,7 +238,25 @@ public class PlayerEntity : Entity
             }
         }
     }
-    
+
+
+    // 파티클 시스템을 켜는 메서드
+    public void EnableafterimageSystem()
+    {
+        if (particleSystem != null)
+        {
+            particleSystem.Play();
+        }
+    }
+    // 파티클 시스템을 끄는 메서드
+    public void DisableafterimageSystem()
+    {
+        if (particleSystem != null)
+        {
+            particleSystem.Stop();
+        }
+    }
+
     public void CharacterIdleSet()
     {
         animator.SetInteger(animationState, (int)AnimationStateEnum.idle);

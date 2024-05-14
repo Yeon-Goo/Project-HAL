@@ -146,16 +146,8 @@ public class Archer : Weapon
     //No. 0 구르기 ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     private int Space(int slevel)
     {
-        //if (playerEntity.is_alive && !(playerEntity.is_animation_started & playerEntity.is_animation_ended))
-        if (playerEntity.is_alive && (playerEntity.is_animation_started ^ playerEntity.is_animation_playing ^ playerEntity.is_animation_cancelable))
-        //if (playerEntity.is_alive && (playerEntity.is_animation_started || playerEntity.is_animation_playing || playerEntity.is_animation_ended))
-        {
-            //if (!playerEntity.is_animation_playing)
-            //{
-            //playerEntity.PlayAnimation("Roll");
-            //}
-        }
-        //playerEntity.PlayAnimation("Roll");
+        playerEntity.EnableafterimageSystem();
+
         return 1;
     }
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
