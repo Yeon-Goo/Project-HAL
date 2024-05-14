@@ -12,6 +12,7 @@ TagManager:
   - Glass
   - Stone
   - water
+  - King_Slime
   layers:
   - Default
   - TransparentFX
@@ -24,10 +25,10 @@ TagManager:
   - Enemies
   - Player_Attack
   - Enemy_Attack
-  - 
-  - 
-  - 
-  - 
+  - UpWall
+  - DownWall
+  - LeftWall
+  - RightWall
   - 
   - 
   - 
