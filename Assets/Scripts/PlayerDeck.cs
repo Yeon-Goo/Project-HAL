@@ -85,7 +85,6 @@ public class PlayerDeck : MonoBehaviour
 
         playerEntity.is_looking_right = (playerEntity.GetMousePos().x > playerEntity.GetPos().x) ? true : false;
 
-        Debug.Log("Base Attack");
         if(weapon.GetComponent<Weapon>().BaseAttackAble())
         {
             weapon.GetComponent<Weapon>().BaseAttack();
