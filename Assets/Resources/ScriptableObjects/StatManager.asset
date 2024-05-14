@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b5da22e2bc55cb49a969f50e5d9d0ed, type: 3}
-  m_Name: PlayerHPManager
+  m_Name: StatManager
   m_EditorClassIdentifier: 
   max_hp: 20
-  cur_hp: 20
+  cur_hp: 10
   max_mp: 20
-  cur_mp: 10
+  cur_mp: 20
