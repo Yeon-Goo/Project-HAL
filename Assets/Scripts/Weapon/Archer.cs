@@ -195,9 +195,14 @@ public class Archer : Weapon
     {
         playerEntity.CharacterStop();
         playerObject.GetComponent<PlayerDeck>().allLockOn();
-        playerEntity.PlayAnimation("Attack");
         mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
+        while (!BaseAttackAble())
+        {
+            yield return new WaitForSeconds(0.1f); // 0.1초 대기 후 다시 체크
+        }
+
+        playerEntity.PlayAnimation("Attack");
         yield return new WaitForSeconds(0.5f);
         int arrowdamage = 1;
 
@@ -229,6 +234,7 @@ public class Archer : Weapon
     {
         mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         playerEntity.CharacterStop();
+        playerEntity.is_moveable = false;
         playerObject.GetComponent<PlayerDeck>().allLockOn();
 
         float chargingtime = 1.0f;
@@ -239,6 +245,7 @@ public class Archer : Weapon
         // chargingtime동안 아무 입력도 들어오지 않으면 실행
         chargingCoroutine = StartCoroutine(ChargingAndExecute(chargingtime, slevel));
 
+        playerEntity.is_moveable = true;
         return skillMana[2];
     }
     private IEnumerator ChargingAndExecute(float chargingtime, int slevel)
