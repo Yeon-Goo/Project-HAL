@@ -144,6 +144,7 @@ public class PlayerEntity : Entity
         if (card_ui == null) return;
         */
 
+        StartCoroutine(Manaregen());
         // Get Components
         //animator = GetComponent<Animator>();
         HPBar = GameObject.Find("HPBar");
@@ -159,6 +160,7 @@ public class PlayerEntity : Entity
             Debug.LogError("Particle System not found!");
         DisableafterimageSystem();
         //ResetEntity();
+        statInit();
     }
 
     /*
@@ -243,7 +245,19 @@ public class PlayerEntity : Entity
         // 캐릭터를 vector와 velocity에 맞게 움직임
         rigidbody.velocity = vector * velocity;
     }
-    
+
+    private void statInit()
+    {
+        stat_manager.Cur_hp = 20;
+        stat_manager.Max_hp = 20;
+        stat_manager.Cur_mp = 20;
+        stat_manager.Max_mp = 20;
+        stat_manager.Armor = 0;
+        stat_manager.Movement_speed = 3.0f;
+        velocity = stat_manager.Movement_speed;
+        stat_manager.Mana_regen = 1;
+    }
+
     private void HPMPUpdate()
     {
         if(HPBarText == null || MPBarText == null)
@@ -255,6 +269,19 @@ public class PlayerEntity : Entity
         MPBarText.text = $"{stat_manager.Cur_mp} / {stat_manager.Max_mp}";
         HPBarFill.fillAmount = (float)(stat_manager.Cur_hp / stat_manager.Max_hp);
         MPBarFill.fillAmount = (float)(stat_manager.Cur_mp / stat_manager.Max_mp);
+    }
+
+    private IEnumerator Manaregen()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f); // 1초 대기
+            stat_manager.Cur_mp += stat_manager.Mana_regen;
+            if (stat_manager.Cur_mp > stat_manager.Max_mp)
+            {
+                stat_manager.Cur_mp = stat_manager.Max_mp; // 최대 마나를 초과하지 않도록 설정
+            }
+        }
     }
 
 

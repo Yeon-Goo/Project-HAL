@@ -33,6 +33,7 @@ public class StatManager : ScriptableObject
     public float Max_hp
     {
         get { return max_hp; }
+        set { max_hp = value; }
     }
     public float Cur_hp
     {
@@ -42,6 +43,7 @@ public class StatManager : ScriptableObject
     public float Max_mp
     {
         get { return max_mp; }
+        set { max_mp = value; }
     }
     public float Cur_mp
     {
