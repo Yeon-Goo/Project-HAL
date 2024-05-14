@@ -10,7 +10,7 @@ public class king_slimeEntity : MonoBehaviour
     public Transform player;
     public float speed = 2f;
     public float range = 10f;
-    public float barrage_time = 3f;
+    public float barrage_time = 4f;
     public float rush_time = 5f;
     public float summon_time = 3f;
     private int monster_state = 0;
@@ -85,14 +85,14 @@ public class king_slimeEntity : MonoBehaviour
             if(Time.time - tempTime > 3.0f)
             {
                 int rand = Random.Range(1, 11);
-                if(rand < 0)
+                if(rand < 4)
                 {
                     monster_state = (int)StateEnum.barrage;
                     transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
                     animator.SetInteger(animationState, monster_state);
                     tempTime = Time.time;
                 }
-                else if(rand < 11)
+                else if(rand < 8)
                 {
                     monster_state = (int)StateEnum.rush;
                     transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
