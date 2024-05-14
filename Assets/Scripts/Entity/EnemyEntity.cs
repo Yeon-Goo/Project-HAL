@@ -21,8 +21,8 @@ public class EnemyEntity : Entity
     void Start()
     {
         // Load HPManager
-        hp_manager = Resources.Load<HPManager>("ScriptableObjects/DummyHPManager");
-        if (hp_manager == null) return;
+        stat_manager = Resources.Load<StatManager>("ScriptableObjects/DummyHPManager");
+        if (stat_manager == null) return;
 
         // Load StatManager
         //stat_manager = Resources.Load<EnemyStatManager>("ScriptableObjects/EnemyStatManager");
@@ -45,7 +45,7 @@ public class EnemyEntity : Entity
     // 미완성
     public override void ResetEntity()
     {
-        hp_manager.Cur_hp = hp_manager.Max_hp;
+        stat_manager.Cur_hp = stat_manager.Max_hp;
     }
 
     void OnCollisionEnter2D(UnityEngine.Collision2D collision)

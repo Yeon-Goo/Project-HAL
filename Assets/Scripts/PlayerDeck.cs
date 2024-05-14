@@ -33,7 +33,7 @@ public class PlayerDeck : MonoBehaviour
     private GameObject weapon;
     private GameObject playerobject;
     private PlayerEntity playerEntity;
-    private HPManager hp_manager;
+    private StatManager stat_manager;
 
     private bool allLock = false;
     
@@ -53,7 +53,13 @@ public class PlayerDeck : MonoBehaviour
         //------------------------------------
         playerobject = GameObject.Find("PlayerObject");
         playerEntity = playerobject.GetComponent<PlayerEntity>();
-        hp_manager = playerEntity.hp_manager;
+        stat_manager = Resources.Load<StatManager>("ScriptableObjects/StatManager");
+
+        if (stat_manager == null)
+        {
+            Debug.LogError("StatManager component not found on PlayerEntity!");
+            return;
+        }
 
         InitializeDeck();
         UpdateCardDisplay();
@@ -110,11 +116,11 @@ public class PlayerDeck : MonoBehaviour
         int mananeed = weapon.GetComponent<Weapon>().GetMana(deck[index].num);
         //Debug.Log(mananeed + " need");
 
-        if (hp_manager.Cur_mp >= mananeed)
+        if (stat_manager.Cur_mp >= mananeed)
         {
             playerEntity.is_looking_right = (playerEntity.GetMousePos().x > playerEntity.GetPos().x) ? true : false;
 
-            hp_manager.Cur_mp -= weapon.GetComponent<Weapon>().Skill(deck[index].num, deck[index].level);
+            stat_manager.Cur_mp -= weapon.GetComponent<Weapon>().Skill(deck[index].num, deck[index].level);
             //해당 카드와 5번째 카드 스와핑
             Card temp = deck[index];
             deck[index] = deck[4];

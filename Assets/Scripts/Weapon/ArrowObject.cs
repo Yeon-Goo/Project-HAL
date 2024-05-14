@@ -23,7 +23,6 @@ public class ArrowObject : MonoBehaviour
         {
             //coll.gameObject.GetComponent<EnemyObject>().Damaged(dmg, armor_de);
             EnemyEntity enemy = coll.gameObject.GetComponent<EnemyEntity>();
-            Debug.Log("Collision ");
             Coroutine damage_coroutine = enemy.GetDamageCoroutine();
 
             if (damage_coroutine == null)

@@ -14,7 +14,7 @@ public abstract class Entity : MonoBehaviour
     public HPBarUI hpbar_ui;
 
     // Entity의 HP를 관리하는 변수
-    public HPManager hp_manager;
+    public StatManager stat_manager;
 
     /*
     public void SetHPManager(HPManager hp_manager)
@@ -28,7 +28,7 @@ public abstract class Entity : MonoBehaviour
     }
     */
 
-    public HPManager Hp_manager
+    public StatManager Stat_manager
     {
         get;
         set;
@@ -50,7 +50,7 @@ public abstract class Entity : MonoBehaviour
 
     public virtual IEnumerator DamageEntity(int damage, float interval, GameObject entity)
     {
-        float cur_hp = hp_manager.Cur_hp;
+        float cur_hp = stat_manager.Cur_hp;
 
         while (true)
         {
@@ -59,7 +59,7 @@ public abstract class Entity : MonoBehaviour
             // this는 entity로부터 damage만큼의 피해를 interval초마다 받는다
             Debug.Log(this.gameObject + " Get " + damage + " Damage From " + entity.name + "(interval : " + interval + ")\n");
             cur_hp -= damage;
-            hp_manager.Cur_hp = cur_hp;
+            stat_manager.Cur_hp = cur_hp;
 
             // this의 체력이 0일 때
             if (cur_hp <= float.Epsilon)
@@ -92,7 +92,7 @@ public abstract class Entity : MonoBehaviour
 
     public virtual void KillEntity()
     {
-        hp_manager.Cur_hp = 0;
+        stat_manager.Cur_hp = 0;
         Destroy(gameObject);
     }
     public abstract void ResetEntity();
