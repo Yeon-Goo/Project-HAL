@@ -489,7 +489,6 @@ public class PlayerEntity : Entity
 
                 // this는 entity로부터 damage만큼의 피해를 interval초마다 받는다
                 CharacterStop();
-                StartCoroutine(FlickEntity());
 
                 //GetComponent<CinemachineVirtualCamera>().VibrateForTimeAndAmount();
 

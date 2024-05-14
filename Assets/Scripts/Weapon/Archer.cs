@@ -170,11 +170,11 @@ public class Archer : Weapon
             playerObject.transform.position = Vector2.Lerp(startPosition, targetPosition, t);
             if(targetPosition.x > startPosition.x)
             {
-                playerEntity.is_looking_right = true;
+                playerEntity.is_looking_right = false;
             }
             else
             {
-                playerEntity.is_looking_right = false;
+                playerEntity.is_looking_right = true;
             }
             elapsedTime += dashInterval;
             yield return new WaitForSeconds(dashInterval);
