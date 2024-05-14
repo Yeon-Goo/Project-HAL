@@ -30,6 +30,8 @@ public class ArrowObject : MonoBehaviour
                 if(attacktype == 0)
                 {
                     enemy.arrowstack += 1;
+                    damage_coroutine = StartCoroutine(enemy.DamageEntity(dmg, 0.0f, this.gameObject));
+                    DestroyArrow();
                 }
                 else if(attacktype == 1)
                 {
@@ -38,14 +40,15 @@ public class ArrowObject : MonoBehaviour
                         enemy.arrowstack -= 1;
                         dmg += damage_per_stack;
                     }
+                    damage_coroutine = StartCoroutine(enemy.DamageEntity(dmg, 0.0f, this.gameObject));
+                    DestroyArrow();
                 }
                 else if(attacktype == 2)
                 {
                     dmg += damage_per_stack * enemy.arrowstack;
                     enemy.arrowstack = 0;
+                    damage_coroutine = StartCoroutine(enemy.DamageEntity(dmg, 0.0f, this.gameObject));
                 }
-                damage_coroutine = StartCoroutine(enemy.DamageEntity(dmg, 0.0f, this.gameObject));
-                DestroyArrow();
             }
         }
     }
@@ -74,9 +77,10 @@ public class ArrowObject : MonoBehaviour
         transform.Translate(new Vector3(0.0f, 1.0f, 0.0f) * Time.deltaTime * speed);
     }
 
-    public void SetArrowData(int damage, float decrease, float shootspeed, int arrowtype)
+    public void SetArrowData(int damage, int dstack, float decrease, float shootspeed, int arrowtype)
     {
         dmg = damage;
+        damage_per_stack = dstack;
         armor_de = decrease;
         speed = shootspeed;
         attacktype = arrowtype;
