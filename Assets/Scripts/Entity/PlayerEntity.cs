@@ -395,6 +395,7 @@ public class PlayerEntity : Entity
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.7f)
                 {
                     is_animation_cancelable = true;
+                    is_moveable = true;
                 }
                 yield return null;
             }
@@ -430,7 +431,7 @@ public class PlayerEntity : Entity
     private void MoveCharacter_Mouse()
     {
         // 마우스 오른쪽 버튼을 뗐을 때 || 마우스 오른쪽 버튼을 누르고 있는 상태에서 마우스를 움직였을 때
-        if (!is_animation_started && (!Input.GetMouseButton(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f)))
+        if (!Input.GetMouseButton(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f))
         //if (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f)
         {
             is_moveable = true;
