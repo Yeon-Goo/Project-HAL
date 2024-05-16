@@ -2,8 +2,10 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
-public class InventoryUI : MonoBehaviour
+public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     private GameObject slotPrefab;
     public const int numSlots = 5;
@@ -35,6 +37,7 @@ public class InventoryUI : MonoBehaviour
     {
         if (slotPrefab != null)
         {
+            
             for (int i = 0; i < numSlots; i++)
             {
                 GameObject newSlot = Instantiate(slotPrefab);
@@ -85,5 +88,50 @@ public class InventoryUI : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            Vector2 mouse_position = eventData.position;
+            Debug.Log("Click at " + mouse_position);
+
+            RectTransform pivot_RectTransform = slots[0].transform.parent.gameObject.GetComponent<RectTransform>();
+            Vector2 pivot_position = new Vector2(1920 / 2, 1080) + pivot_RectTransform.anchoredPosition;
+            float slot_width = pivot_RectTransform.rect.width;
+            float slot_height = pivot_RectTransform.rect.height;
+            for (int i = 0; i < numSlots; i++)
+            {
+                RectTransform slot_RectTransform = slots[i].GetComponent<RectTransform>();
+                Vector2 slot_position = pivot_position + slot_RectTransform.anchoredPosition;
+                Debug.Log("slot_" + i + " : (" + (slot_position.x - slot_width) + ", " + (slot_position.y - slot_height) + " ~ (" + slot_position.x + ", " + slot_position.y + ")");
+
+
+                if (slot_position.x - slot_width <= mouse_position.x && mouse_position.x <= slot_position.x && slot_position.y - slot_height <= mouse_position.y && mouse_position.y <= slot_position.y)
+                {
+                    Debug.Log("Click at slot_" + i);
+                }
+            }
+        }
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        Debug.Log("Pointer Drag");
+        //throw new System.NotImplementedException();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        
+        
+        //Debug.Log("Pointer Enter to " + eventData.pointerEnter.transform.parent.name);
+        //throw new System.NotImplementedException();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        //Debug.Log("Pointer Exit");
     }
 }
