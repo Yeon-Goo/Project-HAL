@@ -22,6 +22,7 @@ public class PlayerEntity : Entity
     // Player's UIs
     private InventoryUI inventory_prefab;
     private InventoryUI inventory_ui;
+    private GameObject inventory;
     private GameObject HPBar;
     private GameObject MPBar;
     private TextMeshProUGUI HPBarText;
@@ -132,6 +133,8 @@ public class PlayerEntity : Entity
         // InventoryUI를 this의 자식으로 생성
         inventory_ui.transform.SetParent(this.transform, false);
         if (inventory_ui == null) return;
+        inventory = this.transform.GetChild(3).gameObject;
+        if (inventory != null)   inventory.SetActive(false);
 
         /*
         // Load CardUI Prefab
@@ -193,6 +196,11 @@ public class PlayerEntity : Entity
                 is_invincible = false;
                 this.interval = 0.0f;
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            inventory.SetActive(inventory.activeSelf ? false : true);
         }
 
         if (is_alive && !(is_animation_started ^ is_animation_cancelable))
