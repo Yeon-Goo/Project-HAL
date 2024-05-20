@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/*
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Spine;
@@ -152,3 +153,4 @@ public class MonsterSpawner_Fantazia : MonoBehaviour
         System.Diagnostics.Process.Start("https://assetstore.unity.com/packages/slug/273047");
     }
 }
+*/

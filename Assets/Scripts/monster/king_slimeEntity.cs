@@ -117,15 +117,15 @@ public class king_slimeEntity : MonoBehaviour
             transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
             if(Time.time - tempTime > 3.0f)
             {
-                int rand = Random.Range(1, 11);
-                if(rand < 5)
+                int rand = Random.Range(1, 15);
+                if(rand < 0)
                 {
                     monster_state = (int)StateEnum.barrage;
                     transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
                     animator.SetInteger(animationState, monster_state);
                     tempTime = Time.time;
                 }
-                else if(rand < 9)
+                else if(rand < 0)
                 {
                     monster_state = (int)StateEnum.rush;
                     transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
