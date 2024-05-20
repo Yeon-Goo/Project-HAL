@@ -1,0 +1,138 @@
+monster_23.png
+size:1869,290
+filter:Linear,Linear
+pma:true
+2ARM A1
+bounds:1262,9,79,68
+offsets:1,1,81,70
+2ARM A2
+bounds:1597,4,88,98
+offsets:1,5,90,104
+2ARM A3
+bounds:1403,2,83,81
+offsets:1,1,85,83
+rotate:90
+2BODY
+bounds:1365,87,132,201
+offsets:1,1,134,203
+2HEAD
+bounds:1158,79,205,209
+offsets:9,1,215,211
+2HEAD EYES CLOSED
+bounds:951,79,205,209
+offsets:9,1,215,211
+2LEG A1
+bounds:576,3,48,73
+offsets:1,1,56,75
+rotate:90
+2LEG A2
+bounds:1539,3,56,99
+offsets:1,1,58,101
+2LEG A3
+bounds:364,9,82,39
+offsets:1,2,84,42
+2LEG B1
+bounds:1343,13,58,64
+offsets:1,1,60,66
+2LEG B2
+bounds:1121,4,53,73
+offsets:1,1,55,75
+2LEG B3
+bounds:281,8,81,40
+offsets:1,1,83,42
+3ARM A1
+bounds:882,5,73,69
+offsets:2,1,76,71
+3ARM A2
+bounds:168,7,41,111
+offsets:1,1,43,113
+rotate:90
+3ARM A3
+bounds:1687,11,92,90
+offsets:1,1,94,92
+rotate:90
+3ARM B3
+bounds:1040,2,79,75
+offsets:1,1,81,77
+3BODY
+bounds:1499,104,115,184
+offsets:1,1,117,186
+3HEAD
+bounds:770,76,179,212
+offsets:1,1,181,214
+3HEAD EYES CLOSED
+bounds:589,76,179,212
+offsets:1,1,181,214
+3HIP CLOTH
+bounds:1616,163,91,125
+offsets:1,1,93,127
+3LEG 2
+bounds:701,5,97,69
+offsets:1,1,99,71
+3LEG A1
+bounds:651,2,48,72
+offsets:1,1,50,74
+3LEG A2
+bounds:1176,9,68,84
+offsets:2,1,71,86
+rotate:90
+3LEG A3
+bounds:1779,70,88,38
+offsets:1,1,90,40
+3LEG B1
+bounds:448,2,49,62
+offsets:1,19,51,82
+rotate:90
+3LEG B2
+bounds:1723,110,51,90
+offsets:1,9,53,100
+rotate:90
+3LEG B3
+bounds:1779,30,87,38
+offsets:1,1,90,40
+ARM A1
+bounds:800,5,80,69
+offsets:1,1,82,71
+ARM A2
+bounds:1616,105,56,105
+offsets:1,1,58,107
+rotate:90
+ARM A3
+bounds:957,2,75,81
+offsets:1,2,77,85
+rotate:90
+BODY
+bounds:368,53,219,235
+offsets:1,2,222,238
+HEAD
+bounds:185,50,181,238
+offsets:1,1,183,240
+HEAD EYES CLOSED
+bounds:2,50,181,238
+offsets:1,1,183,240
+HIP CLOTH
+bounds:1709,163,91,125
+offsets:1,1,93,127
+LEG A1
+bounds:94,4,44,72
+offsets:1,1,46,74
+rotate:90
+LEG A2
+bounds:1486,2,51,83
+offsets:1,1,53,85
+LEG A3
+bounds:1815,208,80,39
+offsets:1,1,82,41
+rotate:90
+LEG B1
+bounds:512,2,49,62
+offsets:1,19,51,82
+rotate:90
+LEG B2
+bounds:2,3,45,90
+offsets:1,9,47,100
+rotate:90
+LEG B3
+bounds:1815,126,80,38
+offsets:1,1,82,40
+rotate:90

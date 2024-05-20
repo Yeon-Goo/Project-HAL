@@ -1,0 +1,77 @@
+monster_14.png
+size:2311,328
+filter:Linear,Linear
+pma:true
+2ARM 1
+bounds:1196,11,126,102
+offsets:1,1,128,104
+2ARM 2
+bounds:1556,4,124,98
+offsets:1,1,126,100
+rotate:90
+2BODY
+bounds:2,9,396,317
+2EYE CLOSED
+bounds:1856,55,55,77
+2FLOWER
+bounds:2133,138,188,176
+offsets:1,2,191,179
+rotate:90
+2LEG 1
+bounds:1856,6,47,64
+offsets:1,2,49,67
+rotate:90
+2LEG 2
+bounds:1922,6,47,64
+offsets:1,1,49,66
+rotate:90
+2STALK
+bounds:1400,130,180,196
+3ARM 1
+bounds:1324,11,126,102
+offsets:1,1,129,104
+3ARM 2
+bounds:1656,4,124,98
+offsets:1,1,126,100
+rotate:90
+3BODY
+bounds:400,9,396,317
+3EYE CLOSED
+bounds:1913,55,55,77
+3FLOWER
+bounds:1764,134,192,178
+offsets:1,1,194,180
+rotate:90
+3LEG 1
+bounds:1988,10,47,64
+offsets:1,2,49,67
+rotate:90
+3LEG 2
+bounds:2027,72,47,64
+offsets:1,1,49,66
+3STALK
+bounds:1196,115,202,211
+ARM 1
+bounds:1452,2,126,102
+offsets:1,1,129,104
+rotate:90
+ARM 2
+bounds:1756,4,124,98
+offsets:1,1,126,100
+rotate:90
+BODY
+bounds:798,9,396,317
+EYE CLOSED
+bounds:1970,59,55,77
+FLOWER
+bounds:1944,138,188,187
+offsets:1,1,191,190
+rotate:90
+LEG 1
+bounds:2076,73,47,63
+offsets:1,1,49,65
+LEG 2
+bounds:2054,6,47,64
+offsets:1,1,49,66
+STALK
+bounds:1582,130,180,196

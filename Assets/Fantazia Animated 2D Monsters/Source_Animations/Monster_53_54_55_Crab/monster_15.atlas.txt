@@ -1,0 +1,187 @@
+monster_15.png
+size:2265,421
+filter:Linear,Linear
+pma:true
+2BODY
+bounds:371,2,365,417
+offsets:1,1,367,420
+2CLAWB A
+bounds:738,3,66,56
+offsets:1,1,68,58
+2CLAWB B
+bounds:1461,234,185,138
+offsets:1,1,187,140
+rotate:90
+2CLAWB C
+bounds:1884,297,122,66
+offsets:1,1,124,68
+rotate:90
+2CLAWF A
+bounds:1764,14,75,42
+offsets:1,2,77,45
+rotate:90
+2CLAWF B
+bounds:1716,91,183,141
+offsets:1,1,185,143
+2CLAWF C
+bounds:2020,298,121,68
+offsets:1,1,123,70
+rotate:90
+2EYE CLOSE
+bounds:1540,7,110,69
+offsets:1,2,112,72
+2HEAD
+bounds:1346,65,154,183
+offsets:1,2,156,186
+rotate:90
+2LEGB 1A
+bounds:2160,272,47,103
+offsets:2,1,50,105
+rotate:90
+2LEGB 1B
+bounds:1470,5,68,58
+offsets:1,1,71,60
+2LEGB 2A
+bounds:2039,133,47,103
+offsets:1,1,49,105
+2LEGB 2B
+bounds:2088,90,66,58
+offsets:1,1,71,60
+rotate:90
+2LEGF 1A
+bounds:942,11,48,103
+offsets:1,1,50,105
+rotate:90
+2LEGF 1B
+bounds:1884,237,68,58
+offsets:2,1,71,60
+2LEGF 2A
+bounds:1047,11,48,103
+offsets:1,1,50,105
+rotate:90
+2LEGF 2B
+bounds:1257,3,69,58
+offsets:1,1,71,60
+3BODY
+bounds:2,2,367,417
+offsets:8,1,376,420
+3CLAWB A
+bounds:806,3,66,56
+offsets:1,1,68,58
+3CLAWB B
+bounds:1309,221,198,150
+offsets:1,10,206,171
+rotate:90
+3CLAWB C
+bounds:1952,297,122,66
+offsets:1,1,124,68
+rotate:90
+3CLAWF A
+bounds:1808,14,75,42
+offsets:1,2,77,45
+rotate:90
+3CLAWF B
+bounds:1158,220,199,149
+offsets:1,1,209,159
+rotate:90
+3CLAWF C
+bounds:1969,114,121,68
+offsets:1,1,123,70
+rotate:90
+3EYE CLOSE
+bounds:1652,7,110,69
+offsets:1,2,112,72
+3HEAD
+bounds:1531,78,154,183
+offsets:1,2,156,186
+rotate:90
+3LEGB 1A
+bounds:2154,223,47,103
+offsets:2,1,50,105
+rotate:90
+3LEGB 1B
+bounds:1954,237,68,58
+offsets:1,1,71,60
+3LEGB 2A
+bounds:2148,174,47,103
+offsets:1,1,49,105
+rotate:90
+3LEGB 2B
+bounds:2197,65,66,58
+offsets:1,1,71,60
+3LEGF 1A
+bounds:1152,11,48,103
+offsets:1,1,50,105
+rotate:90
+3LEGF 1B
+bounds:2024,238,68,58
+offsets:2,1,71,60
+3LEGF 2A
+bounds:2008,9,48,103
+offsets:1,1,50,105
+3LEGF 2B
+bounds:1328,3,69,58
+offsets:1,1,71,60
+BODY
+bounds:738,61,358,418
+offsets:1,1,360,420
+rotate:90
+CLAWB A
+bounds:874,3,66,56
+offsets:1,1,68,58
+CLAWB B
+bounds:1601,234,185,138
+offsets:1,1,187,140
+rotate:90
+CLAWB C
+bounds:1901,113,122,66
+offsets:1,1,124,68
+rotate:90
+CLAWF A
+bounds:1852,14,75,42
+offsets:1,2,77,45
+rotate:90
+CLAWF B
+bounds:1741,236,183,141
+offsets:1,1,185,143
+rotate:90
+CLAWF C
+bounds:2090,298,121,68
+offsets:1,1,123,70
+rotate:90
+EYE CLOSE
+bounds:1896,20,110,69
+offsets:1,2,112,72
+HEAD
+bounds:1158,63,155,186
+offsets:1,2,157,189
+rotate:90
+LEGB 1A
+bounds:2094,228,68,58
+offsets:1,1,71,60
+rotate:90
+LEGB 1B
+bounds:2148,125,47,103
+offsets:2,1,50,105
+rotate:90
+LEGB 2A
+bounds:2197,5,66,58
+offsets:1,1,71,60
+LEGB 2B
+bounds:2148,20,47,103
+offsets:1,1,49,105
+LEGF 1A
+bounds:2088,158,68,58
+offsets:2,1,71,60
+rotate:90
+LEGF 1B
+bounds:2160,371,48,103
+offsets:1,1,50,105
+rotate:90
+LEGF 2A
+bounds:1399,5,69,58
+offsets:1,1,71,60
+LEGF 2B
+bounds:2160,321,48,103
+offsets:1,1,50,105
+rotate:90

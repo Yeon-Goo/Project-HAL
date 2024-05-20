@@ -1,0 +1,100 @@
+monster 06 skeleton SMALL 512_512.png
+size:853,536
+filter:Linear,Linear
+pma:true
+2ARM 1A
+bounds:536,120,98,102
+offsets:1,1,100,104
+2ARM 1B
+bounds:636,148,74,123
+offsets:1,1,77,126
+rotate:90
+2ARM 2A
+bounds:636,84,62,115
+offsets:1,1,64,117
+rotate:90
+2ARM 2B
+bounds:761,144,86,74
+offsets:2,1,89,76
+2ARM 2C
+bounds:2,153,191,381
+offsets:1,1,205,391
+2HEAD
+bounds:195,74,219,231
+offsets:1,1,221,233
+rotate:90
+2LEG 1B
+bounds:428,6,82,76
+offsets:1,1,84,78
+2LEG 1C
+bounds:396,12,60,29
+offsets:1,2,62,32
+rotate:90
+2LEG 2C
+bounds:396,12,60,29
+offsets:1,2,62,32
+rotate:90
+2LEG 2B
+bounds:776,341,48,75
+offsets:1,1,50,77
+rotate:90
+2hip accesories
+bounds:428,84,106,138
+3ARM 1B
+bounds:144,40,42,111
+offsets:2,4,45,117
+3ARM 2B
+bounds:536,50,86,68
+offsets:2,5,89,74
+3BODY
+bounds:716,391,126,143
+3HEAD
+bounds:444,338,270,196
+offsets:3,1,274,198
+ARM 1A
+bounds:728,2,72,67
+offsets:1,1,74,69
+ARM 1B
+bounds:778,220,63,119
+offsets:1,1,65,122
+ARM 1C
+bounds:275,18,66,54
+offsets:1,1,68,56
+ARM 2A
+bounds:188,39,33,85
+offsets:1,1,35,87
+rotate:90
+ARM 2B
+bounds:753,71,93,71
+offsets:3,5,97,77
+ARM 2C
+bounds:444,224,112,332
+offsets:1,1,114,335
+rotate:90
+BODY
+bounds:2,8,140,143
+HEAD
+bounds:195,295,247,239
+offsets:1,1,249,242
+HIP
+bounds:624,7,102,75
+LEG 1A
+bounds:343,18,51,54
+offsets:1,1,53,56
+LEG 1B
+bounds:802,3,41,66
+offsets:1,1,43,68
+LEG 1C
+bounds:207,6,60,31
+offsets:1,1,62,33
+LEG 2A
+bounds:716,338,51,58
+offsets:1,1,53,60
+rotate:90
+LEG 2B
+bounds:512,19,29,66
+offsets:1,1,31,68
+rotate:90
+LEG 2C
+bounds:144,6,61,31
+offsets:1,1,63,33

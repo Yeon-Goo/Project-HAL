@@ -1,0 +1,39 @@
+monster_small.png
+size:249,501
+filter:Linear,Linear
+pma:true
+BODY
+bounds:2,371,181,128
+offsets:1,1,184,130
+EKOR
+bounds:162,2,64,73
+rotate:90
+EYE CLOSE
+bounds:170,68,131,77
+offsets:2,18,139,96
+rotate:90
+HEAD
+bounds:2,102,166,137
+offsets:1,1,168,139
+HELMED
+bounds:2,241,180,128
+LEG 1 A
+bounds:2,11,78,89
+offsets:1,1,85,94
+LEG 1 B
+bounds:185,427,61,72
+offsets:1,2,63,75
+LEG 1 C
+bounds:184,277,74,43
+offsets:1,1,76,46
+rotate:90
+LEG 2 A
+bounds:82,11,78,89
+offsets:2,1,85,94
+LEG 2 B
+bounds:185,353,61,72
+offsets:1,1,63,75
+LEG 2 C
+bounds:184,201,74,42
+offsets:1,1,76,45
+rotate:90

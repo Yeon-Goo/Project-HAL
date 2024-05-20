@@ -1,0 +1,142 @@
+monster_04.png
+size:3226,422
+filter:Linear,Linear
+pma:true
+2ARM 1A
+bounds:1523,172,167,248
+offsets:10,1,178,250
+2ARM 1B
+bounds:1014,162,258,258
+offsets:2,8,266,267
+2ARM 1C
+bounds:2519,64,234,117
+offsets:1,1,236,119
+2ARM 2A
+bounds:782,5,146,228
+offsets:9,1,157,230
+rotate:90
+2ARM 2B
+bounds:2134,182,220,238
+offsets:1,8,225,248
+2ARM 2C
+bounds:2920,225,195,109
+offsets:2,2,198,112
+rotate:90
+2BODY
+bounds:255,109,249,311
+offsets:1,1,251,313
+2EYE CLOSED
+bounds:255,12,95,118
+offsets:1,1,97,120
+rotate:90
+2HEAD
+bounds:2953,30,193,192
+offsets:1,1,195,194
+rotate:90
+2HIP
+bounds:1706,5,169,192
+offsets:1,1,201,359
+rotate:90
+2LEG 2A
+bounds:550,21,114,86
+offsets:1,2,116,89
+2LEG 2B
+bounds:3147,157,77,68
+offsets:1,1,79,70
+2LEG 2C
+bounds:2519,18,73,44
+offsets:1,1,75,46
+3ARM 1A
+bounds:2288,2,178,229
+offsets:1,1,180,231
+rotate:90
+3ARM 1B
+bounds:757,153,267,255
+offsets:2,2,270,258
+rotate:90
+3ARM 1C
+bounds:2570,186,234,117
+offsets:1,1,236,119
+rotate:90
+3ARM 2A
+bounds:1490,10,153,214
+offsets:2,1,156,217
+rotate:90
+3ARM 2B
+bounds:1903,180,229,240
+offsets:2,1,232,242
+3ARM 2C
+bounds:2808,218,202,110
+offsets:1,1,204,113
+rotate:90
+3BODY
+bounds:2,31,251,389
+offsets:5,1,257,392
+3EYE CLOSED
+bounds:464,20,84,87
+offsets:11,1,96,89
+3HEAD
+bounds:1692,176,244,209
+offsets:2,1,247,211
+rotate:90
+3HIP
+bounds:1900,5,169,192
+offsets:1,1,201,359
+rotate:90
+3LEG 2A
+bounds:666,21,114,86
+offsets:1,2,116,89
+3LEG 2B
+bounds:3147,87,77,68
+offsets:1,1,79,70
+3LEG 2C
+bounds:2594,18,73,44
+offsets:1,1,75,46
+ARM 1A
+bounds:1240,4,156,248
+offsets:1,1,158,250
+rotate:90
+ARM 1B
+bounds:1274,165,247,255
+offsets:2,2,250,258
+ARM 1C
+bounds:2689,186,234,117
+offsets:1,1,236,119
+rotate:90
+ARM 2A
+bounds:1012,14,137,226
+offsets:1,1,139,228
+rotate:90
+ARM 2B
+bounds:2356,183,212,237
+offsets:1,2,214,240
+ARM 2C
+bounds:2843,17,199,108
+offsets:1,1,201,110
+rotate:90
+BODY
+bounds:506,109,249,311
+offsets:1,1,251,313
+EYE CLOSED
+bounds:375,12,95,87
+offsets:1,1,97,89
+rotate:90
+HEAD
+bounds:3031,227,193,192
+offsets:1,1,195,194
+rotate:90
+HIP
+bounds:2094,9,169,192
+offsets:1,1,201,359
+rotate:90
+LEG 2A
+bounds:2755,70,114,86
+offsets:1,2,116,89
+rotate:90
+LEG 2B
+bounds:3147,8,77,68
+offsets:1,1,79,70
+rotate:90
+LEG 2C
+bounds:2669,18,73,44
+offsets:1,1,75,46

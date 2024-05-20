@@ -1,0 +1,30 @@
+monster_05.png
+size:532,575
+filter:Linear,Linear
+pma:true
+ARM 1A
+bounds:295,2,90,105
+offsets:1,1,92,107
+rotate:90
+ARM 1B V4
+bounds:2,212,361,361
+offsets:1,1,363,362
+ARM 2A
+bounds:402,48,76,108
+offsets:1,2,79,111
+ARM 2B
+bounds:401,158,97,99
+offsets:1,1,99,101
+ARM 2C
+bounds:295,94,116,104
+offsets:1,1,118,106
+rotate:90
+BODY
+bounds:2,6,204,291
+rotate:90
+EYE CLOSED
+bounds:365,259,136,92
+offsets:1,1,138,101
+HEAD
+bounds:365,353,165,220
+offsets:1,1,167,223

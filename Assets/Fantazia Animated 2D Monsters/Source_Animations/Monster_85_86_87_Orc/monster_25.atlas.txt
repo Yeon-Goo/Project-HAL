@@ -1,0 +1,174 @@
+monster_25.png
+size:2932,302
+filter:Linear,Linear
+pma:true
+2ARM A1
+bounds:1173,128,150,172
+offsets:1,1,152,174
+2ARM A2
+bounds:2173,41,108,128
+offsets:1,2,110,132
+2ARM A3
+bounds:752,2,96,81
+offsets:1,1,98,83
+2ARM B2
+bounds:998,4,96,100
+offsets:1,2,99,103
+rotate:90
+2ARM B3
+bounds:336,68,232,323
+offsets:2,2,236,326
+rotate:90
+2HEAD
+bounds:1743,7,150,131
+offsets:1,1,153,133
+2HEAD EYES CLOSED
+bounds:1591,5,150,131
+offsets:1,1,153,133
+2LEG A1
+bounds:1100,3,100,129
+offsets:1,1,102,131
+rotate:90
+2LEG A2
+bounds:197,2,81,60
+offsets:1,1,83,64
+2LEG A3
+bounds:2401,2,90,52
+offsets:1,1,92,54
+2LEG B1
+bounds:2551,196,102,104
+offsets:1,2,104,107
+2LEG B2
+bounds:110,2,85,60
+offsets:1,1,87,62
+2LEG B3
+bounds:382,9,90,57
+offsets:1,1,92,59
+LEG B3
+bounds:382,9,90,57
+offsets:1,1,92,59
+2SHOULDER B
+bounds:1040,105,131,195
+offsets:1,1,133,197
+3ARM A1
+bounds:2676,8,80,93
+offsets:1,2,82,96
+rotate:90
+3ARM A2
+bounds:2707,205,94,95
+offsets:1,1,96,98
+3ARM A3
+bounds:2852,115,91,78
+offsets:1,1,93,80
+rotate:90
+3ARM B1
+bounds:2585,7,89,81
+offsets:1,1,91,83
+3ARM B2
+bounds:2466,192,83,108
+offsets:1,1,85,110
+3ARM B3
+bounds:2,33,106,267
+offsets:1,1,108,269
+3BODY
+bounds:110,64,224,236
+offsets:5,15,237,253
+3HEAD A
+bounds:1984,145,103,155
+offsets:1,1,105,157
+3HEAD A EYES CLOSED
+bounds:1879,145,103,155
+offsets:1,1,105,157
+3HEAD B
+bounds:1583,138,155,162
+offsets:2,2,158,165
+3HEAD B EYES CLOSED
+bounds:1426,138,155,162
+offsets:2,2,158,165
+3LEG A1
+bounds:1333,2,111,125
+offsets:1,2,113,128
+3LEG A2
+bounds:2655,204,96,50
+offsets:1,1,98,52
+rotate:90
+3LEG A3
+bounds:650,13,100,53
+offsets:1,1,102,55
+3LEG B1
+bounds:2401,56,113,104
+offsets:1,1,115,107
+rotate:90
+3LEG B2
+bounds:2784,114,89,52
+offsets:2,1,92,64
+rotate:90
+3LEG B3
+bounds:280,4,100,58
+offsets:1,1,102,60
+3SHIELD
+bounds:1740,140,137,160
+offsets:1,1,139,162
+3SHOULDER
+bounds:2283,42,127,116
+offsets:1,2,129,120
+rotate:90
+ARM A1
+bounds:2771,12,79,93
+offsets:2,2,82,96
+ARM A2
+bounds:2687,107,95,95
+offsets:1,1,97,98
+ARM A3
+bounds:2852,208,92,78
+offsets:1,1,94,80
+rotate:90
+ARM B1
+bounds:2852,36,78,77
+offsets:1,1,80,79
+ARM B2
+bounds:2507,82,74,108
+offsets:1,1,76,110
+ARM B3
+bounds:2089,171,129,375
+offsets:2,1,133,377
+rotate:90
+BODY
+bounds:661,85,184,215
+offsets:1,1,186,218
+BODY LOWER
+bounds:1325,129,171,99
+offsets:1,1,173,101
+rotate:90
+BODY UPPER
+bounds:847,102,198,191
+offsets:1,1,200,193
+rotate:90
+HEAD
+bounds:2034,4,137,139
+offsets:1,6,139,147
+HEAD ACC
+bounds:850,3,146,97
+offsets:1,1,148,99
+HEAD EYES CLOSED
+bounds:1895,4,137,139
+offsets:1,6,139,147
+LEG A1
+bounds:1231,4,100,122
+offsets:1,1,102,124
+LEG A2
+bounds:474,10,87,56
+offsets:1,1,89,58
+LEG A3
+bounds:2493,2,90,52
+offsets:1,1,92,54
+LEG B1
+bounds:2583,90,102,104
+offsets:1,2,104,107
+LEG B2
+bounds:563,11,85,55
+offsets:2,1,88,63
+SHOULDER
+bounds:1446,4,132,143
+offsets:1,1,134,145
+rotate:90
