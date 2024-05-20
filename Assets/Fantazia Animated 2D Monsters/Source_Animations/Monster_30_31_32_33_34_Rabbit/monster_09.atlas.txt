@@ -1,0 +1,99 @@
+monster_09.png
+size:1274,1060
+filter:Linear,Linear
+pma:true
+2BODY
+bounds:2,79,486,392
+rotate:90
+2EAR 1
+bounds:1008,72,109,104
+offsets:1,1,111,106
+2EAR 2
+bounds:396,80,96,99
+offsets:2,1,99,102
+rotate:90
+2EYE CLOSED
+bounds:149,2,139,75
+offsets:1,1,141,77
+2LEG 1
+bounds:1135,675,136,75
+offsets:1,1,138,77
+2LEG 2
+bounds:1135,983,137,75
+offsets:1,1,139,77
+3BODY
+bounds:2,567,491,392
+rotate:90
+3EAR 1
+bounds:1135,12,219,126
+offsets:1,1,221,128
+rotate:90
+3EAR 2
+bounds:1135,296,146,135
+offsets:1,1,148,138
+rotate:90
+3EYE CLOSED
+bounds:290,2,139,75
+offsets:1,1,141,77
+3LEG 1
+bounds:1135,598,136,75
+offsets:1,1,138,77
+3LEG 2
+bounds:1135,906,137,75
+offsets:1,1,139,77
+4BODY
+bounds:766,178,486,367
+rotate:90
+4EAR 1
+bounds:919,687,225,122
+offsets:1,1,227,124
+rotate:90
+4EAR 2
+bounds:795,14,162,146
+offsets:45,1,209,148
+rotate:90
+4EYE CLOSED
+bounds:431,3,139,75
+offsets:1,1,141,77
+4LEG 1
+bounds:1135,521,136,75
+offsets:1,1,138,77
+5LEG 1
+bounds:1135,521,136,75
+offsets:1,1,138,77
+4LEG 2
+bounds:1135,829,137,75
+offsets:1,1,139,77
+5LEG 2
+bounds:1135,829,137,75
+offsets:1,1,139,77
+5BODY
+bounds:396,178,486,368
+rotate:90
+5EAR 1
+bounds:572,12,221,164
+offsets:1,1,224,166
+5EAR 2
+bounds:919,914,144,203
+offsets:3,1,148,205
+rotate:90
+5EYE CLOSED
+bounds:1135,233,129,61
+offsets:2,2,132,65
+BODY
+bounds:431,666,486,392
+EAR 1
+bounds:943,23,63,153
+EAR 2
+bounds:2,2,75,145
+rotate:90
+EYE CLOSED
+bounds:1043,773,139,75
+offsets:1,1,141,77
+rotate:90
+LEG 1
+bounds:1135,444,136,75
+offsets:1,1,138,77
+LEG 2
+bounds:1135,752,137,75
+offsets:1,1,139,77

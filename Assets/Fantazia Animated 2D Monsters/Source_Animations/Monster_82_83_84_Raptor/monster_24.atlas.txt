@@ -1,0 +1,160 @@
+monster_24.png
+size:1903,282
+filter:Linear,Linear
+pma:true
+2ARM 2
+bounds:1435,34,66,52
+offsets:1,9,69,63
+rotate:90
+2ARM A1
+bounds:1380,33,53,67
+offsets:4,1,60,70
+2ARM A3
+bounds:1792,5,43,41
+offsets:1,1,45,43
+rotate:90
+2BODY
+bounds:454,68,212,134
+offsets:13,2,227,137
+rotate:90
+2BODY TAIL
+bounds:1519,109,171,126
+rotate:90
+2HEAD
+bounds:742,78,202,150
+offsets:1,2,204,154
+rotate:90
+2HEAD ACC
+bounds:184,2,77,54
+offsets:1,1,79,56
+2HEAD EYES CLOSED
+bounds:590,78,202,150
+offsets:1,2,204,154
+rotate:90
+2JAW A
+bounds:1060,4,102,75
+offsets:1,1,104,77
+2JAW B
+bounds:1489,41,59,53
+offsets:1,1,62,59
+rotate:90
+2LEG A1
+bounds:1569,4,103,120
+offsets:2,15,106,136
+rotate:90
+2LEG A2
+bounds:681,5,71,87
+offsets:1,1,74,89
+rotate:90
+2LEG A3
+bounds:864,9,67,85
+offsets:1,2,70,88
+rotate:90
+2LEG A4
+bounds:1267,5,95,48
+offsets:1,1,97,50
+rotate:90
+2NECK
+bounds:770,9,67,92
+offsets:1,1,69,94
+rotate:90
+3ARM A1
+bounds:263,2,41,54
+offsets:1,2,43,58
+3ARM A2
+bounds:1380,2,51,29
+offsets:2,1,54,31
+3ARM A3
+bounds:1489,5,34,38
+offsets:1,1,36,40
+rotate:90
+3BODY
+bounds:129,58,222,163
+offsets:13,2,236,166
+rotate:90
+3BODY TAIL
+bounds:294,60,220,158
+offsets:5,0,225,173
+rotate:90
+3HEAD
+bounds:1076,81,199,180
+offsets:1,1,201,182
+rotate:90
+3HEAD EYES CLOSED
+bounds:894,81,199,180
+offsets:1,1,201,182
+rotate:90
+3JAW A
+bounds:951,4,107,75
+offsets:4,1,112,81
+3JAW B
+bounds:385,2,56,50
+offsets:1,1,58,55
+rotate:90
+3LEG A1
+bounds:1691,5,99,109
+offsets:1,1,101,112
+3LEG A2
+bounds:489,2,64,70
+offsets:1,2,66,73
+rotate:90
+3LEG A3
+bounds:633,4,46,72
+offsets:1,1,48,75
+3LEG A4
+bounds:2,3,89,41
+offsets:2,1,92,43
+3NECK
+bounds:1792,50,108,129
+offsets:1,1,110,131
+ARM A1
+bounds:1835,7,41,54
+offsets:1,2,43,58
+rotate:90
+ARM A2
+bounds:1433,2,51,29
+offsets:2,1,54,31
+ARM A3
+bounds:1529,5,34,38
+offsets:1,1,36,40
+rotate:90
+BODY
+bounds:2,46,234,125
+offsets:1,1,236,127
+rotate:90
+BODY TAIL
+bounds:1647,116,164,118
+rotate:90
+HEAD
+bounds:1389,102,178,128
+offsets:1,1,180,130
+rotate:90
+HEAD EYES CLOSED
+bounds:1258,102,178,129
+offsets:1,2,180,132
+rotate:90
+JAW A
+bounds:1164,4,101,75
+offsets:4,1,107,81
+JAW B
+bounds:437,2,56,50
+offsets:1,1,58,55
+rotate:90
+LEG A1
+bounds:1792,181,99,109
+offsets:1,1,101,112
+rotate:90
+LEG A2
+bounds:561,2,64,70
+offsets:1,2,66,73
+rotate:90
+LEG A3
+bounds:306,2,56,77
+offsets:1,1,58,79
+rotate:90
+LEG A4
+bounds:93,3,89,41
+offsets:2,1,92,43
+NECK
+bounds:1317,13,61,87
+offsets:9,1,71,89

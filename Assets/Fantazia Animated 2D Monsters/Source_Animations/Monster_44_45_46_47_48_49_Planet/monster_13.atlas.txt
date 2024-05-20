@@ -1,0 +1,84 @@
+monster_13.png
+size:2829,364
+filter:Linear,Linear
+pma:true
+2BODY
+bounds:1130,14,348,308
+rotate:90
+2EYE CLOSED
+bounds:2360,183,179,126
+rotate:90
+2LEG 1
+bounds:2746,316,46,81
+offsets:1,1,49,83
+rotate:90
+2LEG 2
+bounds:2746,271,43,68
+offsets:1,1,45,70
+rotate:90
+3BODY
+bounds:333,14,348,474
+rotate:90
+3EYE CLOSED
+bounds:2362,2,179,126
+rotate:90
+3LEG 1
+bounds:2117,33,47,81
+offsets:1,1,49,83
+3LEG 2
+bounds:2746,226,43,68
+offsets:1,1,45,70
+rotate:90
+4BODY
+bounds:1749,45,366,317
+4EYE CLOSED
+bounds:2488,183,179,126
+rotate:90
+4LEG 1
+bounds:2166,33,47,81
+offsets:1,1,49,83
+4LEG 2
+bounds:2746,181,43,68
+offsets:1,1,45,70
+rotate:90
+5BODY
+bounds:2,5,357,329
+rotate:90
+5EYE CLOSED
+bounds:2490,2,179,126
+rotate:90
+5LEG 1
+bounds:2215,33,47,81
+offsets:1,1,49,83
+5LEG 2
+bounds:2746,136,43,68
+offsets:1,1,45,70
+rotate:90
+6BODY
+bounds:809,14,348,319
+rotate:90
+6EYE CLOSED
+bounds:2616,183,179,126
+rotate:90
+6LEG 1
+bounds:2264,33,47,81
+offsets:1,1,49,83
+6LEG 2
+bounds:2746,91,43,68
+offsets:1,1,45,70
+rotate:90
+BODY
+bounds:1440,14,348,307
+rotate:90
+EYE CLOSED
+bounds:2618,2,179,126
+rotate:90
+LEG 1
+bounds:2313,33,47,81
+offsets:1,1,49,83
+LEG 2
+bounds:2746,46,43,68
+offsets:1,1,45,70
+rotate:90
+TREE
+bounds:2117,116,241,246

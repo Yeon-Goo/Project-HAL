@@ -1,0 +1,78 @@
+monster_30.png
+size:802,548
+filter:Linear,Linear
+pma:true
+2ARM A1
+bounds:2,4,52,44
+offsets:3,5,56,50
+rotate:90
+2ARM A2
+bounds:140,4,22,52
+offsets:1,1,28,54
+2ARM A3
+bounds:572,2,78,176
+offsets:1,1,80,178
+2BODY
+bounds:482,175,79,184
+offsets:1,1,81,186
+2HEAD
+bounds:278,12,95,108
+offsets:1,1,97,110
+rotate:90
+2SMOKE
+bounds:2,303,243,168
+rotate:90
+2WING A
+bounds:388,8,182,158
+2WING B
+bounds:433,361,110,185
+3ARM A1
+bounds:48,4,52,44
+offsets:3,5,56,50
+rotate:90
+3ARM A2
+bounds:164,4,22,52
+offsets:1,1,28,54
+3ARM A3
+bounds:279,112,89,189
+offsets:1,1,92,191
+3BODY
+bounds:704,364,78,182
+offsets:1,1,80,184
+3HEAD
+bounds:652,71,89,107
+offsets:1,1,91,110
+3SMOKE
+bounds:2,58,243,168
+rotate:90
+3WING A
+bounds:545,364,182,157
+offsets:1,0,184,157
+rotate:90
+3WING B
+bounds:172,109,105,192
+offsets:0,5,105,197
+ARM A1
+bounds:94,4,52,44
+offsets:3,5,56,50
+rotate:90
+ARM A2
+bounds:342,303,22,52
+offsets:1,1,28,54
+ARM A3
+bounds:342,357,89,189
+offsets:1,1,92,191
+BODY
+bounds:722,180,78,182
+offsets:1,1,80,184
+HEAD
+bounds:188,2,88,105
+offsets:1,1,90,107
+SMOKE
+bounds:172,303,243,168
+rotate:90
+WING A
+bounds:563,180,182,157
+rotate:90
+WING B
+bounds:370,168,110,187

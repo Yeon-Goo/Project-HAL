@@ -1,0 +1,146 @@
+monster_21.png
+size:2342,270
+filter:Linear,Linear
+pma:true
+2ARM A1
+bounds:1749,124,114,144
+offsets:2,1,117,146
+2ARM B1
+bounds:2066,10,123,132
+offsets:1,1,125,134
+2ARM B2
+bounds:749,8,65,75
+offsets:1,1,67,77
+rotate:90
+2BODY
+bounds:1310,102,155,166
+offsets:1,1,157,175
+2HAND B
+bounds:772,80,269,188
+offsets:1,1,271,190
+2HEAD
+bounds:656,3,70,91
+offsets:11,1,82,93
+rotate:90
+2HEAD EYES
+bounds:60,6,28,7
+offsets:1,5,30,14
+2HEAD EYES CLOSED
+bounds:2,4,23,10
+offsets:1,1,25,12
+rotate:90
+2HIP
+bounds:1578,12,88,101
+offsets:1,1,90,103
+rotate:90
+2LEG 1
+bounds:924,3,78,75
+offsets:1,1,80,82
+2LEG 2
+bounds:241,3,60,70
+offsets:1,1,62,72
+rotate:90
+2LEG 3
+bounds:1998,228,60,40
+offsets:1,1,62,42
+2SHIELD
+bounds:241,65,203,190
+offsets:1,1,207,192
+rotate:90
+3ARM A1
+bounds:1624,115,123,153
+offsets:2,1,126,155
+3ARM B1
+bounds:1865,126,131,142
+offsets:1,1,133,145
+3ARM B2
+bounds:579,5,66,75
+offsets:1,1,68,77
+rotate:90
+3BODY
+bounds:1467,102,155,166
+offsets:17,1,173,175
+3HAND B
+bounds:2066,144,274,124
+offsets:1,4,276,132
+3HEAD
+bounds:1356,9,104,91
+offsets:1,1,106,93
+3HEAD EYES
+bounds:14,5,22,14
+offsets:1,1,24,16
+rotate:90
+3HEAD EYES CLOSED
+bounds:60,15,12,9
+offsets:1,1,14,11
+rotate:90
+3HIP
+bounds:1681,12,88,101
+offsets:1,1,90,103
+3HIP CLOTH
+bounds:1234,2,53,86
+offsets:1,1,55,88
+3LEG 1
+bounds:1004,3,75,75
+offsets:1,1,79,82
+3LEG 2
+bounds:313,3,60,70
+offsets:1,1,62,72
+rotate:90
+3LEG 3
+bounds:1998,186,60,40
+offsets:1,1,62,42
+3SHIELD
+bounds:590,75,193,180
+offsets:2,2,198,184
+rotate:90
+ARM A1
+bounds:1043,85,129,183
+offsets:1,1,131,185
+ARM B1
+bounds:1174,90,134,178
+offsets:1,1,136,180
+ARM B2
+bounds:1289,13,65,75
+offsets:1,1,67,77
+BODY
+bounds:433,73,155,195
+offsets:1,1,157,197
+BODY CAPE
+bounds:457,4,120,67
+offsets:1,1,122,69
+HAND B
+bounds:1771,4,293,118
+offsets:2,1,300,126
+HEAD
+bounds:1462,10,90,114
+offsets:1,1,92,116
+rotate:90
+HEAD EYES
+bounds:2281,68,74,39
+offsets:4,5,82,49
+rotate:90
+HEAD EYES ACC
+bounds:30,8,19,28
+offsets:3,3,24,33
+rotate:90
+HIP
+bounds:2191,41,88,101
+offsets:1,1,90,103
+LEG 1
+bounds:826,3,96,75
+offsets:1,1,99,82
+LEG 2
+bounds:385,3,60,70
+offsets:1,1,62,72
+rotate:90
+LEG 3
+bounds:1998,124,60,40
+offsets:1,1,62,42
+rotate:90
+SHIELD
+bounds:2,29,237,239
+offsets:1,1,239,241
+SHIELD EYES
+bounds:1081,6,151,77
+offsets:4,4,159,85

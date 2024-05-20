@@ -1,0 +1,68 @@
+monster_02.png
+size:1902,292
+filter:Linear,Linear
+pma:true
+ANTLER
+bounds:608,4,286,212
+rotate:90
+ARM 1 A
+bounds:1596,116,139,174
+offsets:1,1,141,177
+ARM 1 B
+bounds:822,78,212,200
+offsets:1,1,214,202
+rotate:90
+ARM 1 C
+bounds:1614,7,184,107
+offsets:1,1,186,109
+ARM 2 A
+bounds:1737,165,125,154
+offsets:1,1,139,160
+rotate:90
+ARM 2 B
+bounds:1420,105,185,174
+offsets:1,2,187,177
+rotate:90
+ARM 2 C
+bounds:1326,3,155,97
+offsets:1,1,157,99
+BODY
+bounds:2,20,270,353
+rotate:90
+CHAIN 1A
+bounds:1055,2,156,92
+offsets:0,1,156,93
+CHAIN 1B
+bounds:1024,96,216,194
+offsets:0,0,217,194
+CHAIN 2A
+bounds:1483,10,129,93
+CHAIN 2B
+bounds:1242,102,176,188
+EYES CLOSE
+bounds:1800,38,76,85
+offsets:2,1,79,87
+rotate:90
+HEAD
+bounds:357,16,274,249
+offsets:1,1,276,251
+rotate:90
+LEG 2 A
+bounds:1213,2,111,92
+offsets:1,3,114,96
+LEG 2 A(2)
+bounds:903,9,82,67
+offsets:1,5,86,73
+LEG 2 B
+bounds:987,2,74,66
+offsets:1,1,76,68
+rotate:90
+LEG 2 B(2)
+bounds:822,5,79,71
+offsets:1,1,81,73
+LEG 2 C
+bounds:1822,120,78,43
+offsets:1,1,80,45
+LEG 2 C(2)
+bounds:1737,116,83,47
+offsets:1,1,86,49

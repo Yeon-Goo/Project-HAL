@@ -1,0 +1,65 @@
+monster_18.png
+size:813,1066
+filter:Linear,Linear
+pma:true
+2ARM 1
+bounds:511,9,85,83
+offsets:1,1,87,85
+rotate:90
+2ARM 2
+bounds:231,114,79,77
+offsets:1,2,82,80
+rotate:90
+2EYE CLOSE
+bounds:342,2,167,92
+2HEAD
+bounds:524,837,227,287
+rotate:90
+2LEG 1
+bounds:231,333,62,100
+rotate:90
+2LEG 2
+bounds:231,269,62,98
+rotate:90
+2UPPER
+bounds:2,397,510,331
+3ARM 1
+bounds:596,9,85,83
+offsets:1,1,87,85
+rotate:90
+3ARM 2
+bounds:310,114,79,77
+offsets:1,2,82,80
+rotate:90
+3EYE CLOSE
+bounds:2,2,168,92
+3HEAD
+bounds:524,608,227,287
+rotate:90
+3LEG 1
+bounds:333,333,62,100
+rotate:90
+3LEG 2
+bounds:331,269,62,98
+rotate:90
+3UPPER
+bounds:2,730,520,334
+ARM 1
+bounds:681,9,85,83
+offsets:1,1,87,85
+rotate:90
+ARM 2
+bounds:389,114,79,77
+offsets:1,2,82,80
+rotate:90
+EYE CLOSE
+bounds:172,2,168,92
+HEAD
+bounds:2,108,227,287
+LEG 1
+bounds:435,295,62,100
+LEG 2
+bounds:431,195,62,98
+UPPER
+bounds:514,96,510,293
+rotate:90

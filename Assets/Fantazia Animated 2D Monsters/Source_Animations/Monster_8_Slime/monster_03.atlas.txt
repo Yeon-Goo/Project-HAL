@@ -1,0 +1,39 @@
+monster_03.png
+size:571,205
+filter:Linear,Linear
+pma:true
+ANGEL WING 1
+bounds:320,19,98,57
+offsets:1,1,99,58
+ANGEL WING 2
+bounds:511,30,76,57
+rotate:90
+BIRD WING 1
+bounds:398,86,117,77
+offsets:0,0,118,77
+rotate:90
+BIRD WING 2
+bounds:420,7,89,77
+offsets:0,1,89,78
+BODY
+bounds:2,29,227,174
+DEMON WING 1
+bounds:275,78,125,69
+offsets:0,1,125,70
+rotate:90
+DEMON WING 2
+bounds:231,2,87,72
+EAR 1
+bounds:477,108,92,95
+EAR 2
+bounds:346,83,50,120
+EYES
+bounds:231,76,127,42
+offsets:1,1,129,44
+rotate:90
+EYES CLOSED
+bounds:2,2,126,25
+offsets:2,1,129,27
+MOUTH
+bounds:130,16,38,11
+offsets:1,1,40,13

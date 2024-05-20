@@ -1,0 +1,38 @@
+monster_07.png
+size:2495,453
+filter:Linear,Linear
+pma:true
+2BODY
+bounds:2,3,448,435
+offsets:1,1,450,437
+rotate:90
+2EYE CLOSED
+bounds:2165,269,265,182
+offsets:1,1,267,184
+2MOUTH
+bounds:1262,47,404,302
+offsets:1,1,406,304
+rotate:90
+3BODY
+bounds:845,35,415,416
+offsets:2,1,418,418
+3EYE CLOSED
+bounds:2349,22,245,144
+offsets:1,1,247,147
+rotate:90
+3MOUTH
+bounds:1870,47,404,293
+offsets:1,1,406,295
+rotate:90
+BODY
+bounds:439,3,448,404
+offsets:13,1,462,406
+rotate:90
+EYE CLOSED
+bounds:2165,2,265,182
+offsets:1,1,267,184
+rotate:90
+MOUTH
+bounds:1566,47,404,302
+offsets:1,1,406,304
+rotate:90

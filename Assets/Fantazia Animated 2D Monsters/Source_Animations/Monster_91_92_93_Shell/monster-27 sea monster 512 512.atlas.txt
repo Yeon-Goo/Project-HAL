@@ -1,0 +1,96 @@
+monster-27 sea monster 512 512.png
+size:1583,558
+filter:Linear,Linear
+pma:true
+2ARM A1
+bounds:882,351,121,205
+offsets:1,1,140,207
+2ARM A2
+bounds:1015,2,141,81
+offsets:1,7,143,95
+rotate:90
+2ARM A3
+bounds:724,72,97,239
+offsets:1,1,99,242
+2ARM B1
+bounds:1075,186,175,183
+offsets:1,1,177,185
+2ARMOR
+bounds:2,276,280,209
+offsets:2,1,283,211
+rotate:90
+2BODY
+bounds:427,288,250,268
+2EYES CLOSED
+bounds:1282,99,134,94
+offsets:1,1,136,96
+2EYES OPEN
+bounds:925,3,109,88
+offsets:1,1,111,90
+rotate:90
+2LEG A
+bounds:1098,4,90,180
+offsets:8,4,111,195
+2LEG B
+bounds:1433,430,126,148
+rotate:90
+3ARM A1
+bounds:950,145,123,204
+offsets:5,1,147,207
+3ARM A2
+bounds:1433,132,138,85
+offsets:2,4,141,95
+3ARM A3
+bounds:778,324,102,232
+offsets:2,1,109,234
+3ARM B1
+bounds:1005,371,176,185
+offsets:1,1,178,187
+3ARMOR
+bounds:213,280,276,212
+offsets:1,1,278,214
+rotate:90
+3BODY
+bounds:2,6,257,268
+3EYES CLOSED
+bounds:819,16,104,54
+offsets:2,21,107,76
+3EYES OPEN
+bounds:1282,15,100,82
+offsets:1,1,103,84
+3LEG A
+bounds:1190,4,90,180
+offsets:8,4,111,195
+3LEG B
+bounds:1275,430,126,148
+rotate:90
+ARM A1
+bounds:823,114,125,208
+offsets:1,1,145,211
+ARM A2
+bounds:1433,219,141,81
+offsets:1,7,143,95
+ARM A3
+bounds:679,313,97,243
+offsets:5,1,103,267
+ARM B1
+bounds:1252,195,179,179
+offsets:1,1,182,181
+ARMOR
+bounds:261,5,273,209
+offsets:1,1,275,211
+rotate:90
+BODY
+bounds:472,18,250,268
+EYES CLOSED
+bounds:724,12,93,58
+offsets:22,22,136,96
+EYES OPEN
+bounds:1384,15,100,82
+offsets:1,1,103,84
+LEG A
+bounds:1183,376,90,180
+offsets:8,0,111,195
+LEG B
+bounds:1433,302,126,148
+rotate:90

@@ -1,0 +1,48 @@
+monster_19.png
+size:2750,329
+filter:Linear,Linear
+pma:true
+2ARM 1
+bounds:1868,39,178,238
+rotate:90
+2ARM 2
+bounds:2108,29,139,188
+2BODY
+bounds:1366,2,249,218
+3BODY
+bounds:1366,2,249,218
+2HEAD
+bounds:475,29,295,298
+2SCYTHE
+bounds:2,4,323,471
+offsets:1,1,442,473
+rotate:90
+3ARM 1
+bounds:2270,149,178,238
+rotate:90
+3ARM 2
+bounds:2249,8,139,188
+rotate:90
+3DAGGER
+bounds:1366,222,105,485
+offsets:2,2,108,488
+rotate:90
+3HEAD
+bounds:772,29,295,298
+ARM 1
+bounds:2510,149,178,238
+rotate:90
+ARM 2
+bounds:2439,8,139,188
+rotate:90
+BODY
+bounds:1617,2,249,218
+EYE CLOSE 2
+bounds:2629,6,141,96
+rotate:90
+HEAD
+bounds:1069,29,295,298
+STAFF
+bounds:1868,219,108,400
+offsets:1,2,111,404
+rotate:90

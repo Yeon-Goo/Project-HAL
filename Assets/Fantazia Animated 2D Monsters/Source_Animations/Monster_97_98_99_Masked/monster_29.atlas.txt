@@ -1,0 +1,122 @@
+monster_29.png
+size:540,1901
+filter:Linear,Linear
+pma:true
+2BODY
+bounds:2,1355,184,219
+offsets:1,1,193,221
+rotate:90
+2EYES CLOSED
+bounds:2,1712,187,254
+offsets:1,1,189,257
+rotate:90
+2HAIR
+bounds:170,617,184,187
+offsets:1,1,186,189
+rotate:90
+2HEAD
+bounds:258,1712,187,254
+offsets:1,1,189,257
+rotate:90
+2LEG A1
+bounds:444,1406,133,70
+offsets:1,1,135,73
+rotate:90
+2LEG A2
+bounds:173,803,204,188
+offsets:1,1,206,190
+2LEG A3
+bounds:2,736,202,166
+offsets:1,1,204,169
+rotate:90
+2LEG B1
+bounds:2,82,71,102
+offsets:3,2,76,106
+rotate:90
+2LEG B2
+bounds:359,370,192,169
+offsets:1,1,232,171
+rotate:90
+2LEG B3
+bounds:2,340,190,159
+offsets:2,1,194,161
+rotate:90
+3BODY
+bounds:223,1355,184,219
+offsets:1,1,193,221
+rotate:90
+3EYES CLOSED
+bounds:2,1541,169,267
+offsets:2,1,172,269
+rotate:90
+3HAIR
+bounds:170,431,184,187
+offsets:1,1,186,189
+rotate:90
+3HEAD
+bounds:271,1541,169,267
+offsets:2,1,172,269
+rotate:90
+3LEG A1
+bounds:444,1271,133,70
+offsets:1,1,135,73
+rotate:90
+3LEG A2
+bounds:352,193,182,175
+offsets:1,1,184,189
+3LEG A3
+bounds:2,532,202,166
+offsets:1,1,204,169
+rotate:90
+3LEG B1
+bounds:2,9,71,102
+offsets:3,2,76,106
+rotate:90
+3LEG B2
+bounds:329,31,170,160
+offsets:1,33,172,206
+3LEG B3
+bounds:379,768,191,159
+offsets:1,1,193,161
+rotate:90
+BODY
+bounds:2,1169,184,219
+offsets:1,1,193,221
+rotate:90
+EYES CLOSED
+bounds:2,940,169,227
+offsets:2,1,172,230
+HAIR
+bounds:163,245,184,187
+offsets:1,1,186,189
+rotate:90
+HEAD
+bounds:173,993,169,227
+offsets:2,1,172,230
+rotate:90
+LEAF
+bounds:402,961,173,117
+offsets:1,1,175,119
+rotate:90
+LEG A1
+bounds:429,1136,133,70
+offsets:1,1,135,73
+rotate:90
+LEG A2
+bounds:223,1164,204,189
+offsets:1,1,206,191
+LEG A3
+bounds:359,564,202,166
+offsets:1,1,204,169
+rotate:90
+LEG B1
+bounds:106,2,71,102
+offsets:3,2,76,106
+rotate:90
+LEG B2
+bounds:157,75,170,168
+offsets:1,50,172,219
+LEG B3
+bounds:2,155,183,153
+offsets:1,1,185,155
+rotate:90
