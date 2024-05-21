@@ -12,12 +12,19 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     Image[] itemImages = new Image[numSlots];
     Item[] items = new Item[numSlots];
     GameObject[] slots = new GameObject[numSlots];
+    GameObject duplicatedSlot;
+    RectTransform duplicatedSlot_RectTransform;
+    GameObject duplicatedSlot_quantityTxt;
+    GameObject duplicatedSlot_Image;
 
     GameObject inventory_background;
     RectTransform pivot_RectTransform;
     Vector2 pivot_position;
     float slot_width;
     float slot_height;
+
+    [SerializeField]
+    bool is_item_clicked = false;
 
     // Start is called before the first frame update
     void Start()
@@ -42,33 +49,47 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     // Update is called once per frame
     void Update()
     {
-        
+        if (is_item_clicked)
+        {
+            duplicatedSlot_RectTransform.position = Input.mousePosition;
+        }
     }
 
     public void CreateSlots()
     {
         if (slotPrefab != null)
         {
-            
             for (int i = 0; i < numSlots; i++)
             {
                 GameObject newSlot = Instantiate(slotPrefab);
                 newSlot.name = "ItemSlot_" + i;
 
                 // gameObject.transform.GetChild(0)은 InventoryBackground
-                newSlot.transform.SetParent(gameObject.transform.GetChild(0).transform);
+                newSlot.transform.SetParent(inventory_background.transform);
 
                 slots[i] = newSlot;
 
                 // newSlot.transform.GetChild(1)은 ItemImage
                 itemImages[i] = newSlot.transform.GetChild(1).GetComponent<Image>();
             }
+
+            duplicatedSlot = Instantiate(slotPrefab);
+            duplicatedSlot_RectTransform = duplicatedSlot.GetComponent<RectTransform>();
+            //duplicatedSlot_quantityTxt = duplicatedSlot.transform.GetComponentsInChildren<TextMeshProUGUI>()[0];
+            duplicatedSlot_Image = duplicatedSlot.transform.GetChild(1).gameObject;
+
+            GameObject duplicatedSlot_background = duplicatedSlot.transform.GetChild(0).gameObject;
+            GameObject duplicatedSlot_tray = duplicatedSlot_background.transform.GetChild(0).gameObject;
+            duplicatedSlot_background.GetComponent<Image>().enabled = false;
+            duplicatedSlot_tray.GetComponent<Image>().enabled = false;
+            duplicatedSlot.name = "DuplicateSlot";
+            duplicatedSlot.transform.SetParent(inventory_background.transform);
         }
     }
 
     public bool AddItem(Item itemToAdd)
     {
-        for (int i = 0; i < items.Length; i++)
+        for (int i = 0; i < items.Length - 1; i++)
         {
             if (items[i] != null && items[i].itemType == itemToAdd.itemType && itemToAdd.stackable == true)
             {
@@ -104,28 +125,34 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        Vector2 mouse_position = eventData.position;
+        int clicked_slot = GetClickedSlot(eventData.position);
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            Vector2 mouse_position = eventData.position;
-            Debug.Log("Click at " + mouse_position);
-
-            
-            Debug.Log(pivot_position);            
-            for (int i = 0; i < 1; i++)
+            if (0 <= clicked_slot && clicked_slot <= numSlots)
             {
-                Vector2 slot_pos_leftbotton = new Vector2(pivot_position.x + 40 * i, pivot_position.y - slot_height);
-                Vector2 slot_pos_rightupper = new Vector2(slot_pos_leftbotton.x + slot_width, pivot_position.y - slot_height);
-
-                //Debug.Log("slot" + i + " pos : (" + pivot_position.x + ""
-
-                /*
-                if (slot_position.x - slot_width <= mouse_position.x && mouse_position.x <= slot_position.x && slot_position.y - slot_height <= mouse_position.y && mouse_position.y <= slot_position.y)
+                Debug.Log("Click at slot_" + clicked_slot);
+                if (is_item_clicked)
                 {
-                    Debug.Log("Click at slot_" + i);
+                    is_item_clicked = false;
                 }
-                */
+                else
+                {
+                    if (itemImages[clicked_slot].IsActive())
+                    {
+                        Debug.Log(itemImages[clicked_slot]);
+                        is_item_clicked = true;
+                        CopySlot(slots[clicked_slot], duplicatedSlot);
+                    }
+                }
             }
-            
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            if (0 <= clicked_slot && clicked_slot <= numSlots)
+            {
+                Debug.Log("Right Click at slot_" + clicked_slot);
+            }
         }
     }
 
@@ -147,5 +174,30 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     public void OnPointerExit(PointerEventData eventData)
     {
         //Debug.Log("Pointer Exit");
+    }
+
+    private int GetClickedSlot(Vector2 mouse_position)
+    {
+        for (int i = 0; i < numSlots; i++)
+        {
+            Vector2 slot_pos_leftbotton = new Vector2(pivot_position.x + (40 + slot_width) * i, pivot_position.y - slot_height);
+            Vector2 slot_pos_rightupper = new Vector2(slot_pos_leftbotton.x + slot_width, pivot_position.y);
+
+            if (slot_pos_leftbotton.x <= mouse_position.x && mouse_position.x <= slot_pos_rightupper.x && slot_pos_leftbotton.y <= mouse_position.y && mouse_position.y <= slot_pos_rightupper.y)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    private void CopySlot(GameObject src, GameObject dst)
+    {
+        TextMeshProUGUI src_tray = src.transform.GetComponentsInChildren<TextMeshProUGUI>()[0];
+        GameObject src_image = src.transform.GetChild(1).gameObject;
+
+        TextMeshProUGUI dst_tray = src_tray;
+        GameObject dst_image = src_image;
     }
 }
