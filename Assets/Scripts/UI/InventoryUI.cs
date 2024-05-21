@@ -13,6 +13,12 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     Item[] items = new Item[numSlots];
     GameObject[] slots = new GameObject[numSlots];
 
+    GameObject inventory_background;
+    RectTransform pivot_RectTransform;
+    Vector2 pivot_position;
+    float slot_width;
+    float slot_height;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +30,13 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
 #endif
             return;
         }
+        inventory_background = gameObject.transform.GetChild(0).transform.gameObject;
+        pivot_RectTransform = inventory_background.GetComponent<RectTransform>();
+        pivot_position = new Vector2(1920 / 2, 1080) + pivot_RectTransform.anchoredPosition + new Vector2(-pivot_RectTransform.rect.width / 2, pivot_RectTransform.rect.height / 2);
+
         CreateSlots();
+        slot_width = slots[0].GetComponent<RectTransform>().rect.width;
+        slot_height = slots[0].GetComponent<RectTransform>().rect.height;
     }
 
     // Update is called once per frame
@@ -97,28 +109,30 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
             Vector2 mouse_position = eventData.position;
             Debug.Log("Click at " + mouse_position);
 
-            RectTransform pivot_RectTransform = slots[0].transform.parent.gameObject.GetComponent<RectTransform>();
-            Vector2 pivot_position = new Vector2(1920 / 2, 1080) + pivot_RectTransform.anchoredPosition;
-            float slot_width = pivot_RectTransform.rect.width;
-            float slot_height = pivot_RectTransform.rect.height;
-            for (int i = 0; i < numSlots; i++)
+            
+            Debug.Log(pivot_position);            
+            for (int i = 0; i < 1; i++)
             {
-                RectTransform slot_RectTransform = slots[i].GetComponent<RectTransform>();
-                Vector2 slot_position = pivot_position + slot_RectTransform.anchoredPosition;
-                Debug.Log("slot_" + i + " : (" + (slot_position.x - slot_width) + ", " + (slot_position.y - slot_height) + " ~ (" + slot_position.x + ", " + slot_position.y + ")");
+                Vector2 slot_pos_leftbotton = new Vector2(pivot_position.x + 40 * i, pivot_position.y - slot_height);
+                Vector2 slot_pos_rightupper = new Vector2(slot_pos_leftbotton.x + slot_width, pivot_position.y - slot_height);
 
+                //Debug.Log("slot" + i + " pos : (" + pivot_position.x + ""
 
+                /*
                 if (slot_position.x - slot_width <= mouse_position.x && mouse_position.x <= slot_position.x && slot_position.y - slot_height <= mouse_position.y && mouse_position.y <= slot_position.y)
                 {
                     Debug.Log("Click at slot_" + i);
                 }
+                */
             }
+            
         }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log("Pointer Drag");
+        Vector2 mouse_position = eventData.position;
+        Debug.Log("Drag at " + mouse_position);
         //throw new System.NotImplementedException();
     }
 
