@@ -36,12 +36,9 @@ public class EnemyEntity : Entity
             hpbar_ui = Instantiate(hpbar_prefab);
             // Set HPBarUI as a child of this GameObject
             hpbar_ui.transform.SetParent(this.transform, false);
-
-            if (hpbar_ui == null) return;
-            hpbar_ui.Init(this);
         }
 
-        if (hpbar_ui == null) return;
+
         hpbar_ui.Init(this);
 
         ResetEntity();
