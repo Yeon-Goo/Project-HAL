@@ -21,7 +21,22 @@ public class EnemyEntity : Entity
     void Start()
     {
         // Load HPManager
-        stat_manager = Resources.Load<StatManager>("ScriptableObjects/DummyHPManager");
+        if (this.gameObject.name.Contains("Dummy"))
+        {
+            stat_manager = Resources.Load<StatManager>("ScriptableObjects/DummyHPManager");
+        }
+        else if (this.gameObject.name.Contains("king_slime"))
+        {
+            stat_manager = Resources.Load<StatManager>("ScriptableObjects/king_slimeHPManager");
+        }
+        if (this.gameObject.name.Contains("rupin"))
+        {
+            stat_manager = Resources.Load<StatManager>("ScriptableObjects/rupinHPManager");
+        }
+        else if (this.gameObject.name.Contains("green_slime"))
+        {
+            stat_manager = Resources.Load<StatManager>("ScriptableObjects/green_slimeHPManager");
+        }
         if (stat_manager == null) return;
 
         // Load StatManager
