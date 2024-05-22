@@ -30,11 +30,16 @@ public class EnemyEntity : Entity
 
         // Load HPBarUI Prefab
         hpbar_prefab = Resources.Load<HPBarUI>("Prefabs/UI/HPBar/EnemyHPBarUI");
-        if (hpbar_prefab == null) return;
-        // Instantiate HPBarUI
-        hpbar_ui = Instantiate(hpbar_prefab);
-        // HPBarUI를 this의 자식으로 생성
-        hpbar_ui.transform.SetParent(this.transform, false);
+        if (hpbar_ui == null)
+        {
+            // Instantiate HPBarUI if it doesn't exist
+            hpbar_ui = Instantiate(hpbar_prefab);
+            // Set HPBarUI as a child of this GameObject
+            hpbar_ui.transform.SetParent(this.transform, false);
+
+            if (hpbar_ui == null) return;
+            hpbar_ui.Init(this);
+        }
 
         if (hpbar_ui == null) return;
         hpbar_ui.Init(this);
