@@ -5,9 +5,6 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class EnemyEntity : Entity
 {
-    // EnemyEntity의 Stat을 관리하는 변수
-    //public EnemyStatManager enemy_stat_manager;
-
     private int damage_scale = 1;
     public int arrowstack = 0;
     Coroutine damage_coroutine;
@@ -23,25 +20,26 @@ public class EnemyEntity : Entity
         // Load HPManager
         if (this.gameObject.name.Contains("Dummy"))
         {
-            stat_manager = Resources.Load<StatManager>("ScriptableObjects/DummyHPManager");
+            StatManager originalStatManager = Resources.Load<StatManager>("ScriptableObjects/DummyHPManager");
+            stat_manager = Instantiate(originalStatManager);
         }
         else if (this.gameObject.name.Contains("king_slime"))
         {
-            stat_manager = Resources.Load<StatManager>("ScriptableObjects/king_slimeHPManager");
+            StatManager originalStatManager = Resources.Load<StatManager>("ScriptableObjects/king_slimeHPManager");
+            stat_manager = Instantiate(originalStatManager);
         }
-        if (this.gameObject.name.Contains("rupin"))
+        else if (this.gameObject.name.Contains("rupin"))
         {
-            stat_manager = Resources.Load<StatManager>("ScriptableObjects/rupinHPManager");
+            StatManager originalStatManager = Resources.Load<StatManager>("ScriptableObjects/rupinHPManager");
+            stat_manager = Instantiate(originalStatManager);
         }
         else if (this.gameObject.name.Contains("green_slime"))
         {
-            stat_manager = Resources.Load<StatManager>("ScriptableObjects/green_slimeHPManager");
+            StatManager originalStatManager = Resources.Load<StatManager>("ScriptableObjects/green_slimeHPManager");
+            stat_manager = Instantiate(originalStatManager);
         }
-        if (stat_manager == null) return;
 
-        // Load StatManager
-        //stat_manager = Resources.Load<EnemyStatManager>("ScriptableObjects/EnemyStatManager");
-        //if (stat_manager == null) return;
+        if (stat_manager == null) return;
 
         // Load HPBarUI Prefab
         hpbar_prefab = Resources.Load<HPBarUI>("Prefabs/UI/HPBar/EnemyHPBarUI");
@@ -52,7 +50,6 @@ public class EnemyEntity : Entity
             // Set HPBarUI as a child of this GameObject
             hpbar_ui.transform.SetParent(this.transform, false);
         }
-
 
         hpbar_ui.Init(this);
 
