@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
+using System.Security.Cryptography;
 
 public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
@@ -43,7 +44,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
         pivot_position = new Vector2(1920 / 2, 1080) + pivot_RectTransform.anchoredPosition + new Vector2(-pivot_RectTransform.rect.width / 2, pivot_RectTransform.rect.height / 2);
 
         CreateSlots();
-        Debug.Log("Slots Created");
+        
         slot_width = slots[0].GetComponent<RectTransform>().rect.width;
         slot_height = slots[0].GetComponent<RectTransform>().rect.height;
 
@@ -107,7 +108,6 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                     qtyText.enabled = true;
                     qtyText.text = items[i].GetQuantity().ToString();
                 }
-                //Debug.Log("New Quantity = " + items[i].GetQuantity().ToString());
 
                 return true;
             }
@@ -126,7 +126,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                     qtyText.enabled = true;
                     qtyText.text = items[i].GetQuantity().ToString();
                 }
-                //Debug.Log("New Quantity = " + items[i].GetQuantity().ToString());
+
                 return true;
             }
         }
@@ -141,18 +141,28 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
         {
             if (0 <= clicked_slot && clicked_slot <= numSlots)
             {
-                Debug.Log("Click at slot_" + clicked_slot);
+                //Debug.Log("Click at slot_" + clicked_slot);
                 if (is_item_clicked)
                 {
                     is_item_clicked = false;
+
+                    TMP_Text qty_Text = duplicatedSlot.transform.GetComponentsInChildren<TMP_Text>()[0];
+                    Image image = duplicatedSlot.transform.GetChild(1).GetComponent<Image>();
+                    qty_Text.enabled = false;
+                    image.enabled = false;
                 }
                 else
                 {
                     if (itemImages[clicked_slot].IsActive())
                     {
-                        Debug.Log(itemImages[clicked_slot]);
                         is_item_clicked = true;
                         CopySlot(slots[clicked_slot], duplicatedSlot);
+
+                        TMP_Text qty_Text = duplicatedSlot.transform.GetComponentsInChildren<TMP_Text>()[0];
+                        Image image = duplicatedSlot.transform.GetChild(1).GetComponent<Image>();
+
+                        qty_Text.enabled = true;
+                        image.enabled = true;
                     }
                 }
             }
@@ -169,7 +179,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     public void OnDrag(PointerEventData eventData)
     {
         Vector2 mouse_position = eventData.position;
-        Debug.Log("Drag at " + mouse_position);
+        //Debug.Log("Drag at " + mouse_position);
         //throw new System.NotImplementedException();
     }
 
@@ -204,10 +214,33 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
 
     private void CopySlot(GameObject src, GameObject dst)
     {
-        TextMeshProUGUI src_tray = src.transform.GetComponentsInChildren<TextMeshProUGUI>()[0];
-        GameObject src_image = src.transform.GetChild(1).gameObject;
+        TMP_Text src_qty_text = src.transform.GetComponentsInChildren<TMP_Text>()[0];
+        Image src_image = src.transform.GetChild(1).GetComponent<Image>();
 
-        TextMeshProUGUI dst_tray = src_tray;
-        GameObject dst_image = src_image;
+        TMP_Text dst_qty_Text = dst.transform.GetComponentsInChildren<TMP_Text>()[0];
+        Image dst_image = dst.transform.GetChild(1).GetComponent<Image>();
+
+        dst_qty_Text.text = src_qty_text.text;
+        dst_image.sprite = src_image.sprite;
+    }
+
+    private void ClearSlot(GameObject slot)
+    {
+        /*
+        items[i] = Instantiate(itemToAdd);
+        items[i].SetQuantity(1);
+        itemImages[i].sprite = itemToAdd.GetSprite();
+        itemImages[i].enabled = true;
+        InventorySlotUI slotScript = slots[i].GetComponent<InventorySlotUI>();
+        TMP_Text qtyText = slotScript.transform.GetComponentsInChildren<TMP_Text>()[0];
+
+        if (qtyText != null)
+        {
+            qtyText.enabled = true;
+            qtyText.text = items[i].GetQuantity().ToString();
+        }
+
+        return true;
+        */
     }
 }
