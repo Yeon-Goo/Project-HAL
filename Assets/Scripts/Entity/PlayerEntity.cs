@@ -134,7 +134,7 @@ public class PlayerEntity : Entity
         inventory_ui.transform.SetParent(this.transform, false);
         if (inventory_ui == null) return;
         inventory = this.transform.GetChild(3).gameObject;
-        if (inventory != null)   inventory.SetActive(false);
+        if (inventory == null) return;
 
         /*
         // Load CardUI Prefab

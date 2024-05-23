@@ -12,10 +12,11 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     Image[] itemImages = new Image[numSlots];
     Item[] items = new Item[numSlots];
     GameObject[] slots = new GameObject[numSlots];
+
     GameObject duplicatedSlot;
     RectTransform duplicatedSlot_RectTransform;
-    GameObject duplicatedSlot_quantityTxt;
-    GameObject duplicatedSlot_Image;
+    TextMeshProUGUI duplicatedSlot_quantityTxt;
+    Image duplicatedSlot_Image;
 
     GameObject inventory_background;
     RectTransform pivot_RectTransform;
@@ -42,8 +43,11 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
         pivot_position = new Vector2(1920 / 2, 1080) + pivot_RectTransform.anchoredPosition + new Vector2(-pivot_RectTransform.rect.width / 2, pivot_RectTransform.rect.height / 2);
 
         CreateSlots();
+        Debug.Log("Slots Created");
         slot_width = slots[0].GetComponent<RectTransform>().rect.width;
         slot_height = slots[0].GetComponent<RectTransform>().rect.height;
+
+        this.transform.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -75,8 +79,8 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
 
             duplicatedSlot = Instantiate(slotPrefab);
             duplicatedSlot_RectTransform = duplicatedSlot.GetComponent<RectTransform>();
-            //duplicatedSlot_quantityTxt = duplicatedSlot.transform.GetComponentsInChildren<TextMeshProUGUI>()[0];
-            duplicatedSlot_Image = duplicatedSlot.transform.GetChild(1).gameObject;
+            duplicatedSlot_quantityTxt = duplicatedSlot.transform.GetComponentsInChildren<TextMeshProUGUI>()[0];
+            duplicatedSlot_Image = duplicatedSlot.transform.GetComponentsInChildren<Image>()[0];
 
             GameObject duplicatedSlot_background = duplicatedSlot.transform.GetChild(0).gameObject;
             GameObject duplicatedSlot_tray = duplicatedSlot_background.transform.GetChild(0).gameObject;
@@ -96,10 +100,13 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                 items[i].SetQuantity(items[i].GetQuantity() + 1);
 
                 InventorySlotUI slotScript = slots[i].GetComponent<InventorySlotUI>();
-                TMP_Text qtyText = slotScript.qtyText;
+                TMP_Text qtyText = slotScript.transform.GetComponentsInChildren<TMP_Text>()[0];
 
-                qtyText.enabled = true;
-                qtyText.text = items[i].GetQuantity().ToString();
+                if (qtyText != null)
+                {
+                    qtyText.enabled = true;
+                    qtyText.text = items[i].GetQuantity().ToString();
+                }
                 //Debug.Log("New Quantity = " + items[i].GetQuantity().ToString());
 
                 return true;
@@ -112,10 +119,13 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                 itemImages[i].sprite = itemToAdd.GetSprite();
                 itemImages[i].enabled = true;
                 InventorySlotUI slotScript = slots[i].GetComponent<InventorySlotUI>();
-                TMP_Text qtyText = slotScript.qtyText;
+                TMP_Text qtyText = slotScript.transform.GetComponentsInChildren<TMP_Text>()[0];
 
-                qtyText.enabled = true;
-                qtyText.text = items[i].GetQuantity().ToString();
+                if (qtyText != null)
+                {
+                    qtyText.enabled = true;
+                    qtyText.text = items[i].GetQuantity().ToString();
+                }
                 //Debug.Log("New Quantity = " + items[i].GetQuantity().ToString());
                 return true;
             }
