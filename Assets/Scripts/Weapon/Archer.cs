@@ -293,7 +293,6 @@ public class Archer : Weapon
         StartCoroutine(ArrowBarrageCoroutine(slevel));
 
         HideCastingBar();
-        playerObject.GetComponent<PlayerDeck>().allLockOff();
         isCharging = false;
     }
     private void CancelCharging()
@@ -346,6 +345,7 @@ public class Archer : Weapon
             }
             yield return new WaitForSeconds(0.1f); // 0.1초 대기
         }
+        playerObject.GetComponent<PlayerDeck>().allLockOff();
     }
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
