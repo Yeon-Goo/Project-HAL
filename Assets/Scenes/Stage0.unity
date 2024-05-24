@@ -20567,6 +20567,10 @@ PrefabInstance:
       propertyPath: arrowPrefab
       value: 
       objectReference: {fileID: 8709906039647008244, guid: 929e51a49c9cab94382219165779aea0, type: 3}
+    - target: {fileID: 4428847904414546672, guid: 4133b24d84cd84e47a7cdd839cf8fe20, type: 3}
+      propertyPath: afterImagePrefab
+      value: 
+      objectReference: {fileID: 4080174129319838037, guid: cf6622ca3c76a734da85c54f31bb0429, type: 3}
     - target: {fileID: 7569069485596114041, guid: 4133b24d84cd84e47a7cdd839cf8fe20, type: 3}
       propertyPath: m_Name
       value: WeaponGroup
