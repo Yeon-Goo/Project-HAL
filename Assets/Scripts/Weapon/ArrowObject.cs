@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.UIElements;
 
 public class ArrowObject : MonoBehaviour
 {
@@ -49,6 +50,9 @@ public class ArrowObject : MonoBehaviour
                     enemy.arrowstack = 0;
                     damage_coroutine = StartCoroutine(enemy.DamageEntity(dmg, 0.0f, this.gameObject));
                 }
+                Vector2 effectPosition = transform.position;
+                Vector2 effectScale = new Vector2(3.0f, 3.0f); // 이펙트 크기 설정
+                EffectManager.Instance.PlayEffect("attackanim", effectPosition, effectScale);
             }
         }
     }
