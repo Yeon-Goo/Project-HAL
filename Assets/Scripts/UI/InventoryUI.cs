@@ -4,19 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
+using System.Security.Cryptography;
 
 public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointerEnterHandler, IPointerExitHandler
 {
     private GameObject slotPrefab;
     public const int numSlots = 5;
-    Image[] itemImages = new Image[numSlots];
-    Item[] items = new Item[numSlots];
-    GameObject[] slots = new GameObject[numSlots];
+    Image[] itemImages = new Image[numSlots + 1];
+    Item[] items = new Item[numSlots + 1];
+    GameObject[] slots = new GameObject[numSlots + 1];
 
-    GameObject duplicatedSlot;
     RectTransform duplicatedSlot_RectTransform;
-    TextMeshProUGUI duplicatedSlot_quantityTxt;
-    Image duplicatedSlot_Image;
 
     GameObject inventory_background;
     RectTransform pivot_RectTransform;
@@ -26,6 +24,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
 
     [SerializeField]
     bool is_item_clicked = false;
+    int clicked_slot;
 
     // Start is called before the first frame update
     void Start()
@@ -38,12 +37,12 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
 #endif
             return;
         }
-        inventory_background = gameObject.transform.GetChild(0).transform.gameObject;
+        inventory_background = gameObject.transform.GetChild(0).gameObject;
         pivot_RectTransform = inventory_background.GetComponent<RectTransform>();
         pivot_position = new Vector2(1920 / 2, 1080) + pivot_RectTransform.anchoredPosition + new Vector2(-pivot_RectTransform.rect.width / 2, pivot_RectTransform.rect.height / 2);
 
         CreateSlots();
-        Debug.Log("Slots Created");
+        
         slot_width = slots[0].GetComponent<RectTransform>().rect.width;
         slot_height = slots[0].GetComponent<RectTransform>().rect.height;
 
@@ -56,7 +55,20 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
         if (is_item_clicked)
         {
             duplicatedSlot_RectTransform.position = Input.mousePosition;
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (GetClickedSlot(Input.mousePosition) == -1)
+                {
+                    ClearSlot(clicked_slot);
+                    ClearSlot(numSlots);
+
+                    is_item_clicked = false;
+                }
+            }
         }
+
+        
     }
 
     public void CreateSlots()
@@ -77,18 +89,35 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                 itemImages[i] = newSlot.transform.GetChild(1).GetComponent<Image>();
             }
 
-            duplicatedSlot = Instantiate(slotPrefab);
-            duplicatedSlot_RectTransform = duplicatedSlot.GetComponent<RectTransform>();
-            duplicatedSlot_quantityTxt = duplicatedSlot.transform.GetComponentsInChildren<TextMeshProUGUI>()[0];
-            duplicatedSlot_Image = duplicatedSlot.transform.GetComponentsInChildren<Image>()[0];
-
-            GameObject duplicatedSlot_background = duplicatedSlot.transform.GetChild(0).gameObject;
-            GameObject duplicatedSlot_tray = duplicatedSlot_background.transform.GetChild(0).gameObject;
-            duplicatedSlot_background.GetComponent<Image>().enabled = false;
-            duplicatedSlot_tray.GetComponent<Image>().enabled = false;
-            duplicatedSlot.name = "DuplicateSlot";
+            GameObject duplicatedSlot = Instantiate(slotPrefab);
+            duplicatedSlot.name = "ItemDuplicateSlot";
             duplicatedSlot.transform.SetParent(inventory_background.transform);
+            slots[numSlots] = duplicatedSlot;
+            itemImages[numSlots] = duplicatedSlot.transform.GetChild(1).GetComponent<Image>();
+            duplicatedSlot_RectTransform = duplicatedSlot.GetComponent<RectTransform>();
+            // Disable Slot Background Image
+            duplicatedSlot.transform.GetChild(0).gameObject.GetComponent<Image>().enabled = false;
+            // Disable Slot Tray Image
+            duplicatedSlot.transform.GetChild(0).GetChild(0).gameObject.GetComponent<Image>().enabled = false;
         }
+    }
+
+    private void ClearSlot(int targetSlotNum)
+    {
+        items[targetSlotNum] = null;
+        itemImages[targetSlotNum].sprite = null;
+        itemImages[targetSlotNum].enabled = false;
+
+        InventorySlotUI slotScript = slots[targetSlotNum].GetComponent<InventorySlotUI>();
+        TMP_Text qtyText = slotScript.transform.GetComponentsInChildren<TMP_Text>()[0];
+
+        if (qtyText != null)
+        {
+            qtyText.enabled = false;
+            qtyText.text = "";
+        }
+
+        Resources.UnloadUnusedAssets();
     }
 
     public bool AddItem(Item itemToAdd)
@@ -104,10 +133,9 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
 
                 if (qtyText != null)
                 {
-                    qtyText.enabled = true;
+                    //qtyText.enabled = true;
                     qtyText.text = items[i].GetQuantity().ToString();
                 }
-                //Debug.Log("New Quantity = " + items[i].GetQuantity().ToString());
 
                 return true;
             }
@@ -126,7 +154,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                     qtyText.enabled = true;
                     qtyText.text = items[i].GetQuantity().ToString();
                 }
-                //Debug.Log("New Quantity = " + items[i].GetQuantity().ToString());
+
                 return true;
             }
         }
@@ -136,23 +164,39 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     public void OnPointerClick(PointerEventData eventData)
     {
         Vector2 mouse_position = eventData.position;
-        int clicked_slot = GetClickedSlot(eventData.position);
+        clicked_slot = GetClickedSlot(eventData.position);
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             if (0 <= clicked_slot && clicked_slot <= numSlots)
             {
-                Debug.Log("Click at slot_" + clicked_slot);
+                //Debug.Log("Click at slot_" + clicked_slot);
                 if (is_item_clicked)
                 {
                     is_item_clicked = false;
+
+                    TMP_Text qty_Text = slots[numSlots].transform.GetComponentsInChildren<TMP_Text>()[0];
+                    Image image = slots[numSlots].transform.GetChild(1).GetComponent<Image>();
+                    qty_Text.enabled = false;
+                    image.enabled = false;
                 }
                 else
                 {
                     if (itemImages[clicked_slot].IsActive())
                     {
-                        Debug.Log(itemImages[clicked_slot]);
                         is_item_clicked = true;
-                        CopySlot(slots[clicked_slot], duplicatedSlot);
+
+                        GameObject src = slots[clicked_slot];
+                        TMP_Text src_qty_text = src.transform.GetComponentsInChildren<TMP_Text>()[0];
+                        Image src_image = src.transform.GetChild(1).GetComponent<Image>();
+
+                        GameObject dst = slots[numSlots];
+                        TMP_Text dst_qty_Text = dst.transform.GetComponentsInChildren<TMP_Text>()[0];
+                        Image dst_image = dst.transform.GetChild(1).GetComponent<Image>();
+
+                        dst_qty_Text.text = src_qty_text.text;
+                        dst_qty_Text.enabled = true;
+                        dst_image.sprite = src_image.sprite;
+                        dst_image.enabled = true;
                     }
                 }
             }
@@ -169,7 +213,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     public void OnDrag(PointerEventData eventData)
     {
         Vector2 mouse_position = eventData.position;
-        Debug.Log("Drag at " + mouse_position);
+        //Debug.Log("Drag at " + mouse_position);
         //throw new System.NotImplementedException();
     }
 
@@ -202,12 +246,5 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
         return -1;
     }
 
-    private void CopySlot(GameObject src, GameObject dst)
-    {
-        TextMeshProUGUI src_tray = src.transform.GetComponentsInChildren<TextMeshProUGUI>()[0];
-        GameObject src_image = src.transform.GetChild(1).gameObject;
-
-        TextMeshProUGUI dst_tray = src_tray;
-        GameObject dst_image = src_image;
-    }
+    
 }

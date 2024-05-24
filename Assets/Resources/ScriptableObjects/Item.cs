@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 [CreateAssetMenu(menuName = "Item")]
 
@@ -24,6 +25,14 @@ public class Item : ScriptableObject
     }
     // Item의 타입
     public ItemTypeEnum itemType;
+
+    public Item(Item item)
+    {
+        this.objectName = item.objectName;
+        this.quantity = item.quantity;
+        this.stackable = item.stackable;
+        this.itemType = item.itemType;
+    }
 
     public string GetName()
     {
