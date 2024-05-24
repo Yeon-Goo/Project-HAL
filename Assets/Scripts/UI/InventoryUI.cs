@@ -10,12 +10,20 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
 {
     private GameObject slotPrefab;
     public const int numSlots = 5;
-    Image[] itemImages = new Image[numSlots + 1];
-    Item[] items = new Item[numSlots + 1];
-    GameObject[] slots = new GameObject[numSlots + 1];
+    [SerializeField]
+    Item[] items = new Item[numSlots];
+    [SerializeField]
+    Image[] itemImages = new Image[numSlots];
+    [SerializeField]
+    GameObject[] slots = new GameObject[numSlots];
 
+    [SerializeField]
+    GameObject duplicatedSlot;
     RectTransform duplicatedSlot_RectTransform;
-
+    Item duplicatedSlot_Item;
+    Image duplicatedSlot_Image;
+    TMP_Text duplicatedSlot_QtyText;
+    
     GameObject inventory_background;
     RectTransform pivot_RectTransform;
     Vector2 pivot_position;
@@ -60,15 +68,15 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
             {
                 if (GetClickedSlot(Input.mousePosition) == -1)
                 {
-                    ClearSlot(clicked_slot);
-                    ClearSlot(numSlots);
+                    //ClearSlot(clicked_slot);
+                    //ClearSlot(numSlots);
+
+                    DropItem(clicked_slot, int.Parse(slots[numSlots].GetComponent<InventorySlotUI>().transform.GetComponentsInChildren<TMP_Text>()[0].text));
 
                     is_item_clicked = false;
                 }
             }
         }
-
-        
     }
 
     public void CreateSlots()
@@ -89,44 +97,83 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                 itemImages[i] = newSlot.transform.GetChild(1).GetComponent<Image>();
             }
 
-            GameObject duplicatedSlot = Instantiate(slotPrefab);
+            duplicatedSlot = Instantiate(slotPrefab);
             duplicatedSlot.name = "ItemDuplicateSlot";
             duplicatedSlot.transform.SetParent(inventory_background.transform);
-            slots[numSlots] = duplicatedSlot;
-            itemImages[numSlots] = duplicatedSlot.transform.GetChild(1).GetComponent<Image>();
             duplicatedSlot_RectTransform = duplicatedSlot.GetComponent<RectTransform>();
+            duplicatedSlot_Image = duplicatedSlot.transform.GetChild(1).GetComponent<Image>();
+            duplicatedSlot_QtyText = duplicatedSlot.transform.GetComponentsInChildren<TMP_Text>()[0];
             // Disable Slot Background Image
             duplicatedSlot.transform.GetChild(0).gameObject.GetComponent<Image>().enabled = false;
             // Disable Slot Tray Image
             duplicatedSlot.transform.GetChild(0).GetChild(0).gameObject.GetComponent<Image>().enabled = false;
         }
     }
-
+    //
+    // 요약:
+    //     targetSlotNum가 numSlots이면 duplicatedSlot을 비웁니다.
+    //     그렇지 않다면 targetSlotNum에 해당하는 Slot을 비웁니다.
     private void ClearSlot(int targetSlotNum)
     {
-        items[targetSlotNum] = null;
-        itemImages[targetSlotNum].sprite = null;
-        itemImages[targetSlotNum].enabled = false;
-
-        InventorySlotUI slotScript = slots[targetSlotNum].GetComponent<InventorySlotUI>();
-        TMP_Text qtyText = slotScript.transform.GetComponentsInChildren<TMP_Text>()[0];
-
-        if (qtyText != null)
+        // Duplicated Slot
+        if (targetSlotNum == numSlots)
         {
-            qtyText.enabled = false;
-            qtyText.text = "";
-        }
+            duplicatedSlot_Item = null;
+            duplicatedSlot_Image.sprite = null;
+            duplicatedSlot_Image.enabled = false;
+            duplicatedSlot_QtyText.text = "";
+            duplicatedSlot_QtyText.enabled = false;
 
+            if (duplicatedSlot_QtyText != null)
+            {
+                
+            }
+        }
+        // Item Slot
+        else
+        {
+            TMP_Text qtyText = slots[targetSlotNum].transform.GetComponentsInChildren<TMP_Text>()[0];
+
+            items[targetSlotNum] = null;
+            itemImages[targetSlotNum].sprite = null;
+            itemImages[targetSlotNum].enabled = false;
+            qtyText.text = "";
+            qtyText.enabled = false;
+
+            if (qtyText != null)
+            {
+                
+            }
+        }
+        
         Resources.UnloadUnusedAssets();
     }
+    //
+    // 요약:
+    //     duplicatedSlot을 월드에 드랍합니다.
+    private void DropItem()
+    {
 
+    }
+    //
+    // 요약:
+    //     targetSlotNum에 해당하는 아이템을 quantity만큼 월드에 드랍합니다.
+    private void DropItem(int targetSlotNum, int quantity)
+    {
+
+    }
+    //
+    // 요약:
+    //     itemToAdd를 Inventory에 가지고 있다면 itemToAdd가 들어 있는 가장 앞쪽 slot에 itemToAdd를 추가합니다.
+    //     itemToAdd를 Inventory에 가지고 있지 않다면 비어 있는 가장 앞쪽 slot에 itemToAdd를 추가합니다.
+    //     itemToAdd를 Inventory에 추가하는 데에 성공하면 true를 반환하고, 실패하면 false를 반환합니다.
     public bool AddItem(Item itemToAdd)
     {
-        for (int i = 0; i < items.Length - 1; i++)
+        for (int i = 0; i < items.Length; i++)
         {
-            if (items[i] != null && items[i].itemType == itemToAdd.itemType && itemToAdd.stackable == true)
+            if (items[i] != null && items[i].ItemType == itemToAdd.ItemType && itemToAdd.Stackable == true)
             {
-                items[i].SetQuantity(items[i].GetQuantity() + 1);
+                items[i].Quantity = items[i].Quantity + itemToAdd.Quantity;
 
                 InventorySlotUI slotScript = slots[i].GetComponent<InventorySlotUI>();
                 TMP_Text qtyText = slotScript.transform.GetComponentsInChildren<TMP_Text>()[0];
@@ -134,17 +181,20 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                 if (qtyText != null)
                 {
                     //qtyText.enabled = true;
-                    qtyText.text = items[i].GetQuantity().ToString();
+                    qtyText.text = items[i].Quantity.ToString();
                 }
 
                 return true;
             }
-
+        }
+        for (int i = 0; i < items.Length; i++)
+        {
             if (items[i] == null)
             {
+                Debug.Log("Quantity = " + itemToAdd.Quantity + ", Image = " + itemToAdd.Sprite);
                 items[i] = Instantiate(itemToAdd);
-                items[i].SetQuantity(1);
-                itemImages[i].sprite = itemToAdd.GetSprite();
+                items[i].Quantity = itemToAdd.Quantity;
+                itemImages[i].sprite = itemToAdd.Sprite;
                 itemImages[i].enabled = true;
                 InventorySlotUI slotScript = slots[i].GetComponent<InventorySlotUI>();
                 TMP_Text qtyText = slotScript.transform.GetComponentsInChildren<TMP_Text>()[0];
@@ -152,7 +202,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                 if (qtyText != null)
                 {
                     qtyText.enabled = true;
-                    qtyText.text = items[i].GetQuantity().ToString();
+                    qtyText.text = items[i].Quantity.ToString();
                 }
 
                 return true;
@@ -160,24 +210,193 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
         }
         return false;
     }
+    //
+    // 요약:
+    //     targetSlotNum의 slot이 itemToAdd를 가지고 있거나 비어 있다면 itemToAdd를 추가하고 true를 반환합니다.
+    //     targetSlotNum의 slot이 itemToAdd를 가지고 있지 않고 비어 있지도 않으면 false를 반환합니다.
+    public bool AddItemAt(Item itemToAdd, int targetSlotNum)
+    {
+        if (items[targetSlotNum] != null && items[targetSlotNum].ItemType == itemToAdd.ItemType && itemToAdd.Stackable == true)
+        {
+            items[targetSlotNum].Quantity = items[targetSlotNum].Quantity + itemToAdd.Quantity;
+
+            InventorySlotUI slotScript = slots[targetSlotNum].GetComponent<InventorySlotUI>();
+            TMP_Text qtyText = slotScript.transform.GetComponentsInChildren<TMP_Text>()[0];
+
+            if (qtyText != null)
+            {
+                //qtyText.enabled = true;
+                qtyText.text = items[targetSlotNum].Quantity.ToString();
+            }
+
+            return true;
+        }
+        else if (items[targetSlotNum] == null)
+        {
+            items[targetSlotNum] = Instantiate(itemToAdd);
+            items[targetSlotNum].Quantity = itemToAdd.Quantity;
+            itemImages[targetSlotNum].sprite = itemToAdd.Sprite;
+            itemImages[targetSlotNum].enabled = true;
+            InventorySlotUI slotScript = slots[targetSlotNum].GetComponent<InventorySlotUI>();
+            TMP_Text qtyText = slotScript.transform.GetComponentsInChildren<TMP_Text>()[0];
+
+            if (qtyText != null)
+            {
+                qtyText.enabled = true;
+                qtyText.text = items[targetSlotNum].Quantity.ToString();
+            }
+
+            return true;
+        }
+        return false;
+    }
+    //
+    // 요약:
+    //     targetSlotNum이 비어 있다면 duplicatedSlot을 targetSlotNum에 추가합니다.
+    //     targetSlotNum이 비어 있지 않다면 duplicatedSlot과 targetSlotNum를 서로 바꿉니다.
+    //     targetSlotNum이 비어 있지 않다면 duplicatedSlot과 targetSlotNum를 서로 바꿉니다.
+    public bool MoveItem(int targetSlotNum)
+    {
+        GameObject src = duplicatedSlot;
+        TMP_Text src_qty_text = duplicatedSlot_QtyText;
+        Image src_image = duplicatedSlot_Image;
+
+        GameObject dst = slots[targetSlotNum];
+        TMP_Text dst_qty_text = dst.transform.GetComponentsInChildren<TMP_Text>()[0];
+        Image dst_image = itemImages[targetSlotNum];
+
+        int quantity = int.Parse(src_qty_text.text);
+        // Destination Slot is empty
+        if (AddItemAt(new Item(items[src_slot_num], quantity), targetSlotNum))
+        {
+            if (items[src_slot_num].Quantity - quantity != 0)
+            {
+                return DeleteItem(src_slot_num, quantity);
+            }
+            else
+            {
+                ClearSlot(src_slot_num);
+                ClearSlot(numSlots);
+                return true;
+            }
+        }
+        // Destination Slot is not empty
+        else
+        {
+            //SwapSlot();
+            // Swap
+            if (int.Parse(src_qty_text.text) == quantity)
+            {
+                Item tmpItems = items[src_slot_num];
+                Image tmpItemImages = itemImages[src_slot_num];
+                GameObject tmpSlots = slots[src_slot_num];
+
+                items[src_slot_num] = items[targetSlotNum];
+                itemImages[src_slot_num] = itemImages[targetSlotNum];
+                slots[src_slot_num] = slots[targetSlotNum];
+
+                items[src_slot_num] = tmpItems;
+                itemImages[src_slot_num] = tmpItemImages;
+                slots[src_slot_num] = tmpSlots;
+
+                ClearSlot(numSlots);
+
+                return true;
+            }
+            else
+            {
+                Item tmpItems = new Item(items[src_slot_num], quantity);
+                Image tmpItemImages = itemImages[src_slot_num];
+                GameObject tmpSlots = slots[src_slot_num];
+
+                items[src_slot_num] = items[targetSlotNum];
+                itemImages[src_slot_num] = itemImages[targetSlotNum];
+                slots[src_slot_num] = slots[targetSlotNum];
+
+                items[src_slot_num] = tmpItems;
+                itemImages[src_slot_num] = tmpItemImages;
+                slots[src_slot_num] = tmpSlots;
+
+                ClearSlot(numSlots);
+
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    public bool SwapSlot(int src_slot_num, int dst_slot_num)
+    {
+        
+    }
+
+
+    public bool DeleteItem(int target_slot_num, int quantity)
+    {
+        InventorySlotUI slotScript = slots[target_slot_num].GetComponent<InventorySlotUI>();
+        TMP_Text qtyText = slotScript.transform.GetComponentsInChildren<TMP_Text>()[0];
+
+        int new_quantity = int.Parse(qtyText.text) - quantity;
+        if (new_quantity > 0)
+        {
+            qtyText.text = (int.Parse(qtyText.text) - quantity).ToString();
+            return true;
+        }
+        return false;
+    }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         Vector2 mouse_position = eventData.position;
-        clicked_slot = GetClickedSlot(eventData.position);
+        int current_clicked_slot = GetClickedSlot(eventData.position);
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if (0 <= clicked_slot && clicked_slot <= numSlots)
+            if (0 <= current_clicked_slot && current_clicked_slot <= numSlots)
             {
+                
                 //Debug.Log("Click at slot_" + clicked_slot);
                 if (is_item_clicked)
                 {
                     is_item_clicked = false;
 
-                    TMP_Text qty_Text = slots[numSlots].transform.GetComponentsInChildren<TMP_Text>()[0];
-                    Image image = slots[numSlots].transform.GetChild(1).GetComponent<Image>();
-                    qty_Text.enabled = false;
-                    image.enabled = false;
+                    if (MoveItem(current_clicked_slot)
+                    {
+                    }
+                    else
+                    {
+                        //SwapSlot();
+                    }
+
+                    ClearSlot(numSlots);
+                }
+                else
+                {
+                    if (itemImages[clicked_slot].IsActive())
+                    {
+                        is_item_clicked = true;
+                        clicked_slot = current_clicked_slot;
+
+                        GameObject src = slots[clicked_slot];
+                        TMP_Text src_qty_text = src.transform.GetComponentsInChildren<TMP_Text>()[0];
+                        Image src_image = itemImages[clicked_slot];
+
+                        duplicatedSlot_Image.sprite = src_image.sprite;
+                        duplicatedSlot_Image.enabled = true;
+                        duplicatedSlot_QtyText.text = src_qty_text.text;
+                        duplicatedSlot_QtyText.enabled = true;
+                    }
+                }
+            }
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            if (0 <= current_clicked_slot && current_clicked_slot <= numSlots)
+            {
+                //Debug.Log("Click at slot_" + clicked_slot);
+                if (is_item_clicked)
+                {
+                    
                 }
                 else
                 {
@@ -187,25 +406,14 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
 
                         GameObject src = slots[clicked_slot];
                         TMP_Text src_qty_text = src.transform.GetComponentsInChildren<TMP_Text>()[0];
-                        Image src_image = src.transform.GetChild(1).GetComponent<Image>();
+                        Image src_image = itemImages[clicked_slot];
 
-                        GameObject dst = slots[numSlots];
-                        TMP_Text dst_qty_Text = dst.transform.GetComponentsInChildren<TMP_Text>()[0];
-                        Image dst_image = dst.transform.GetChild(1).GetComponent<Image>();
-
-                        dst_qty_Text.text = src_qty_text.text;
-                        dst_qty_Text.enabled = true;
-                        dst_image.sprite = src_image.sprite;
-                        dst_image.enabled = true;
+                        duplicatedSlot_Image.sprite = src_image.sprite;
+                        duplicatedSlot_Image.enabled = true;
+                        duplicatedSlot_QtyText.text = src_qty_text.text;
+                        duplicatedSlot_QtyText.enabled = true;
                     }
                 }
-            }
-        }
-        else if (eventData.button == PointerEventData.InputButton.Right)
-        {
-            if (0 <= clicked_slot && clicked_slot <= numSlots)
-            {
-                Debug.Log("Right Click at slot_" + clicked_slot);
             }
         }
     }

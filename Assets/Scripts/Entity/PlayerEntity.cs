@@ -495,13 +495,13 @@ public class PlayerEntity : Entity
                 bool should_disappear = false;
 
                 //print("Hit: " + hitObject.GetName());
-                switch (hitObject.GetItemType())
+                switch (hitObject.ItemType)
                 {
                     case Item.ItemTypeEnum.COIN:
                         should_disappear = inventory_ui.AddItem(hitObject);
                         break;
                     case Item.ItemTypeEnum.HEALTH:
-                        should_disappear = stat_manager.AdjustHP(hitObject.GetQuantity());
+                        should_disappear = stat_manager.AdjustHP(hitObject.Quantity);
                         break;
                 }
 

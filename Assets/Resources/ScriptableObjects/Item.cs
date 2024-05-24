@@ -8,14 +8,21 @@ using UnityEngine.TextCore.Text;
 // Item의 속성을 정의하는 Sciprtable Object 클래스
 public class Item : ScriptableObject
 {
+    [SerializeField]
     // Item의 이름
-    public string objectName;
+    private string objectName;
+    [SerializeField]
     // Item의 sprite
-    public Sprite sprite;
+    private Sprite sprite;
+    [SerializeField]
     // Item의 수량 (default : 1)
-    public int quantity;
+    private int quantity;
+    [SerializeField]
     // Item의 stack 여부 (default : false)
-    public bool stackable;
+    private bool stackable;
+    [SerializeField]
+    // Item의 타입
+    private ItemTypeEnum itemType;
 
     // ** 여기 private enum으로 하면 왜 GetItemType()에서 오류가 나는지 모르겠음 **
     public enum ItemTypeEnum
@@ -23,8 +30,7 @@ public class Item : ScriptableObject
         COIN,
         HEALTH
     }
-    // Item의 타입
-    public ItemTypeEnum itemType;
+    
 
     public Item(Item item)
     {
@@ -34,43 +40,41 @@ public class Item : ScriptableObject
         this.itemType = item.itemType;
     }
 
-    public string GetName()
+    public Item(Item item, int quantity)
     {
-        return objectName;
-    }
-
-    public Sprite GetSprite()
-    {
-        return sprite;
-    }
-
-    public int GetQuantity()
-    {
-        return quantity;
-    }
-
-    public bool GetStackable()
-    {
-        return stackable;
-    }
-
-    public ItemTypeEnum GetItemType()
-    {
-        return itemType;
-    }
-
-    public void SetQuantity(int quantity)
-    {
+        this.objectName = item.objectName;
         this.quantity = quantity;
+        this.stackable = item.stackable;
+        this.itemType = item.itemType;
     }
 
-    public void SetStackable(bool stackable)
+    public string ObjectName
     {
-        this.stackable = stackable;
+        get { return this.objectName; }
+        set { this.objectName = value; }
     }
 
-    public void SetItemType(ItemTypeEnum itemType)
+    public Sprite Sprite
     {
-        this.itemType = itemType;
+        get { return this.sprite; }
+        set { this.sprite = value; }
+    }
+
+    public int Quantity
+    {
+        get { return this.quantity; }
+        set { this.quantity = value; }
+    }
+
+    public bool Stackable
+    {
+        get { return this.stackable; }
+        set { this.stackable = value; }
+    }
+
+    public ItemTypeEnum ItemType
+    {
+        get { return this.itemType; }
+        set { this.itemType = value; }
     }
 }
