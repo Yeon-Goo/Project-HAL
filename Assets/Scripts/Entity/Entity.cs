@@ -12,21 +12,11 @@ public abstract class Entity : MonoBehaviour
     // Entity's UIs
     public HPBarUI hpbar_prefab;
     public HPBarUI hpbar_ui;
+    public GameObject damageTextPrefab;
+    public Canvas canvas;
 
     // Entity의 HP를 관리하는 변수
     public StatManager stat_manager;
-
-    /*
-    public void SetHPManager(HPManager hp_manager)
-    {
-        this.hp_manager = hp_manager;
-    }
-
-    public HPManager GetHPManager()
-    {
-        return hp_manager;
-    }
-    */
 
     public StatManager Stat_manager
     {
@@ -42,7 +32,6 @@ public abstract class Entity : MonoBehaviour
         return new Vector2(transform.position.x, transform.position.y);
     }
 
-
     public Vector2 GetMousePos()
     {
         return Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -54,12 +43,16 @@ public abstract class Entity : MonoBehaviour
 
         while (true)
         {
+            Debug.Log(transform + " Get " + damage + " Damage From " + entity.name + "(interval : " + interval + ")\n");
             StartCoroutine(FlickEntity());
-
             // this는 entity로부터 damage만큼의 피해를 interval초마다 받는다
-            Debug.Log(this.gameObject + " Get " + damage + " Damage From " + entity.name + "(interval : " + interval + ")\n");
             cur_hp -= damage;
             stat_manager.Cur_hp = cur_hp;
+
+            // DamageText 생성 및 정보 전달
+            GameObject damageTextObj = Instantiate(damageTextPrefab, canvas.transform);
+            DamageText damageText = damageTextObj.GetComponent<DamageText>();
+            damageText.Setup(transform, damage);
 
             // this의 체력이 0일 때
             if (cur_hp <= float.Epsilon)
