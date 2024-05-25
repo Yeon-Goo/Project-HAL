@@ -186,7 +186,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hpbar_prefab: {fileID: 0}
   hpbar_ui: {fileID: 0}
-  hp_manager: {fileID: 0}
+  damageTextPrefab: {fileID: 3453731427029572494, guid: a6feb9b828fe2a04393e13e72ab99985, type: 3}
+  canvas: {fileID: 1157815839568653100, guid: 0d8b1f02299607b4c8ff56fea48ce546, type: 3}
+  stat_manager: {fileID: 0}
+  arrowstack: 0
 --- !u!114 &2510663624873542490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,3 +202,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0291d0c33ab98644e89dfc57d65b09b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 0}
+  rupinPrefab: {fileID: 4890928813107072413, guid: b51b5b11b4f11864187a7d83c5e150ce, type: 3}
+  BananaPrefab: {fileID: 9109811338446579067, guid: e4bfce5ef0377c64bbedc4e097861d7d, type: 3}
+  player: {fileID: 0}
+  speed: 2
+  range: 10
+  barrage_time: 4
+  rush_time: 5
+  summon_time: 3
