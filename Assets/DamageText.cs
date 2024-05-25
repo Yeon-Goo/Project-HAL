@@ -26,7 +26,7 @@ public class DamageText : MonoBehaviour
         if (targetTransform != null)
         {
             // 텍스트가 몬스터를 따라다니도록 위치 갱신
-            Vector3 screenPosition = Camera.main.WorldToScreenPoint(pos + new Vector3(2.3f + rand_x, 1f + rand_y, 0) + new Vector3(0, 0.5f, 0) * (Time.time - tempTime));
+            Vector3 screenPosition = Camera.main.WorldToScreenPoint(pos + new Vector3(2.3f + rand_x, 1f + rand_y, 0) + new Vector3(0, 1.5f, 0) * (Time.time - tempTime));
             transform.position = screenPosition;
         }
     }
