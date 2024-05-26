@@ -43,7 +43,6 @@ public abstract class Entity : MonoBehaviour
 
         while (true)
         {
-            Debug.Log(transform + " Get " + damage + " Damage From " + entity.name + "(interval : " + interval + ")\n");
             StartCoroutine(FlickEntity());
             // this는 entity로부터 damage만큼의 피해를 interval초마다 받는다
             cur_hp -= damage;
