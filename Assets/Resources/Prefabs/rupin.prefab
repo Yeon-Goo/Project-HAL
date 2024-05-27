@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BananaPrefab: {fileID: 9109811338446579067, guid: e4bfce5ef0377c64bbedc4e097861d7d, type: 3}
-  player: {fileID: 4911060858802102391, guid: 36ff0fc806edadb4aa29eb52c08fd884, type: 3}
+  player: {fileID: 0}
   speed: 2
   range: 6
   tracking_range: 7

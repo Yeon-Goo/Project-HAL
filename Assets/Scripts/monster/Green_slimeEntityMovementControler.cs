@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class MonsterTracking : MonoBehaviour
 {
-    private Transform player;
+    public Transform player;
     public float speed = 2f;
     public float range = 4f;
     public float tracking_range = 7f;
@@ -32,12 +32,7 @@ public class MonsterTracking : MonoBehaviour
         idle_move = 5
     }
     void Start()
-    {        
-        GameObject playerObject = GameObject.Find("PlayerObject");
-        if (playerObject != null)
-        {
-            player = playerObject.transform;
-        }
+    {
         initial_pos = transform.position;
         animator = GetComponent<Animator>();
     }
