@@ -50,9 +50,9 @@ public class EnemyEntity : Entity
             // Set HPBarUI as a child of this GameObject
             hpbar_ui.transform.SetParent(this.transform, false);
         }
-
         hpbar_ui.Init(this);
 
+        base.Start();
         ResetEntity();
     }
 
