@@ -14,6 +14,7 @@ public class Archer : Weapon
     private float baseAttackCooltime = 0.5f;
     [SerializeField]
     private bool isCharging = false;
+    private bool isBuffActive = false;
     private Coroutine chargingCoroutine;
 
     [SerializeField]
@@ -387,12 +388,13 @@ public class Archer : Weapon
 
 
 
-    // 새로운 버프 스킬 추가ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    //No.4 잔상 공격 / 버프 스킬ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     private int BuffSkill(int slevel)
     {
         if (afterImageCoroutine != null)
         {
             StopCoroutine(afterImageCoroutine);
+            Destroy(afterImageObject);
         }
         afterImageCoroutine = StartCoroutine(EnableAfterImage(slevel));
 
@@ -404,7 +406,15 @@ public class Archer : Weapon
         // 잔상 오브젝트 생성 및 활성화
         if (afterImagePrefab != null)
         {
-            afterImageObject = Instantiate(afterImagePrefab, playerObject.transform.position + new Vector3(-0.8f, 1.5f, 0.0f), Quaternion.identity);
+            if(playerEntity.is_looking_right)
+            {
+                afterImageObject = Instantiate(afterImagePrefab, playerObject.transform.position + new Vector3(-0.8f, 1.5f, 0.0f), Quaternion.identity);
+            }
+            else
+            {
+                afterImageObject = Instantiate(afterImagePrefab, playerObject.transform.position + new Vector3(0.8f, 1.5f, 0.0f), Quaternion.identity);
+            }
+            
             afterImageObject.transform.SetParent(playerObject.transform);
 
             for (int i = 0; i < 10; i++) // 10초 동안 잔상 유지 - 레벨 별로 지속시간 다르게 구성 가능
