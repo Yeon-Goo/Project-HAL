@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 /*
  * Entity → PlayerEntity
@@ -14,6 +15,7 @@ public abstract class Entity : MonoBehaviour
     public HPBarUI hpbar_ui;
     public GameObject damageTextPrefab;
     public Canvas canvas;
+    public event Action OnDeath;
 
     // Entity의 HP를 관리하는 변수
     public StatManager stat_manager;
@@ -44,15 +46,15 @@ public abstract class Entity : MonoBehaviour
         while (true)
         {
             StartCoroutine(FlickEntity());
-            // this는 entity로부터 damage만큼의 피해를 interval초마다 받는다
-            cur_hp -= damage;
-            stat_manager.Cur_hp = cur_hp;
 
             // DamageText 생성 및 정보 전달
             GameObject damageTextObj = Instantiate(damageTextPrefab, canvas.transform);
             DamageText damageText = damageTextObj.GetComponent<DamageText>();
             damageText.Setup(transform, damage);
-
+            
+            // this는 entity로부터 damage만큼의 피해를 interval초마다 받는다
+            cur_hp -= damage;
+            stat_manager.Cur_hp = cur_hp;
             // this의 체력이 0일 때
             if (cur_hp <= float.Epsilon)
             {
@@ -84,8 +86,25 @@ public abstract class Entity : MonoBehaviour
 
     public virtual void KillEntity()
     {
+        if (OnDeath != null)
+        {
+            OnDeath.Invoke();
+        }
         stat_manager.Cur_hp = 0;
         Destroy(gameObject);
     }
     public abstract void ResetEntity();
+    public void Start()
+    {
+        // "DamageTextUI" 이름의 오브젝트를 찾아 canvas에 할당
+        GameObject canvasObject = GameObject.Find("DamageTextUI");
+        if (canvasObject != null)
+        {
+            canvas = canvasObject.GetComponent<Canvas>();
+        }
+        else
+        {
+            Debug.LogError("DamageTextUI라는 이름의 오브젝트를 찾을 수 없습니다. 하이어라키에 DamageTextUI를 추가하세요.");
+        }
+    }
 }
