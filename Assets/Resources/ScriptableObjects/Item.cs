@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
@@ -15,14 +16,13 @@ public class Item : ScriptableObject
     // Item의 sprite
     private Sprite sprite;
     [SerializeField]
-    // Item의 수량 (default : 1)
-    private int quantity;
-    [SerializeField]
     // Item의 stack 여부 (default : false)
     private bool stackable;
     [SerializeField]
     // Item의 타입
     private ItemTypeEnum itemType;
+    [SerializeField]
+    private string prefabPath;
 
     // ** 여기 private enum으로 하면 왜 GetItemType()에서 오류가 나는지 모르겠음 **
     public enum ItemTypeEnum
@@ -34,18 +34,10 @@ public class Item : ScriptableObject
 
     public Item(Item item)
     {
-        this.objectName = item.objectName;
-        this.quantity = item.quantity;
-        this.stackable = item.stackable;
-        this.itemType = item.itemType;
-    }
-
-    public Item(Item item, int quantity)
-    {
-        this.objectName = item.objectName;
-        this.quantity = quantity;
-        this.stackable = item.stackable;
-        this.itemType = item.itemType;
+        this.objectName = item.ObjectName;
+        this.sprite = item.Sprite;
+        this.stackable = item.Stackable;
+        this.itemType = item.ItemType;
     }
 
     public string ObjectName
@@ -60,12 +52,6 @@ public class Item : ScriptableObject
         set { this.sprite = value; }
     }
 
-    public int Quantity
-    {
-        get { return this.quantity; }
-        set { this.quantity = value; }
-    }
-
     public bool Stackable
     {
         get { return this.stackable; }
@@ -76,5 +62,11 @@ public class Item : ScriptableObject
     {
         get { return this.itemType; }
         set { this.itemType = value; }
+    }
+
+    public string PrefabPath
+    {
+        get { return this.prefabPath; }
+        set { this.prefabPath = value; }
     }
 }

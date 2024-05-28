@@ -11,7 +11,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     private GameObject slotPrefab;
     public const int numSlots = 5;
     [SerializeField]
-    Item[] items = new Item[numSlots];
+    PickableObjects[] items = new PickableObjects[numSlots];
     [SerializeField]
     Image[] itemImages = new Image[numSlots];
     [SerializeField]
@@ -20,7 +20,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     [SerializeField]
     GameObject duplicatedSlot;
     RectTransform duplicatedSlot_RectTransform;
-    Item duplicatedSlot_Item;
+    PickableObjects duplicatedSlot_Item;
     Image duplicatedSlot_Image;
     TMP_Text duplicatedSlot_QtyText;
     
@@ -158,7 +158,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
         string prefab_path = null;
         GameObject prefab_to_spawn;
 
-        switch (duplicatedSlot_Item.ItemType)
+        switch (duplicatedSlot_Item.item.ItemType)
         {
             case Item.ItemTypeEnum.COIN:
                 prefab_path = "Prefabs/CoinObject";
@@ -169,11 +169,12 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
         {
             prefab_to_spawn = Resources.Load<GameObject>(prefab_path);
 
-            Vector2 playerPos = GameObject.FindWithTag("Player").GetComponent<PlayerEntity>().GetPos();
-            Vector2 mousePos = Input.mousePosition.normalized;
-            Vector3 spawnPos = new Vector3(playerPos.x + mousePos.x, playerPos.y + mousePos.y, 0);
+            PlayerEntity player = GameObject.FindWithTag("Player").GetComponent<PlayerEntity>();
+            Vector2 playerPos = player.GetPos();
+            //Vector2 mousePos = player.GetMousePos().normalized;
+            Vector3 spawnPos = new Vector3(playerPos.x, playerPos.y - 0.5f, 0.0f);
             GameObject spawnObject = Instantiate(prefab_to_spawn, spawnPos, Quaternion.identity);
-            Item spawnItem = spawnObject.GetComponent<PickableObjects>().item;
+            PickableObjects spawnItem = spawnObject.GetComponent<PickableObjects>();
             spawnItem.Quantity = items[clicked_slot].Quantity;
 
             // Clear Slot
@@ -196,11 +197,11 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     //     itemToAdd를 Inventory에 가지고 있다면 itemToAdd가 들어 있는 가장 앞쪽 slot에 itemToAdd를 추가합니다.
     //     itemToAdd를 Inventory에 가지고 있지 않다면 비어 있는 가장 앞쪽 slot에 itemToAdd를 추가합니다.
     //     itemToAdd를 Inventory에 추가하는 데에 성공하면 true를 반환하고, 실패하면 false를 반환합니다.
-    public bool AddItem(Item itemToAdd)
+    public bool AddItem(PickableObjects itemToAdd)
     {
         for (int i = 0; i < items.Length; i++)
         {
-            if (items[i] != null && items[i].ItemType == itemToAdd.ItemType && itemToAdd.Stackable == true)
+            if (items[i] != null && items[i].item.ItemType == itemToAdd.item.ItemType && itemToAdd.item.Stackable == true)
             {
                 items[i].Quantity = items[i].Quantity + itemToAdd.Quantity;
 
@@ -220,10 +221,10 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
         {
             if (items[i] == null)
             {
-                Debug.Log("Quantity = " + itemToAdd.Quantity + ", Image = " + itemToAdd.Sprite);
+                Debug.Log("Quantity = " + itemToAdd.Quantity + ", Image = " + itemToAdd.item.Sprite);
                 items[i] = Instantiate(itemToAdd);
                 items[i].Quantity = itemToAdd.Quantity;
-                itemImages[i].sprite = itemToAdd.Sprite;
+                itemImages[i].sprite = itemToAdd.item.Sprite;
                 itemImages[i].enabled = true;
                 InventorySlotUI slotScript = slots[i].GetComponent<InventorySlotUI>();
                 TMP_Text qtyText = slotScript.transform.GetComponentsInChildren<TMP_Text>()[0];
@@ -243,9 +244,9 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     // 요약:
     //     targetSlotNum의 slot이 itemToAdd를 가지고 있거나 비어 있다면 itemToAdd를 추가하고 true를 반환합니다.
     //     targetSlotNum의 slot이 itemToAdd를 가지고 있지 않고 비어 있지도 않으면 false를 반환합니다.
-    public bool AddItemAt(Item itemToAdd, int targetSlotNum)
+    public bool AddItemAt(PickableObjects itemToAdd, int targetSlotNum)
     {
-        if (items[targetSlotNum] != null && items[targetSlotNum].ItemType == itemToAdd.ItemType && itemToAdd.Stackable == true)
+        if (items[targetSlotNum] != null && items[targetSlotNum].item.ItemType == itemToAdd.item.ItemType && itemToAdd.item.Stackable == true)
         {
             items[targetSlotNum].Quantity = items[targetSlotNum].Quantity + itemToAdd.Quantity;
 
@@ -264,7 +265,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
         {
             items[targetSlotNum] = Instantiate(itemToAdd);
             items[targetSlotNum].Quantity = itemToAdd.Quantity;
-            itemImages[targetSlotNum].sprite = itemToAdd.Sprite;
+            itemImages[targetSlotNum].sprite = itemToAdd.item.Sprite;
             itemImages[targetSlotNum].enabled = true;
             InventorySlotUI slotScript = slots[targetSlotNum].GetComponent<InventorySlotUI>();
             TMP_Text qtyText = slotScript.transform.GetComponentsInChildren<TMP_Text>()[0];
@@ -295,7 +296,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
 
         int quantity = int.Parse(src_qty_text.text);
         // Destination Slot is empty
-        if (AddItemAt(new Item(items[targetSlotNum], quantity), targetSlotNum))
+        if (AddItemAt(new PickableObjects(items[targetSlotNum].item, quantity), targetSlotNum))
         {
             if (items[targetSlotNum].Quantity - quantity != 0)
             {
@@ -315,7 +316,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
             // Swap
             if (int.Parse(src_qty_text.text) == quantity)
             {
-                Item tmpItems = items[targetSlotNum];
+                PickableObjects tmpItems = items[targetSlotNum];
                 Image tmpItemImages = itemImages[targetSlotNum];
                 GameObject tmpSlots = slots[targetSlotNum];
 
@@ -333,7 +334,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
             }
             else
             {
-                Item tmpItems = new Item(items[targetSlotNum], quantity);
+                PickableObjects tmpItems = new PickableObjects(items[targetSlotNum].item, quantity);
                 Image tmpItemImages = itemImages[targetSlotNum];
                 GameObject tmpSlots = slots[targetSlotNum];
 
