@@ -71,7 +71,8 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                     //ClearSlot(clicked_slot);
                     //ClearSlot(numSlots);
 
-                    DropItem(clicked_slot, int.Parse(slots[numSlots].GetComponent<InventorySlotUI>().transform.GetComponentsInChildren<TMP_Text>()[0].text));
+                    //DropItem(clicked_slot, int.Parse(slots[numSlots].GetComponent<InventorySlotUI>().transform.GetComponentsInChildren<TMP_Text>()[0].text));
+                    DropItem();
 
                     is_item_clicked = false;
                 }
@@ -111,8 +112,8 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     }
     //
     // 요약:
-    //     targetSlotNum가 numSlots이면 duplicatedSlot을 비웁니다.
-    //     그렇지 않다면 targetSlotNum에 해당하는 Slot을 비웁니다.
+    //     targetSlotNum에 해당하는 Slot을 비웁니다.
+    //     만약 targetSlotNum이 numSlots이면 duplicatedSlot을 비웁니다.
     private void ClearSlot(int targetSlotNum)
     {
         // Duplicated Slot
@@ -151,16 +152,44 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     //
     // 요약:
     //     duplicatedSlot을 월드에 드랍합니다.
-    private void DropItem()
+    private bool DropItem()
     {
+        // Drop Clicked Slot's Item
+        string prefab_path = null;
+        GameObject prefab_to_spawn;
 
+        switch (duplicatedSlot_Item.ItemType)
+        {
+            case Item.ItemTypeEnum.COIN:
+                prefab_path = "Prefabs/CoinObject";
+                break;
+        };
+        
+        if (prefab_path != null)
+        {
+            prefab_to_spawn = Resources.Load<GameObject>(prefab_path);
+
+            Vector2 playerPos = GameObject.FindWithTag("Player").GetComponent<PlayerEntity>().GetPos();
+            Vector2 mousePos = Input.mousePosition.normalized;
+            Vector3 spawnPos = new Vector3(playerPos.x + mousePos.x, playerPos.y + mousePos.y, 0);
+            GameObject spawnObject = Instantiate(prefab_to_spawn, spawnPos, Quaternion.identity);
+            Item spawnItem = spawnObject.GetComponent<PickableObjects>().item;
+            spawnItem.Quantity = items[clicked_slot].Quantity;
+
+            // Clear Slot
+            ClearSlot(clicked_slot);
+            ClearSlot(numSlots);
+
+            return true;
+        }
+        return false;
     }
     //
     // 요약:
     //     targetSlotNum에 해당하는 아이템을 quantity만큼 월드에 드랍합니다.
     private void DropItem(int targetSlotNum, int quantity)
     {
-
+        
     }
     //
     // 요약:
@@ -254,7 +283,6 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     // 요약:
     //     targetSlotNum이 비어 있다면 duplicatedSlot을 targetSlotNum에 추가합니다.
     //     targetSlotNum이 비어 있지 않다면 duplicatedSlot과 targetSlotNum를 서로 바꿉니다.
-    //     targetSlotNum이 비어 있지 않다면 duplicatedSlot과 targetSlotNum를 서로 바꿉니다.
     public bool MoveItem(int targetSlotNum)
     {
         GameObject src = duplicatedSlot;
@@ -267,15 +295,15 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
 
         int quantity = int.Parse(src_qty_text.text);
         // Destination Slot is empty
-        if (AddItemAt(new Item(items[src_slot_num], quantity), targetSlotNum))
+        if (AddItemAt(new Item(items[targetSlotNum], quantity), targetSlotNum))
         {
-            if (items[src_slot_num].Quantity - quantity != 0)
+            if (items[targetSlotNum].Quantity - quantity != 0)
             {
-                return DeleteItem(src_slot_num, quantity);
+                return DeleteItem(targetSlotNum, quantity);
             }
             else
             {
-                ClearSlot(src_slot_num);
+                ClearSlot(targetSlotNum);
                 ClearSlot(numSlots);
                 return true;
             }
@@ -287,17 +315,17 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
             // Swap
             if (int.Parse(src_qty_text.text) == quantity)
             {
-                Item tmpItems = items[src_slot_num];
-                Image tmpItemImages = itemImages[src_slot_num];
-                GameObject tmpSlots = slots[src_slot_num];
+                Item tmpItems = items[targetSlotNum];
+                Image tmpItemImages = itemImages[targetSlotNum];
+                GameObject tmpSlots = slots[targetSlotNum];
 
-                items[src_slot_num] = items[targetSlotNum];
-                itemImages[src_slot_num] = itemImages[targetSlotNum];
-                slots[src_slot_num] = slots[targetSlotNum];
+                items[targetSlotNum] = items[targetSlotNum];
+                itemImages[targetSlotNum] = itemImages[targetSlotNum];
+                slots[targetSlotNum] = slots[targetSlotNum];
 
-                items[src_slot_num] = tmpItems;
-                itemImages[src_slot_num] = tmpItemImages;
-                slots[src_slot_num] = tmpSlots;
+                items[targetSlotNum] = tmpItems;
+                itemImages[targetSlotNum] = tmpItemImages;
+                slots[targetSlotNum] = tmpSlots;
 
                 ClearSlot(numSlots);
 
@@ -305,17 +333,17 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
             }
             else
             {
-                Item tmpItems = new Item(items[src_slot_num], quantity);
-                Image tmpItemImages = itemImages[src_slot_num];
-                GameObject tmpSlots = slots[src_slot_num];
+                Item tmpItems = new Item(items[targetSlotNum], quantity);
+                Image tmpItemImages = itemImages[targetSlotNum];
+                GameObject tmpSlots = slots[targetSlotNum];
 
-                items[src_slot_num] = items[targetSlotNum];
-                itemImages[src_slot_num] = itemImages[targetSlotNum];
-                slots[src_slot_num] = slots[targetSlotNum];
+                items[targetSlotNum] = items[targetSlotNum];
+                itemImages[targetSlotNum] = itemImages[targetSlotNum];
+                slots[targetSlotNum] = slots[targetSlotNum];
 
-                items[src_slot_num] = tmpItems;
-                itemImages[src_slot_num] = tmpItemImages;
-                slots[src_slot_num] = tmpSlots;
+                items[targetSlotNum] = tmpItems;
+                itemImages[targetSlotNum] = tmpItemImages;
+                slots[targetSlotNum] = tmpSlots;
 
                 ClearSlot(numSlots);
 
@@ -328,10 +356,12 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
 
     public bool SwapSlot(int src_slot_num, int dst_slot_num)
     {
-        
+        return false;
     }
-
-
+    //
+    // 요약:
+    //     targetSlotNum이 비어 있다면 duplicatedSlot을 targetSlotNum에 추가합니다.
+    //     targetSlotNum이 비어 있지 않다면 duplicatedSlot과 targetSlotNum를 서로 바꿉니다.
     public bool DeleteItem(int target_slot_num, int quantity)
     {
         InventorySlotUI slotScript = slots[target_slot_num].GetComponent<InventorySlotUI>();
@@ -354,14 +384,14 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
         {
             if (0 <= current_clicked_slot && current_clicked_slot <= numSlots)
             {
-                
                 //Debug.Log("Click at slot_" + clicked_slot);
                 if (is_item_clicked)
                 {
                     is_item_clicked = false;
 
-                    if (MoveItem(current_clicked_slot)
+                    if (MoveItem(current_clicked_slot))
                     {
+
                     }
                     else
                     {
@@ -381,6 +411,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                         TMP_Text src_qty_text = src.transform.GetComponentsInChildren<TMP_Text>()[0];
                         Image src_image = itemImages[clicked_slot];
 
+                        duplicatedSlot_Item = items[clicked_slot];
                         duplicatedSlot_Image.sprite = src_image.sprite;
                         duplicatedSlot_Image.enabled = true;
                         duplicatedSlot_QtyText.text = src_qty_text.text;
