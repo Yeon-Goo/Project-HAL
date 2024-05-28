@@ -16,9 +16,13 @@ public class Archer : Weapon
     private bool isCharging = false;
     private Coroutine chargingCoroutine;
 
-    
+    [SerializeField]
+    private GameObject afterImagePrefab;
+    private GameObject afterImageObject;
+    private Coroutine afterImageCoroutine;
 
-    int[] skillMana = new int[] {1, 4, 8, 6, 1, 1, 1, 1, 1, 1, 1, 1 };
+
+    int[] skillMana = new int[] {1, 4, 8, 6, 4, 1, 1, 1, 1, 1, 1, 1 };
     private Vector2 mouseWorldPosition;
 
     public override int GetMana(int cardnum)
@@ -81,7 +85,7 @@ public class Archer : Weapon
             arrow.transform.position += new Vector3(0.0f, 0.25f, 0.0f);
 
             // 필요한 경우, 화살의 데이터 설정 메서드 호출
-            arrow.SetArrowData(damage, 1, 0, arrowSpeed, type); // 화살에 대한 추가 정보 설정
+            arrow.SetArrowData(damage, 1, 0, arrowSpeed, type, true); // 화살에 대한 추가 정보 설정
 
             // 화살 발사 (Shoot 메서드 내부에서 화살의 방향과 속도 처리)
             arrow.Shoot(targetVec.normalized, angleadd); // Shoot 메서드가 방향 벡터를 받아 처리하도록 가정
@@ -111,7 +115,7 @@ public class Archer : Weapon
                 manaused = PiercingArrow(skilllevel);
                 break;
             case 4:
-                manaused = BombArrow(skilllevel);
+                manaused = BuffSkill(skilllevel);
                 break;
             case 5:
                 manaused = ArrowRain(skilllevel);
@@ -293,7 +297,6 @@ public class Archer : Weapon
         StartCoroutine(ArrowBarrageCoroutine(slevel));
 
         HideCastingBar();
-        playerObject.GetComponent<PlayerDeck>().allLockOff();
         isCharging = false;
     }
     private void CancelCharging()
@@ -338,7 +341,7 @@ public class Archer : Weapon
                 arrow.Shoot(targetVec.normalized * arrowSpeed, 0.0f); // Shoot 메서드가 방향 벡터를 받아 처리하도록 가정
 
                 // 필요한 경우, 화살의 데이터 설정 메서드 호출
-                arrow.SetArrowData(arrowdamage, 1, 0, arrowSpeed, 1); // 화살에 대한 추가 정보 설정
+                arrow.SetArrowData(arrowdamage, 1, 0, arrowSpeed, 1, true); // 화살에 대한 추가 정보 설정
             }
             else
             {
@@ -346,6 +349,7 @@ public class Archer : Weapon
             }
             yield return new WaitForSeconds(0.1f); // 0.1초 대기
         }
+        playerObject.GetComponent<PlayerDeck>().allLockOff();
     }
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
@@ -381,12 +385,55 @@ public class Archer : Weapon
     }
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
-    private int BombArrow(int slevel)
+
+
+    // 새로운 버프 스킬 추가ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    private int BuffSkill(int slevel)
     {
-        Debug.Log("Performing Bomb Arrow (도착지점에서 폭발하는 범위형 스킬)");
-        // Bomb Arrow implementation
-        return 0;
+        if (afterImageCoroutine != null)
+        {
+            StopCoroutine(afterImageCoroutine);
+        }
+        afterImageCoroutine = StartCoroutine(EnableAfterImage(slevel));
+
+        return skillMana[4]; // 버프 스킬에 필요한 마나 반환
     }
+
+    private IEnumerator EnableAfterImage(int slevel)
+    {
+        // 잔상 오브젝트 생성 및 활성화
+        if (afterImagePrefab != null)
+        {
+            afterImageObject = Instantiate(afterImagePrefab, playerObject.transform.position + new Vector3(-0.8f, 1.5f, 0.0f), Quaternion.identity);
+            afterImageObject.transform.SetParent(playerObject.transform);
+
+            for (int i = 0; i < 10; i++) // 10초 동안 잔상 유지 - 레벨 별로 지속시간 다르게 구성 가능
+            {
+                yield return new WaitForSeconds(1.0f);
+            }
+
+            Destroy(afterImageObject); // 10초 후 잔상 오브젝트 제거
+        }
+    }
+
+    public void FireFromAfterImage(Vector3 position)
+    {
+        if (afterImageObject != null)
+        {
+            ArrowObject arrow = _Pool.Get();
+            arrow.transform.position = afterImageObject.transform.position;
+            arrow.transform.rotation = Quaternion.identity;
+            arrow.transform.position += new Vector3(0.0f, 0.0f, 0.0f);
+
+            Vector3 targetVec = position - arrow.transform.position;
+            arrow.SetArrowData(1, 1, 0, arrowSpeed, 0, false);
+            arrow.Shoot(targetVec.normalized, 0.0f);
+        }
+    }
+    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+
+
 
     private int ArrowRain(int slevel)
     {

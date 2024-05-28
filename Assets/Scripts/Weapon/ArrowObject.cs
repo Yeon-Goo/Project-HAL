@@ -1,13 +1,16 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
+using UnityEngine.UIElements;
 
 public class ArrowObject : MonoBehaviour
 {
+    private GameObject weapon;
     // 화살 설정
     private int dmg;
     private float armor_de, speed;
     private Vector3 shootvector = Vector3.zero;
+    private bool originalarrow = true;
     //  0-스택 충전    1-스택 사용     2-스택 전체 사용
     private int attacktype = 0;
     private int damage_per_stack = 1;
@@ -49,6 +52,14 @@ public class ArrowObject : MonoBehaviour
                     enemy.arrowstack = 0;
                     damage_coroutine = StartCoroutine(enemy.DamageEntity(dmg, 0.0f, this.gameObject));
                 }
+                Vector2 effectPosition = transform.position;
+                Vector2 effectScale = new Vector2(3.0f, 3.0f); // 이펙트 크기 설정
+                EffectManager.Instance.PlayEffect("attackanim", effectPosition, effectScale);
+                if(originalarrow)
+                {
+                    weapon.GetComponent<Archer>().FireFromAfterImage(new Vector3(coll.transform.position.x, coll.transform.position.y, 0.0f));
+                }
+                
             }
         }
     }
@@ -77,13 +88,19 @@ public class ArrowObject : MonoBehaviour
         transform.Translate(new Vector3(0.0f, 1.0f, 0.0f) * Time.deltaTime * speed);
     }
 
-    public void SetArrowData(int damage, int dstack, float decrease, float shootspeed, int arrowtype)
+    void Awake()
+    {
+        weapon = GameObject.Find("Archer");
+    }
+
+    public void SetArrowData(int damage, int dstack, float decrease, float shootspeed, int arrowtype, bool realarrow)
     {
         dmg = damage;
         damage_per_stack = dstack;
         armor_de = decrease;
         speed = shootspeed;
         attacktype = arrowtype;
+        originalarrow = realarrow;
     }
 
 
