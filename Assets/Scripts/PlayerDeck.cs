@@ -11,13 +11,15 @@ public class Card
     public int level; // 카드 레벨
     public int count; // 해당 카드의 개수
     public bool isUnlocked; // 카드의 해금 여부
+    public Sprite image; // 카드의 이미지
 
-    public Card(int num, int level, int count = 1, bool isUnlocked = false)
+    public Card(int num, int level, int count = 1, bool isUnlocked = false, Sprite image = null)
     {
         this.num = num;
         this.level = level;
         this.count = count;
         this.isUnlocked = isUnlocked;
+        this.image = image;
     }
 }
 
@@ -36,7 +38,7 @@ public class PlayerDeck : MonoBehaviour
     private StatManager stat_manager;
 
     private bool allLock = false;
-    
+
     public void allLockOn()
     {
         allLock = true;
@@ -46,6 +48,7 @@ public class PlayerDeck : MonoBehaviour
     {
         allLock = false;
     }
+
     void Start()
     {
         //need to fix - can select weapon-----
@@ -74,11 +77,18 @@ public class PlayerDeck : MonoBehaviour
         else if (Input.GetMouseButton(0) && !allLock) BaseAttack();
         //else if (Input.GetMouseButtonDown(0)) BaseAttack();
     }
+
     private void InitializeDeck()
     {
         for (int i = 0; i < 8; i++)
         {
-            deck.Add(new Card(i, 1, 1, true));
+            // 임시로 동일한 이미지 사용. 실제로는 각 카드마다 다른 이미지를 할당해야 함
+            Sprite cardImage = Resources.Load<Sprite>($"CardImages/Card{i}");
+            if(cardImage == null)
+            {
+                Debug.Log("image null error");
+            }
+            deck.Add(new Card(i, 1, 1, true, cardImage));
         }
     }
 
@@ -91,12 +101,11 @@ public class PlayerDeck : MonoBehaviour
 
         playerEntity.is_looking_right = (playerEntity.GetMousePos().x > playerEntity.GetPos().x) ? true : false;
 
-        if(weapon.GetComponent<Weapon>().BaseAttackAble())
+        if (weapon.GetComponent<Weapon>().BaseAttackAble())
         {
             weapon.GetComponent<Weapon>().BaseAttack();
         }
     }
-
 
     private void UseCard(int index)
     {
@@ -114,7 +123,6 @@ public class PlayerDeck : MonoBehaviour
 
         //카드 고유번호에 따른 필요 마나 확인
         int mananeed = weapon.GetComponent<Weapon>().GetMana(deck[index].num);
-        //Debug.Log(mananeed + " need");
 
         if (stat_manager.Cur_mp >= mananeed)
         {
@@ -131,11 +139,10 @@ public class PlayerDeck : MonoBehaviour
             deck.Add(temp);
 
             UpdateCardDisplay();
-            //Debug.Log($"Card used: Num= " + index);
         }
         else
         {
-            //Debug.Log(" NO MANA ");
+            Debug.Log("Not enough mana.");
         }
     }
 
@@ -146,12 +153,15 @@ public class PlayerDeck : MonoBehaviour
             if (i < deck.Count)
             {
                 cardTexts[i].text = $"Card {deck[i].num}\nLevel {deck[i].level}";
+                cardImages[i].sprite = deck[i].image; // 카드 이미지 업데이트
+                cardImages[i].enabled = true; // 이미지 활성화
             }
             else
             {
                 cardTexts[i].text = "";
+                cardImages[i].enabled = false; // 이미지 비활성화
             }
+            Debug.Log("updated");
         }
-        //UnityEngine.Debug.Log("update good");
     }
 }
