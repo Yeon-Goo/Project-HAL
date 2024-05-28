@@ -388,7 +388,7 @@ public class Archer : Weapon
 
 
 
-    // 새로운 버프 스킬 추가ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    //No.4 잔상 공격 / 버프 스킬ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     private int BuffSkill(int slevel)
     {
         if (afterImageCoroutine != null)
