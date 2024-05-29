@@ -11,7 +11,7 @@ public class ArrowObject : MonoBehaviour
     private float armor_de, speed;
     private Vector3 shootvector = Vector3.zero;
     private bool originalarrow = true;
-    //  0-스택 충전    1-스택 사용     2-스택 전체 사용
+    //  0-스택 충전    1-스택 사용     2-스택 전체 사용   3-마나 회복
     private int attacktype = 0;
     private int damage_per_stack = 1;
 
@@ -51,6 +51,10 @@ public class ArrowObject : MonoBehaviour
                     dmg += damage_per_stack * enemy.arrowstack;
                     enemy.arrowstack = 0;
                     damage_coroutine = StartCoroutine(enemy.DamageEntity(dmg, 0.0f, this.gameObject));
+                }
+                else if(attacktype == 3)
+                {
+
                 }
                 Vector2 effectPosition = transform.position;
                 Vector2 effectScale = new Vector2(3.0f, 3.0f); // 이펙트 크기 설정
