@@ -119,10 +119,10 @@ public class Archer : Weapon
                 manaused = BuffSkill(skilllevel);
                 break;
             case 5:
-                manaused = ArrowRain(skilllevel);
+                manaused = ManaArrows(skilllevel);
                 break;
             case 6:
-                manaused = ManaArrows(skilllevel);
+                manaused = ArrowRain(skilllevel);
                 break;
             case 7:
                 manaused = RapidFire(skilllevel);
@@ -153,12 +153,12 @@ public class Archer : Weapon
     {
         mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        StartCoroutine(DashCoroutine());
+        StartCoroutine(DashCoroutine(slevel));
 
         return skillMana[0];
     }
 
-    private IEnumerator DashCoroutine()
+    private IEnumerator DashCoroutine(int slevel)
     {
         playerEntity.EnableafterimageSystem();
         float dashDistance = 3.0f;
@@ -291,7 +291,7 @@ public class Archer : Weapon
             }
             elapsedTime += Time.deltaTime;
             SetCastTime(elapsedTime.ToString("F1"));
-            SetFillAmount(elapsedTime);
+            SetFillAmount(elapsedTime / chargingtime);
             yield return null;
         }
 
@@ -417,6 +417,8 @@ public class Archer : Weapon
             
             afterImageObject.transform.SetParent(playerObject.transform);
 
+            //레벨 별 지속시간 다르게 할 경우 구현할 곳
+
             for (int i = 0; i < 10; i++) // 10초 동안 잔상 유지 - 레벨 별로 지속시간 다르게 구성 가능
             {
                 yield return new WaitForSeconds(1.0f);
@@ -445,17 +447,19 @@ public class Archer : Weapon
 
 
 
-    private int ArrowRain(int slevel)
-    {
-        Debug.Log("Performing Arrow Rain (범위형 화살 공격 + 방깎 시너지)");
-        // Arrow Rain implementation
-        return 0;
-    }
-
+    
+    //No.5 마나 충전 스킬ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     private int ManaArrows(int slevel)
     {
         Debug.Log("Performing Mana Arrows (3발 발사, 적중시 2마나씩 회복)");
         // Mana Arrows implementation
+        return 0;
+    }
+    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    private int ArrowRain(int slevel)
+    {
+        Debug.Log("Performing Arrow Rain (범위형 화살 공격 + 방깎 시너지)");
+        // Arrow Rain implementation
         return 0;
     }
 
