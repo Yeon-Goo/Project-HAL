@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
@@ -8,14 +9,20 @@ using UnityEngine.TextCore.Text;
 // Item의 속성을 정의하는 Sciprtable Object 클래스
 public class Item : ScriptableObject
 {
+    [SerializeField]
     // Item의 이름
-    public string objectName;
+    private string objectName;
+    [SerializeField]
     // Item의 sprite
-    public Sprite sprite;
-    // Item의 수량 (default : 1)
-    public int quantity;
+    private Sprite sprite;
+    [SerializeField]
     // Item의 stack 여부 (default : false)
-    public bool stackable;
+    private bool stackable;
+    [SerializeField]
+    // Item의 타입
+    private ItemTypeEnum itemType;
+    [SerializeField]
+    private string prefabPath;
 
     // ** 여기 private enum으로 하면 왜 GetItemType()에서 오류가 나는지 모르겠음 **
     public enum ItemTypeEnum
@@ -23,54 +30,45 @@ public class Item : ScriptableObject
         COIN,
         HEALTH
     }
-    // Item의 타입
-    public ItemTypeEnum itemType;
+    
 
     public Item(Item item)
     {
-        this.objectName = item.objectName;
-        this.quantity = item.quantity;
-        this.stackable = item.stackable;
-        this.itemType = item.itemType;
+        this.objectName = item.ObjectName;
+        this.sprite = item.Sprite;
+        this.stackable = item.Stackable;
+        this.itemType = item.ItemType;
     }
 
-    public string GetName()
+    
+    public string ObjectName
     {
-        return objectName;
+        get { return this.objectName; }
+        set { this.objectName = value; }
+    }
+    
+
+    public Sprite Sprite
+    {
+        get { return this.sprite; }
+        set { this.sprite = value; }
     }
 
-    public Sprite GetSprite()
+    public bool Stackable
     {
-        return sprite;
+        get { return this.stackable; }
+        set { this.stackable = value; }
     }
 
-    public int GetQuantity()
+    public ItemTypeEnum ItemType
     {
-        return quantity;
+        get { return this.itemType; }
+        set { this.itemType = value; }
     }
 
-    public bool GetStackable()
+    public string PrefabPath
     {
-        return stackable;
-    }
-
-    public ItemTypeEnum GetItemType()
-    {
-        return itemType;
-    }
-
-    public void SetQuantity(int quantity)
-    {
-        this.quantity = quantity;
-    }
-
-    public void SetStackable(bool stackable)
-    {
-        this.stackable = stackable;
-    }
-
-    public void SetItemType(ItemTypeEnum itemType)
-    {
-        this.itemType = itemType;
+        get { return this.prefabPath; }
+        set { this.prefabPath = value; }
     }
 }

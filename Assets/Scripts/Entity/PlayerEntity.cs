@@ -488,26 +488,26 @@ public class PlayerEntity : Entity
     {
         if (collision.gameObject.CompareTag(pickable_objects))
         {
-            Item hitObject = collision.gameObject.GetComponent<PickableObjects>().item;
+            PickableObjects hitObject = collision.gameObject.GetComponent<PickableObjects>();
 
             if (hitObject != null)
             {
                 bool should_disappear = false;
 
                 //print("Hit: " + hitObject.GetName());
-                switch (hitObject.GetItemType())
+                switch (hitObject.item.ItemType)
                 {
                     case Item.ItemTypeEnum.COIN:
                         should_disappear = inventory_ui.AddItem(hitObject);
                         break;
                     case Item.ItemTypeEnum.HEALTH:
-                        should_disappear = stat_manager.AdjustHP(hitObject.GetQuantity());
+                        should_disappear = stat_manager.AdjustHP(hitObject.Quantity);
                         break;
                 }
 
                 if (should_disappear)
                 {
-                    collision.gameObject.SetActive(false);
+                    Destroy(collision.gameObject, .0f);
                 }
             }
         }
