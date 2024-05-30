@@ -146,7 +146,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     //     duplicatedSlot을 월드에 드랍합니다.
     private bool DropItem()
     {
-        Debug.Log("DropItem");
+        //Debug.Log("DropItem");
         // Drop Clicked Slot's Item
         string prefab_path = null;
         GameObject prefab_to_spawn;
@@ -169,7 +169,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
             GameObject spawnObject = Instantiate(prefab_to_spawn, spawnPos, Quaternion.identity);
             PickableObjects spawnItem = spawnObject.GetComponent<PickableObjects>();
             spawnItem.Quantity = int.Parse(duplicatedSlot_QtyText.text);
-            Debug.Log("spawnItem.Quantity = " + spawnItem.Quantity);
+            //Debug.Log("spawnItem.Quantity = " + spawnItem.Quantity);
 
             // Clear Slot
             ClearSlot(clicked_slot);
@@ -193,7 +193,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     //     itemToAdd를 Inventory에 추가하는 데에 성공하면 true를 반환하고, 실패하면 false를 반환합니다.
     public bool AddItem(PickableObjects itemToAdd)
     {
-        Debug.Log("itemToAdd = " + itemToAdd + ", itemToAdd.item.ItemType = " + itemToAdd.item.ItemType);
+        //Debug.Log("itemToAdd = " + itemToAdd + ", itemToAdd.item.ItemType = " + itemToAdd.item.ItemType);
         
         for (int i = 0; i < items.Length; i++)
         {
@@ -241,6 +241,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     //     targetSlotNum의 slot이 itemToAdd를 가지고 있지 않고 비어 있지도 않으면 false를 반환합니다.
     public bool AddItemAt(PickableObjects itemToAdd, int targetSlotNum)
     {
+        //Debug.Log("Add Item At");
         if (items[targetSlotNum] != null && items[targetSlotNum].ItemType == itemToAdd.item.ItemType && itemToAdd.item.Stackable == true)
         {
 
@@ -290,17 +291,20 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
         TMP_Text dst_qty_text = dst.transform.GetComponentsInChildren<TMP_Text>()[0];
         Image dst_image = itemImages[targetSlotNum];
 
-        int quantity = int.Parse(src_qty_text.text);
+        int quantity = int.Parse(duplicatedSlot_QtyText.text);
         // Destination Slot is empty
-        if (AddItemAt(new PickableObjects(items[targetSlotNum], quantity), targetSlotNum))
+        //Debug.Log("MoveItem");
+        //Debug.Log("item.objectname = " + items[targetSlotNum].ObjectName + ", item.sprite = " + items[targetSlotNum].Sprite + "items.stackable" + items[targetSlotNum].Stackable + "items.itemType" + items[targetSlotNum].ItemType);
+        if (AddItemAt(new PickableObjects(items[clicked_slot], quantity), targetSlotNum))
         {
-            if (int.Parse(items[targetSlotNum].GetComponentsInChildren<TMP_Text>()[0].text) - quantity != 0)
+            //Debug.Log("Slot is empty");
+            if (int.Parse(slots[clicked_slot].transform.GetComponentsInChildren<TMP_Text>()[0].text) - quantity != 0)
             {
-                return DeleteItem(targetSlotNum, quantity);
+                return DeleteItem(clicked_slot, quantity);
             }
             else
             {
-                ClearSlot(targetSlotNum);
+                ClearSlot(clicked_slot);
                 ClearSlot(numSlots);
                 return true;
             }
@@ -387,7 +391,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
         {
             if (0 <= current_clicked_slot && current_clicked_slot <= numSlots)
             {
-                //Debug.Log("Click at slot_" + clicked_slot);
+                Debug.Log("Click at slot_" + current_clicked_slot);
                 if (is_item_clicked)
                 {
                     is_item_clicked = false;
@@ -405,7 +409,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                 }
                 else
                 {
-                    if (itemImages[clicked_slot].IsActive())
+                    if (itemImages[current_clicked_slot].IsActive())
                     {
                         is_item_clicked = true;
                         clicked_slot = current_clicked_slot;
