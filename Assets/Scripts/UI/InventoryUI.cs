@@ -387,11 +387,11 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     {
         Vector2 mouse_position = eventData.position;
         int current_clicked_slot = GetClickedSlot(eventData.position);
+        
         if (eventData.button == PointerEventData.InputButton.Left)
         {
             if (0 <= current_clicked_slot && current_clicked_slot <= numSlots)
             {
-                Debug.Log("Click at slot_" + current_clicked_slot);
                 if (is_item_clicked)
                 {
                     is_item_clicked = false;
@@ -407,6 +407,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
 
                     ClearSlot(numSlots);
                 }
+                // 좌클릭으로 모든 수량 선택
                 else
                 {
                     if (itemImages[current_clicked_slot].IsActive())
@@ -427,29 +428,73 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                 }
             }
         }
+        // 우클릭으로 수량을 하나씩 선택
         else if (eventData.button == PointerEventData.InputButton.Right)
         {
             if (0 <= current_clicked_slot && current_clicked_slot <= numSlots)
             {
-                //Debug.Log("Click at slot_" + clicked_slot);
+                // 선택된 아이템이 있음
                 if (is_item_clicked)
                 {
-                    
+                    if (current_clicked_slot != clicked_slot)
+                    {
+                        // 기존에 선택된 아이템을 해제하고 새롭게 아이템을 선택
+                    }
+                    else
+                    {
+                        GameObject src = slots[clicked_slot];
+                        TMP_Text src_qty_text = src.transform.GetComponentsInChildren<TMP_Text>()[0];
+
+                        int dst_qty;
+                        if (duplicatedSlot_QtyText.text.Equals(""))
+                        {
+                            dst_qty = 0;
+                        }
+                        else
+                        {
+                            dst_qty = int.Parse(duplicatedSlot_QtyText.text);
+                        }
+
+                        if (dst_qty < int.Parse(src_qty_text.text))
+                        {
+                            dst_qty++;
+                            duplicatedSlot_QtyText.text = dst_qty.ToString();
+                        }
+                    }
                 }
+                // 선택된 아이템이 없음
                 else
                 {
-                    if (itemImages[clicked_slot].IsActive())
+                    if (itemImages[current_clicked_slot].IsActive())
                     {
                         is_item_clicked = true;
+                        clicked_slot = current_clicked_slot;
 
                         GameObject src = slots[clicked_slot];
                         TMP_Text src_qty_text = src.transform.GetComponentsInChildren<TMP_Text>()[0];
                         Image src_image = itemImages[clicked_slot];
 
+                        duplicatedSlot_Item = items[clicked_slot];
                         duplicatedSlot_Image.sprite = src_image.sprite;
                         duplicatedSlot_Image.enabled = true;
-                        duplicatedSlot_QtyText.text = src_qty_text.text;
                         duplicatedSlot_QtyText.enabled = true;
+
+                        Debug.Log("duplicatedSlot_QtyText.text = " + duplicatedSlot_QtyText.text);
+                        int dst_qty;
+                        if (duplicatedSlot_QtyText.text.Equals(""))
+                        {
+                            dst_qty = 0;
+                        }
+                        else
+                        {
+                            dst_qty = int.Parse(duplicatedSlot_QtyText.text);
+                        }
+
+                        if (dst_qty < int.Parse(src_qty_text.text))
+                        {
+                            dst_qty++;
+                            duplicatedSlot_QtyText.text = dst_qty.ToString();
+                        }
                     }
                 }
             }
