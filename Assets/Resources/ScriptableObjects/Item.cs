@@ -9,9 +9,9 @@ using UnityEngine.TextCore.Text;
 // Item의 속성을 정의하는 Sciprtable Object 클래스
 public class Item : ScriptableObject
 {
-    [SerializeField]
+    //[SerializeField]
     // Item의 이름
-    private string objectName;
+    //private string objectName;
     [SerializeField]
     // Item의 sprite
     private Sprite sprite;
@@ -34,17 +34,19 @@ public class Item : ScriptableObject
 
     public Item(Item item)
     {
-        this.objectName = item.ObjectName;
+        //this.objectName = item.ObjectName;
         this.sprite = item.Sprite;
         this.stackable = item.Stackable;
         this.itemType = item.ItemType;
     }
 
+    /*
     public string ObjectName
     {
         get { return this.objectName; }
         set { this.objectName = value; }
     }
+    */
 
     public Sprite Sprite
     {

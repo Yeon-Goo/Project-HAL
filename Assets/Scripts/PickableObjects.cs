@@ -5,8 +5,9 @@ using UnityEngine;
 public class PickableObjects : MonoBehaviour
 {
     public Item item;
+    [SerializeField]
     // Item의 수량 (default : 1)
-    private int quantity;
+    private int quantity = 1;
 
     public PickableObjects(Item item)
     {

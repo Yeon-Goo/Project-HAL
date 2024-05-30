@@ -507,7 +507,7 @@ public class PlayerEntity : Entity
 
                 if (should_disappear)
                 {
-                    collision.gameObject.SetActive(false);
+                    Destroy(collision.gameObject, .0f);
                 }
             }
         }
