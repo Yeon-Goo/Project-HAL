@@ -16,7 +16,9 @@ public class Archer : Weapon
     private bool isCharging = false;
     private bool isBuffActive = false;
     private Coroutine chargingCoroutine;
+    private int recovermanaamount = 2;
 
+    private StatManager stat_manager;
     [SerializeField]
     private GameObject afterImagePrefab;
     private GameObject afterImageObject;
@@ -319,7 +321,7 @@ public class Archer : Weapon
         playerEntity.CharacterStop();
 
         int arrowdamage = 1;
-        int arrownum = 8;
+        int arrownum = 5 + 3 * slevel;
 
         for (int i = 0; i < arrownum; i++)
         {
@@ -447,15 +449,56 @@ public class Archer : Weapon
 
 
 
-    
+
     //No.5 마나 충전 스킬ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     private int ManaArrows(int slevel)
     {
-        Debug.Log("Performing Mana Arrows (3발 발사, 적중시 2마나씩 회복)");
-        // Mana Arrows implementation
-        return 0;
+        StartCoroutine(ManaArrowsCoroutine(slevel));
+        return skillMana[5];
+    }
+
+    private IEnumerator ManaArrowsCoroutine(int slevel)
+    {
+        playerEntity.CharacterStop();
+        playerObject.GetComponent<PlayerDeck>().allLockOn();
+        mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        while (!BaseAttackAble())
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        playerEntity.PlayAnimation("Attack");
+        yield return new WaitForSeconds(0.5f);
+
+        int arrowdamage = 1;
+        int arrownum = 3;
+
+        for (int i = 0; i < arrownum; i++)
+        {
+            if (arrowPrefab != null && _Pool != null)
+            {
+                BaseShot(0.0f, 3, arrowdamage);
+            }
+            else
+            {
+                Debug.Log("Arrow prefab or object pool is not set.");
+            }
+            yield return new WaitForSeconds(0.05f);
+        }
+        playerObject.GetComponent<PlayerDeck>().allLockOff();
+    }
+
+    public void RecoverMana()
+    {
+        stat_manager = Resources.Load<StatManager>("ScriptableObjects/StatManager");
+        stat_manager.Cur_mp += recovermanaamount;
+        Debug.Log($"Recovered {recovermanaamount} mana. Current mana: {stat_manager.Cur_mp}");
     }
     //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+
+
     private int ArrowRain(int slevel)
     {
         Debug.Log("Performing Arrow Rain (범위형 화살 공격 + 방깎 시너지)");
