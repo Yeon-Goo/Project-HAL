@@ -161,7 +161,6 @@ public class PlayerDeck : MonoBehaviour
                 cardTexts[i].text = "";
                 cardImages[i].enabled = false; // 이미지 비활성화
             }
-            Debug.Log("updated");
         }
     }
 }

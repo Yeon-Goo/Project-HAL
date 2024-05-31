@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
@@ -8,6 +9,8 @@ public class EnemyEntity : Entity
     private int damage_scale = 1;
     public int arrowstack = 0;
     Coroutine damage_coroutine;
+
+
 
     public Coroutine GetDamageCoroutine()
     {

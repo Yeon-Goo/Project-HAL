@@ -11,7 +11,7 @@ public class ArrowObject : MonoBehaviour
     private float armor_de, speed;
     private Vector3 shootvector = Vector3.zero;
     private bool originalarrow = true;
-    //  0-스택 충전    1-스택 사용     2-스택 전체 사용
+    //  0-스택 충전    1-스택 사용     2-스택 전체 사용   3-마나 회복
     private int attacktype = 0;
     private int damage_per_stack = 1;
 
@@ -30,10 +30,13 @@ public class ArrowObject : MonoBehaviour
 
             if (damage_coroutine == null)
             {
-                if(attacktype == 0)
+                Vector2 effectPosition = transform.position;
+                Vector2 effectScale = new Vector2(4.0f, 4.0f); // 이펙트 크기 설정
+                if (attacktype == 0)
                 {
                     enemy.arrowstack += 1;
                     damage_coroutine = StartCoroutine(enemy.DamageEntity(dmg, 0.0f, this.gameObject));
+                    EffectManager.Instance.PlayEffect("attackanim", effectPosition, effectScale);
                     DestroyArrow();
                 }
                 else if(attacktype == 1)
@@ -44,6 +47,8 @@ public class ArrowObject : MonoBehaviour
                         dmg += damage_per_stack;
                     }
                     damage_coroutine = StartCoroutine(enemy.DamageEntity(dmg, 0.0f, this.gameObject));
+                    effectScale = new Vector2(6.0f, 6.0f);
+                    EffectManager.Instance.PlayEffect("ani_hitFire_01", effectPosition, effectScale);
                     DestroyArrow();
                 }
                 else if(attacktype == 2)
@@ -51,10 +56,18 @@ public class ArrowObject : MonoBehaviour
                     dmg += damage_per_stack * enemy.arrowstack;
                     enemy.arrowstack = 0;
                     damage_coroutine = StartCoroutine(enemy.DamageEntity(dmg, 0.0f, this.gameObject));
+                    EffectManager.Instance.PlayEffect("ani_slashSpecial2_01", effectPosition, effectScale);
                 }
-                Vector2 effectPosition = transform.position;
-                Vector2 effectScale = new Vector2(3.0f, 3.0f); // 이펙트 크기 설정
-                EffectManager.Instance.PlayEffect("attackanim", effectPosition, effectScale);
+                else if(attacktype == 3)
+                {
+                    weapon.GetComponent<Archer>().RecoverMana();
+                    damage_coroutine = StartCoroutine(enemy.DamageEntity(dmg, 0.0f, this.gameObject));
+                    effectScale = new Vector2(6.0f, 6.0f);
+                    EffectManager.Instance.PlayEffect("ani_hitIce_01", effectPosition, effectScale);
+                    DestroyArrow();
+                }
+                
+                
                 if(originalarrow)
                 {
                     weapon.GetComponent<Archer>().FireFromAfterImage(new Vector3(coll.transform.position.x, coll.transform.position.y, 0.0f));

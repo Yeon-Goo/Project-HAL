@@ -16,7 +16,9 @@ public class Archer : Weapon
     private bool isCharging = false;
     private bool isBuffActive = false;
     private Coroutine chargingCoroutine;
+    private int recovermanaamount = 2;
 
+    private StatManager stat_manager;
     [SerializeField]
     private GameObject afterImagePrefab;
     private GameObject afterImageObject;
@@ -119,10 +121,10 @@ public class Archer : Weapon
                 manaused = BuffSkill(skilllevel);
                 break;
             case 5:
-                manaused = ArrowRain(skilllevel);
+                manaused = ManaArrows(skilllevel);
                 break;
             case 6:
-                manaused = ManaArrows(skilllevel);
+                manaused = ArrowRain(skilllevel);
                 break;
             case 7:
                 manaused = RapidFire(skilllevel);
@@ -153,12 +155,12 @@ public class Archer : Weapon
     {
         mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        StartCoroutine(DashCoroutine());
+        StartCoroutine(DashCoroutine(slevel));
 
         return skillMana[0];
     }
 
-    private IEnumerator DashCoroutine()
+    private IEnumerator DashCoroutine(int slevel)
     {
         playerEntity.EnableafterimageSystem();
         float dashDistance = 3.0f;
@@ -291,7 +293,7 @@ public class Archer : Weapon
             }
             elapsedTime += Time.deltaTime;
             SetCastTime(elapsedTime.ToString("F1"));
-            SetFillAmount(elapsedTime);
+            SetFillAmount(elapsedTime / chargingtime);
             yield return null;
         }
 
@@ -319,7 +321,7 @@ public class Archer : Weapon
         playerEntity.CharacterStop();
 
         int arrowdamage = 1;
-        int arrownum = 8;
+        int arrownum = 5 + 3 * slevel;
 
         for (int i = 0; i < arrownum; i++)
         {
@@ -417,6 +419,8 @@ public class Archer : Weapon
             
             afterImageObject.transform.SetParent(playerObject.transform);
 
+            //레벨 별 지속시간 다르게 할 경우 구현할 곳
+
             for (int i = 0; i < 10; i++) // 10초 동안 잔상 유지 - 레벨 별로 지속시간 다르게 구성 가능
             {
                 yield return new WaitForSeconds(1.0f);
@@ -445,17 +449,60 @@ public class Archer : Weapon
 
 
 
+
+    //No.5 마나 충전 스킬ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    private int ManaArrows(int slevel)
+    {
+        StartCoroutine(ManaArrowsCoroutine(slevel));
+        return skillMana[5];
+    }
+
+    private IEnumerator ManaArrowsCoroutine(int slevel)
+    {
+        playerEntity.CharacterStop();
+        playerObject.GetComponent<PlayerDeck>().allLockOn();
+        mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        while (!BaseAttackAble())
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        playerEntity.PlayAnimation("Attack");
+        yield return new WaitForSeconds(0.5f);
+
+        int arrowdamage = 1;
+        int arrownum = 3;
+
+        for (int i = 0; i < arrownum; i++)
+        {
+            if (arrowPrefab != null && _Pool != null)
+            {
+                BaseShot(0.0f, 3, arrowdamage);
+            }
+            else
+            {
+                Debug.Log("Arrow prefab or object pool is not set.");
+            }
+            yield return new WaitForSeconds(0.05f);
+        }
+        playerObject.GetComponent<PlayerDeck>().allLockOff();
+    }
+
+    public void RecoverMana()
+    {
+        stat_manager = Resources.Load<StatManager>("ScriptableObjects/StatManager");
+        stat_manager.Cur_mp += recovermanaamount;
+        Debug.Log($"Recovered {recovermanaamount} mana. Current mana: {stat_manager.Cur_mp}");
+    }
+    //ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+
+
     private int ArrowRain(int slevel)
     {
         Debug.Log("Performing Arrow Rain (범위형 화살 공격 + 방깎 시너지)");
         // Arrow Rain implementation
-        return 0;
-    }
-
-    private int ManaArrows(int slevel)
-    {
-        Debug.Log("Performing Mana Arrows (3발 발사, 적중시 2마나씩 회복)");
-        // Mana Arrows implementation
         return 0;
     }
 
