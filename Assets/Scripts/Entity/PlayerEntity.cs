@@ -495,8 +495,10 @@ public class PlayerEntity : Entity
                 bool should_disappear = false;
 
                 //print("Hit: " + hitObject.GetName());
-                switch (hitObject.item.ItemType)
+                switch (hitObject.Item.ItemType)
                 {
+                    case Item.ItemTypeEnum.GRASS:
+                    case Item.ItemTypeEnum.STONE:
                     case Item.ItemTypeEnum.COIN:
                         should_disappear = inventory_ui.AddItem(hitObject);
                         break;
