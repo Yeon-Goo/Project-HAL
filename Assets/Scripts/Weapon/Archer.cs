@@ -450,7 +450,7 @@ public class Archer : Weapon
 
 
 
-    //No.5 마나 충전 스킬ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    //No.5 푸른 화살 / 마나 충전 스킬ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     private int ManaArrows(int slevel)
     {
         StartCoroutine(ManaArrowsCoroutine(slevel));
