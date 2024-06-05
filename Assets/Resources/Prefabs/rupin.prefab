@@ -174,6 +174,7 @@ MonoBehaviour:
   hpbar_prefab: {fileID: 0}
   hpbar_ui: {fileID: 0}
   damageTextPrefab: {fileID: 3453731427029572494, guid: a6feb9b828fe2a04393e13e72ab99985, type: 3}
+  stackTextPrefab: {fileID: 3807142244504146439, guid: 29a02629e61ad81469f5fdae1652dea9, type: 3}
   canvas: {fileID: 1157815839568653100, guid: 0d8b1f02299607b4c8ff56fea48ce546, type: 3}
   stat_manager: {fileID: 0}
   arrowstack: 0

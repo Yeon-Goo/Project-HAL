@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-/*
- * Entity → PlayerEntity
- *        → EnemyEntity → BossEntity
- *        → Living Entity
- */
 public abstract class Entity : MonoBehaviour
 {
     // Entity's UIs
     public HPBarUI hpbar_prefab;
     public HPBarUI hpbar_ui;
     public GameObject damageTextPrefab;
+    public GameObject stackTextPrefab; // StackText 프리팹
     public Canvas canvas;
     public event Action OnDeath;
+
+    // 현재 생성된 StackText 오브젝트를 저장할 변수
+    private GameObject currentStackTextObj;
 
     // Entity의 HP를 관리하는 변수
     public StatManager stat_manager;
@@ -26,9 +25,20 @@ public abstract class Entity : MonoBehaviour
         set;
     }
 
-    //
-    // 요약:
-    //     Entity가 현재 위치하고 있는 좌표를 Vector2로 반환합니다.
+    public void Start()
+    {
+        // "DamageTextUI" 이름의 오브젝트를 찾아 canvas에 할당
+        GameObject canvasObject = GameObject.Find("DamageTextUI");
+        if (canvasObject != null)
+        {
+            canvas = canvasObject.GetComponent<Canvas>();
+        }
+        else
+        {
+            Debug.LogError("DamageTextUI라는 이름의 오브젝트를 찾을 수 없습니다. 하이어라키에 DamageTextUI를 추가하세요.");
+        }
+    }
+
     public Vector2 GetPos()
     {
         return new Vector2(transform.position.x, transform.position.y);
@@ -52,6 +62,22 @@ public abstract class Entity : MonoBehaviour
             DamageText damageText = damageTextObj.GetComponent<DamageText>();
             damageText.Setup(transform, damage);
             
+            if (this is EnemyEntity enemy)
+            {
+                int arrowstack = enemy.arrowstack;
+
+                // 현재 생성된 StackText 오브젝트가 있으면 삭제
+                if (currentStackTextObj != null)
+                {
+                    Destroy(currentStackTextObj);
+                }
+
+                // 새로운 StackText 생성 및 정보 전달
+                currentStackTextObj = Instantiate(stackTextPrefab, canvas.transform);
+                StackText stackText = currentStackTextObj.GetComponent<StackText>();
+                stackText.Setup(transform, arrowstack);
+            }
+
             // this는 entity로부터 damage만큼의 피해를 interval초마다 받는다
             cur_hp -= damage;
             stat_manager.Cur_hp = cur_hp;
@@ -74,9 +100,6 @@ public abstract class Entity : MonoBehaviour
         }
     }
 
-    //
-    // 요약:
-    //     피격 시 Entity를 0.1초 동안 깜빡입니다.
     public virtual IEnumerator FlickEntity()
     {
         GetComponent<SpriteRenderer>().color = Color.red;
@@ -91,20 +114,15 @@ public abstract class Entity : MonoBehaviour
             OnDeath.Invoke();
         }
         stat_manager.Cur_hp = 0;
+
+        // 현재 생성된 StackText 오브젝트가 있으면 삭제
+        if (currentStackTextObj != null)
+        {
+            Destroy(currentStackTextObj);
+        }
+
         Destroy(gameObject);
     }
+
     public abstract void ResetEntity();
-    public void Start()
-    {
-        // "DamageTextUI" 이름의 오브젝트를 찾아 canvas에 할당
-        GameObject canvasObject = GameObject.Find("DamageTextUI");
-        if (canvasObject != null)
-        {
-            canvas = canvasObject.GetComponent<Canvas>();
-        }
-        else
-        {
-            Debug.LogError("DamageTextUI라는 이름의 오브젝트를 찾을 수 없습니다. 하이어라키에 DamageTextUI를 추가하세요.");
-        }
-    }
 }
