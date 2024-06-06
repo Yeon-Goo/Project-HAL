@@ -52,15 +52,15 @@ public abstract class Entity : MonoBehaviour
     public virtual IEnumerator DamageEntity(int damage, float interval, GameObject entity)
     {
         float cur_hp = stat_manager.Cur_hp;
+        GameObject damageTextObj = Instantiate(damageTextPrefab, canvas.transform);
+        DamageText damageText = damageTextObj.GetComponent<DamageText>();
+        damageText.Setup(transform.position, damage);
 
         while (true)
         {
             StartCoroutine(FlickEntity());
 
             // DamageText 생성 및 정보 전달
-            GameObject damageTextObj = Instantiate(damageTextPrefab, canvas.transform);
-            DamageText damageText = damageTextObj.GetComponent<DamageText>();
-            damageText.Setup(transform, damage);
             
             if (this is EnemyEntity enemy)
             {

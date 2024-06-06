@@ -4,30 +4,27 @@ using TMPro;
 public class DamageText : MonoBehaviour
 {
     public TextMeshProUGUI text;
-    private Transform targetTransform;
+    private Vector3 targetPosition;
     private float tempTime;
     private float rand_x, rand_y;
     private Vector3 pos;
     // 텍스트를 설정하는 메소드
-    public void Setup(Transform target, int damage)
+    public void Setup(Vector3 targetPos, int damage)
     {
-        targetTransform = target;
+        targetPosition = targetPos;
         text.text = damage.ToString();
         text.color = Color.red;
         Destroy(gameObject, 1.0f); // 1초 후에 텍스트 오브젝트 파괴
         tempTime = Time.time;
         rand_x = Random.Range(-0.3f, 0.3f);
         rand_y = Random.Range(-0.1f, 0.1f);
-        pos = targetTransform.position;
+        pos = targetPosition;
     }
 
     private void Update()
     {
-        if (targetTransform != null)
-        {
-            // 텍스트가 몬스터를 따라다니도록 위치 갱신
-            Vector3 screenPosition = Camera.main.WorldToScreenPoint(pos + new Vector3(2.3f + rand_x, 1f + rand_y, 0) + new Vector3(0, 1.5f, 0) * (Time.time - tempTime));
-            transform.position = screenPosition;
-        }
+        // 텍스트가 몬스터를 따라다니도록 위치 갱신
+        Vector3 screenPosition = Camera.main.WorldToScreenPoint(pos + new Vector3(2.3f + rand_x, 1f + rand_y, 0) + new Vector3(0, 1.5f, 0) * (Time.time - tempTime));
+        transform.position = screenPosition;
     }
 }
