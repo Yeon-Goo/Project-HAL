@@ -424,15 +424,32 @@ public class PlayerEntity : Entity
     {
         CharacterStop();
 
-        Debug.Log("Dead start");
+        while (!animator.GetCurrentAnimatorStateInfo(0).IsName("0_idle"))
+        {
+            animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+            yield return null;
+        }
+
         while (!animator.GetCurrentAnimatorStateInfo(0).IsName("4_Death"))
         {
             animator.SetInteger(animationState, (int)AnimationStateEnum.dead);
             yield return null;
         }
-        Debug.Log("Dead end");
+        animation_coroutine = null;
+    }
+
+    public IEnumerator Revive(Animator animator)
+    {
+        CharacterStop();
+
+        while (!animator.GetCurrentAnimatorStateInfo(0).IsName("0_idle"))
+        {
+            animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+            yield return null;
+        }
 
         is_alive = true;
+        is_animation_started = false;
         animation_coroutine = null;
     }
 
@@ -553,11 +570,9 @@ public class PlayerEntity : Entity
     // 플레이어가 사망하는 코드
     override public void KillEntity()
     {
-        Debug.Log("KillEntity");
-        CharacterStop();
         CharacterIdleSet();
         is_animation_started = true;
-
+        //is_animation_cancelable = true;
         if (animation_coroutine != null)
         {
             StopCoroutine(animation_coroutine);
@@ -570,18 +585,24 @@ public class PlayerEntity : Entity
         }
         is_alive = false;
         stat_manager.Cur_hp = 0;
-        //GetComponent<SpriteRenderer>().enabled = false;
-        //animator.SetInteger(animationState, (int)AnimationStateEnum.dead);
-        //GameManager.sharedInstance.SpawnPlayer();
-        // 미완성
-        Debug.Log("KillEntity end");
     }
 
     // 플레이어가 부활하는 코드
     public override void ResetEntity()
     {
-        CharacterIdleSet();
         is_alive = true;
+        CharacterIdleSet();
+        if (animation_coroutine != null)
+        {
+            StopCoroutine(animation_coroutine);
+        }
+        animation_coroutine = null;
+
+        if (animation_coroutine == null)
+        {
+            animation_coroutine = StartCoroutine("Revive", animator);
+        }
+        
         stat_manager.Cur_hp = stat_manager.Max_hp;
         stat_manager.Cur_mp = stat_manager.Max_mp;
         //GetComponent<SpriteRenderer>().enabled = true;
