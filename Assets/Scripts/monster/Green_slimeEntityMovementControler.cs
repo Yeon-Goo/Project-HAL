@@ -49,7 +49,7 @@ public class MonsterTracking : MonoBehaviour
             if(distance < range) // 거리가 가까워지면 추격상태로 전환
             {
                 monster_state = (int)StateEnum.move;
-                transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 animator.SetInteger(animationState, monster_state);
             }
             else if(Time.time - tempTime > 1f) // 평상시 상태가 1초 이상 지속시 탐색상태로 전환
@@ -74,14 +74,14 @@ public class MonsterTracking : MonoBehaviour
                 move_direction = (player.position - transform.position).normalized;
                 target_pos = transform.position + (Vector3)move_direction * 3;
                 monster_state = (int)StateEnum.charge;
-                transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 animator.SetInteger(animationState, monster_state);
                 tempTime = Time.time;
             }
             if(distance > tracking_range) // 시야 사거리가 멀어졌을 경우 평상시로 전환
             {
                 monster_state = (int)StateEnum.idle;
-                transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 animator.SetInteger(animationState, monster_state);
                 tempTime = Time.time;
             }
@@ -94,7 +94,7 @@ public class MonsterTracking : MonoBehaviour
             {
                 tempTime = Time.time;
                 monster_state = (int)StateEnum.attack;
-                transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 animator.SetInteger(animationState, monster_state);
             }
         }
@@ -105,7 +105,7 @@ public class MonsterTracking : MonoBehaviour
             if(Time.time - tempTime > attack_time) // 공격이 끝나고 딜레이로 전환
             {
                 monster_state = (int)StateEnum.delay;
-                transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 animator.SetInteger(animationState, (int)StateEnum.delay);
             }
         }
@@ -118,13 +118,13 @@ public class MonsterTracking : MonoBehaviour
                 if(distance < tracking_range)   // 돌진 후 가까우면 추격상태로 전환
                 {
                     monster_state = (int)StateEnum.move;
-                    transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                    transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                     animator.SetInteger(animationState, monster_state);
                 }
                 else  // 돌진 후 멀면 평상시로 전환
                 {
                     monster_state = (int)StateEnum.idle;
-                    transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+                    transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                     animator.SetInteger(animationState, monster_state);
                     tempTime = Time.time;
                 }
