@@ -498,7 +498,7 @@ public class PlayerEntity : Entity
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag(pickable_objects))
+        if (is_alive && collision.gameObject.CompareTag(pickable_objects))
         {
             PickableObjects hitObject = collision.gameObject.GetComponent<PickableObjects>();
 

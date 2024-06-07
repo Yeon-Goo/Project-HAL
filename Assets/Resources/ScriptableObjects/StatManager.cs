@@ -74,18 +74,13 @@ public class StatManager : ScriptableObject
 
     public bool AdjustHP(int amount)
     {
-        Debug.Log("AdjustHP");
-        if (this.cur_hp < this.max_hp)
+        this.cur_hp += amount;
+        if (this.cur_hp >= this.max_hp)
         {
-            Debug.Log("cur_hp = " + this.cur_hp + ", max_hp = " + this.max_hp);
-            Debug.Log("amount = " + amount);
-            this.cur_hp = this.cur_hp + amount;
-            //print("Adjusted HP by : " + amount + ". New value : " + hp_manager.cur_hp);
-
-            return true;
+            this.cur_hp = this.max_hp;
         }
 
-        return false;
+        return true;
     }
 
     public bool AdjustMP(int amount)
