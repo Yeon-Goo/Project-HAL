@@ -37,6 +37,7 @@ public class ArrowObject : MonoBehaviour
                     damage_coroutine = StartCoroutine(enemy.DamageEntity(dmg, 0.0f, this.gameObject));
                     EffectManager.Instance.PlayEffect("attackanim", effectPosition, effectScale);
                     DestroyArrow();
+                    SoundManager.Instance.PlaySound("arrowhitsound");
                 }
                 else if(attacktype == 1)
                 {
@@ -50,6 +51,7 @@ public class ArrowObject : MonoBehaviour
                     effectScale = new Vector2(4.5f, 4.5f);
                     EffectManager.Instance.PlayEffect("ani_hitFire_01", effectPosition, effectScale);
                     DestroyArrow();
+                    SoundManager.Instance.PlaySound("arrowhitsound2");
                 }
                 else if(attacktype == 2)
                 {
@@ -58,6 +60,7 @@ public class ArrowObject : MonoBehaviour
                     enemy.arrowstack = 0;
                     damage_coroutine = StartCoroutine(enemy.DamageEntity(dmg, 0.0f, this.gameObject));
                     EffectManager.Instance.PlayEffect("ani_slashSpecial2_01", effectPosition, effectScale);
+                    SoundManager.Instance.PlaySound("arrowhitsound3");
                 }
                 else if(attacktype == 3)
                 {
@@ -66,6 +69,7 @@ public class ArrowObject : MonoBehaviour
                     effectScale = new Vector2(4.5f, 4.5f);
                     EffectManager.Instance.PlayEffect("ani_hitIce_01", effectPosition, effectScale);
                     DestroyArrow();
+                    SoundManager.Instance.PlaySound("arrowhitsound");
                 }
                 
                 
