@@ -78,8 +78,6 @@ public class PlayerDeck : MonoBehaviour
         // 마우스 포인터의 월드 위치 가져오기
         Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        Debug.Log("now " + mouseWorldPosition.y + " and " + this.transform.position.y);
-
         // 마우스 포인터의 Y값이 minY와 maxY 사이에 있는지 확인
         if (mouseWorldPosition.y >= this.transform.position.y + minY && mouseWorldPosition.y <= this.transform.position.y + maxY)
         {

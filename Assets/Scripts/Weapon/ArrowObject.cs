@@ -27,7 +27,6 @@ public class ArrowObject : MonoBehaviour
             //coll.gameObject.GetComponent<EnemyObject>().Damaged(dmg, armor_de);
             EnemyEntity enemy = coll.gameObject.GetComponent<EnemyEntity>();
             Coroutine damage_coroutine = enemy.GetDamageCoroutine();
-
             if (damage_coroutine == null)
             {
                 Vector2 effectPosition = transform.position;
@@ -54,6 +53,7 @@ public class ArrowObject : MonoBehaviour
                 }
                 else if(attacktype == 2)
                 {
+                    damage_per_stack = dmg / 2;
                     dmg += damage_per_stack * enemy.arrowstack;
                     enemy.arrowstack = 0;
                     damage_coroutine = StartCoroutine(enemy.DamageEntity(dmg, 0.0f, this.gameObject));
