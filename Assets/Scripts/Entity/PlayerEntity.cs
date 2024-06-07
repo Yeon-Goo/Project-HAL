@@ -99,11 +99,9 @@ public class PlayerEntity : Entity
     {
         idle = 0,
         walk = 1,
-        roll = 2,
-        attack = 3,
-        damaged = 4,
-        dead = 5
-
+        attack = 2,
+        dead = 3,
+        damaged = 4
     }
     void Start()
     {
@@ -348,7 +346,6 @@ public class PlayerEntity : Entity
     {
         if (is_animation_cancelable)
         {
-            //Debug.Log("Play " + action + "(animation is cancelable)");
             CharacterIdleSet();
             is_animation_started = true;
             is_animation_cancelable = true;
@@ -359,38 +356,24 @@ public class PlayerEntity : Entity
             {
                 animation_coroutine = StartCoroutine(action, animator);
             }
-            //animation_coroutine = null;
 
             transform.localScale = (GetMousePos().x - GetPos().x) > 0 ? new Vector3(playerscale, playerscale, 1.0f) : new Vector3(-playerscale, playerscale, 1.0f);
         }
         else
         {
-            //Debug.Log("Play " + action + "(animation is not playing)");
             is_animation_started = true;
-            //is_animation_cancelable = false;
 
             if (animation_coroutine == null)
             {
                 animation_coroutine = StartCoroutine(action, animator);
             }
-            // animation_coroutine = null;
 
             transform.localScale = (GetMousePos().x - GetPos().x) > 0 ? new Vector3(playerscale, playerscale, 1.0f) : new Vector3(-playerscale, playerscale, 1.0f);
         }
-        /*
-        if (animation_coroutine == null)
-        {
-            animation_coroutine = StartCoroutine(action, animator);
-        }
-        animation_coroutine = null;
-
-        transform.localScale = (GetMousePos().x - GetPos().x) > 0 ? new Vector3(playerscale, playerscale, 1.0f) : new Vector3(-playerscale, playerscale, 1.0f);
-        */
     }
 
     public IEnumerator Attack(Animator animator)
     {
-        //Debug.Log("Attack Start");
         if (!is_animation_playing)
         {
             CharacterStop();
@@ -400,26 +383,20 @@ public class PlayerEntity : Entity
             {
                 while (!animator.GetCurrentAnimatorStateInfo(0).IsName("0_idle"))
                 {
-                    //Debug.Log("set to idle " + animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
                     animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
                     yield return null;
                 }
-                //Debug.Log("Set to Idle");
                 is_animation_cancelable = false;
             }
 
             while (!animator.GetCurrentAnimatorStateInfo(0).IsName("2_Attack_Bow"))
             {
-                //Debug.Log("set to attack " + animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
                 animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
                 yield return null;
             }
-            //Debug.Log("Set to Attack");
 
-            //Debug.Log("Animation Start");
             while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
             {
-                //Debug.Log(animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
                 is_animation_playing = true;
                 if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f)
                 {
@@ -431,14 +408,54 @@ public class PlayerEntity : Entity
 
             if (is_animation_playing)
             {
-                //Debug.Log("Animation End");
                 CharacterIdleSet();
-                //Debug.Log("Set to Idle");
             }
         }
         is_animation_started = false;
         animation_coroutine = null;
-        //Debug.Log("Attack End");
+    }
+
+    public IEnumerator Dead(Animator animator)
+    {
+        if (!is_animation_playing)
+        {
+            CharacterStop();
+
+            // 이전에 재생되던 애니메이션이 존재 (캔슬한 경우)
+            if (is_animation_cancelable)
+            {
+                while (!animator.GetCurrentAnimatorStateInfo(0).IsName("0_idle"))
+                {
+                    animator.SetInteger(animationState, (int)AnimationStateEnum.idle);
+                    yield return null;
+                }
+                is_animation_cancelable = false;
+            }
+
+            while (!animator.GetCurrentAnimatorStateInfo(0).IsName("2_Attack_Bow"))
+            {
+                animator.SetInteger(animationState, (int)AnimationStateEnum.attack);
+                yield return null;
+            }
+
+            while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+            {
+                is_animation_playing = true;
+                if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f)
+                {
+                    is_animation_cancelable = true;
+                    is_moveable = true;
+                }
+                yield return null;
+            }
+
+            if (is_animation_playing)
+            {
+                CharacterIdleSet();
+            }
+        }
+        is_animation_started = false;
+        animation_coroutine = null;
     }
 
     IEnumerator Damaged(Animator animator)
@@ -570,6 +587,7 @@ public class PlayerEntity : Entity
     // 플레이어가 부활하는 코드
     public override void ResetEntity()
     {
+        CharacterIdleSet();
         is_alive = true;
         stat_manager.Cur_hp = stat_manager.Max_hp;
         stat_manager.Cur_mp = stat_manager.Max_mp;
