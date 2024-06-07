@@ -12,7 +12,7 @@ public class Boss_Portal : MonoBehaviour
         {
              if (SceneManager.GetActiveScene().name == "Stage0")
              {
-                Vector3 targetposition = new Vector3(4,-24,0);
+                Vector3 targetposition = new Vector3(4,-25,0);
                 other.transform.position = targetposition;
 
              }
