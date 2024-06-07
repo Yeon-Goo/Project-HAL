@@ -25,6 +25,9 @@ public class BlockMaker : MonoBehaviour
     [SerializeField]
     private float map_hight = 0.0f;
 
+    private GameObject Stones;
+    private GameObject Grasses;
+
     Vector2 spawnPosition;
 
     void Start()
@@ -40,10 +43,14 @@ public class BlockMaker : MonoBehaviour
 
     void SpawnResources()
     {
+        Grasses = GameObject.Find("Grasses");
+        Stones = GameObject.Find("Stones");
+
         for (int i = 0; i < Test_GlassSpawnCount; i++)
         {
             spawnPosition = GetRandomSpawnPosition();
             GameObject glass = Instantiate(GlassPrefab, spawnPosition, Quaternion.identity); // 회전이 없는 상태를 나타내는 Quaternion.identity
+            glass.transform.SetParent(Grasses.transform);
             glass.tag = "Glass"; // GlassPrefab의 태그 설정;
         }
         // GlassPrefab 초기 생성
@@ -52,6 +59,7 @@ public class BlockMaker : MonoBehaviour
         {
             spawnPosition = GetRandomSpawnPosition();
              GameObject stone = Instantiate(StonePrefab, spawnPosition, Quaternion.identity);
+            stone.transform.SetParent(Stones.transform);
             stone.tag = "Stone"; // StonePrefab의 태그 설정
         }
         // StonePrefab 초기 생성
@@ -88,18 +96,20 @@ public class BlockMaker : MonoBehaviour
     {
         // GlassPrefab 생성
         Debug.Log("here3");
-            spawnPosition = GetRandomSpawnPosition();
-           GameObject glass = Instantiate(GlassPrefab, spawnPosition, Quaternion.identity);
-            glass.tag = "Glass"; // 없어진 후 새로 생성되는 GlassPrefab의 태그 설정
+        spawnPosition = GetRandomSpawnPosition();
+        GameObject glass = Instantiate(GlassPrefab, spawnPosition, Quaternion.identity);
+        glass.transform.SetParent(Grasses.transform);
+        glass.tag = "Glass"; // 없어진 후 새로 생성되는 GlassPrefab의 태그 설정
     }
 
     void SpawnStoneResources()
     {
         // StonePrefab 생성
         Debug.Log("here4");
-            spawnPosition = GetRandomSpawnPosition();
-            GameObject stone = Instantiate(StonePrefab, spawnPosition, Quaternion.identity);
-            stone.tag = "Stone"; // 없어진 후 새로 생성되는 StonePrefab의 태그 설정
+        spawnPosition = GetRandomSpawnPosition();
+        GameObject stone = Instantiate(StonePrefab, spawnPosition, Quaternion.identity);
+        stone.transform.SetParent(Stones.transform);
+        stone.tag = "Stone"; // 없어진 후 새로 생성되는 StonePrefab의 태그 설정
     }
     
 }

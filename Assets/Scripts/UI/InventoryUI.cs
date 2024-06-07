@@ -20,7 +20,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     [SerializeField]
     GameObject duplicatedSlot;
     RectTransform duplicatedSlot_RectTransform;
-    Item duplicatedSlot_Item;
+    Item itemToDrop;
     Image duplicatedSlot_Image;
     TMP_Text duplicatedSlot_QtyText;
     
@@ -119,8 +119,8 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
         // Duplicated Slot
         if (targetSlotNum == numSlots)
         {
-            Destroy(duplicatedSlot_Item, .0f);
-            duplicatedSlot_Item = null;
+            Destroy(itemToDrop, .0f);
+            itemToDrop = null;
             duplicatedSlot_Image.enabled = false;
             duplicatedSlot_Image.sprite = null;
             duplicatedSlot_QtyText.text = "";
@@ -151,7 +151,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
         string prefab_path = null;
         GameObject prefab_to_spawn;
 
-        switch (duplicatedSlot_Item.ItemType)
+        switch (itemToDrop.ItemType)
         {
             case Item.ItemTypeEnum.COIN:
                 prefab_path = "Prefabs/CoinObject";
@@ -193,11 +193,11 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     //     itemToAdd를 Inventory에 추가하는 데에 성공하면 true를 반환하고, 실패하면 false를 반환합니다.
     public bool AddItem(PickableObjects itemToAdd)
     {
-        //Debug.Log("itemToAdd = " + itemToAdd + ", itemToAdd.item.ItemType = " + itemToAdd.item.ItemType);
+        Debug.Log("itemToAdd = " + itemToAdd + ", itemToAdd.item.ItemType = " + itemToAdd.Item.ItemType);
         
         for (int i = 0; i < items.Length; i++)
         {
-            if (items[i] != null && items[i].ItemType == itemToAdd.item.ItemType && itemToAdd.item.Stackable == true)
+            if (items[i] != null && items[i].ItemType == itemToAdd.Item.ItemType && itemToAdd.Item.Stackable == true)
             {
                 InventorySlotUI slotScript = slots[i].GetComponent<InventorySlotUI>();
                 TMP_Text qtyText = slotScript.transform.GetComponentsInChildren<TMP_Text>()[0];
@@ -217,8 +217,8 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
         {
             if (items[i] == null)
             {
-                items[i] = Instantiate(itemToAdd.item);
-                itemImages[i].sprite = itemToAdd.item.Sprite;
+                items[i] = Instantiate(itemToAdd.Item);
+                itemImages[i].sprite = itemToAdd.Item.Sprite;
                 itemImages[i].enabled = true;
                 InventorySlotUI slotScript = slots[i].GetComponent<InventorySlotUI>();
                 TMP_Text qtyText = slotScript.transform.GetComponentsInChildren<TMP_Text>()[0];
@@ -242,7 +242,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     public bool AddItemAt(PickableObjects itemToAdd, int targetSlotNum)
     {
         //Debug.Log("Add Item At");
-        if (items[targetSlotNum] != null && items[targetSlotNum].ItemType == itemToAdd.item.ItemType && itemToAdd.item.Stackable == true)
+        if (items[targetSlotNum] != null && items[targetSlotNum].ItemType == itemToAdd.Item.ItemType && itemToAdd.Item.Stackable == true)
         {
 
             InventorySlotUI slotScript = slots[targetSlotNum].GetComponent<InventorySlotUI>();
@@ -260,8 +260,8 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
         }
         else if (items[targetSlotNum] == null)
         {
-            items[targetSlotNum] = Instantiate(itemToAdd.item);
-            itemImages[targetSlotNum].sprite = itemToAdd.item.Sprite;
+            items[targetSlotNum] = Instantiate(itemToAdd.Item);
+            itemImages[targetSlotNum].sprite = itemToAdd.Item.Sprite;
             itemImages[targetSlotNum].enabled = true;
             InventorySlotUI slotScript = slots[targetSlotNum].GetComponent<InventorySlotUI>();
             TMP_Text qtyText = slotScript.transform.GetComponentsInChildren<TMP_Text>()[0];
@@ -419,7 +419,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                         TMP_Text src_qty_text = src.transform.GetComponentsInChildren<TMP_Text>()[0];
                         Image src_image = itemImages[clicked_slot];
 
-                        duplicatedSlot_Item = items[clicked_slot];
+                        itemToDrop = items[clicked_slot];
                         duplicatedSlot_Image.sprite = src_image.sprite;
                         duplicatedSlot_Image.enabled = true;
                         duplicatedSlot_QtyText.text = src_qty_text.text;
@@ -474,7 +474,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                         TMP_Text src_qty_text = src.transform.GetComponentsInChildren<TMP_Text>()[0];
                         Image src_image = itemImages[clicked_slot];
 
-                        duplicatedSlot_Item = items[clicked_slot];
+                        itemToDrop = items[clicked_slot];
                         duplicatedSlot_Image.sprite = src_image.sprite;
                         duplicatedSlot_Image.enabled = true;
                         duplicatedSlot_QtyText.enabled = true;

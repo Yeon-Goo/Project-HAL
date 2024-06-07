@@ -15,10 +15,10 @@ public class BlockObject : MonoBehaviour
     
     private BlockMaker blockMaker;
 
-
     void Start()
     {
         blockMaker = FindObjectOfType<BlockMaker>(); // Scene에서 BlockMaker 클래스의 인스턴스를 찾음
+        
     }
 
     void OnCollisionEnter2D(Collision2D other)
@@ -43,9 +43,16 @@ public class BlockObject : MonoBehaviour
         {
             Debug.Log("here1");
             destroy_tag = gameObject.tag; // 태그 수정해서, Un-combat으로 통일하고 그 안에서 프리팹 이름으로 구분해야 할듯
+
+            PickableObjects prefab_path = Resources.Load<PickableObjects>("Prefabs/" + destroy_tag + "_PickableObject");
+            Vector2 objectPos = gameObject.GetComponent<Transform>().position;
+            Vector3 spawnPos = new Vector3(objectPos.x, objectPos.y - 0.5f, 0.0f);
+
+            PickableObjects spawnObject = Instantiate(prefab_path, spawnPos, Quaternion.identity);
+            spawnObject.Quantity = 1;
+
             StartCoroutine(blockMaker.RespawnResources(destroy_tag));
             Destroy(gameObject);
-            
         }
     }
 
