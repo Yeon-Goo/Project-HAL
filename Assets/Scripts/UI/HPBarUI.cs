@@ -35,9 +35,13 @@ public class HPBarUI : MonoBehaviour
         switch (entity)
         {
             case EnemyEntity :
-                Sprite sprite = entity.GetComponent<SpriteRenderer>().sprite;
-                width = sprite.rect.width;
-                height = sprite.rect.height;
+                MeshRenderer meshRenderer = entity.GetComponent<MeshRenderer>();
+                if (meshRenderer != null)
+                {
+                    Bounds bounds = meshRenderer.bounds;
+                    width = bounds.size.x;
+                    height = bounds.size.y;
+                }
                 hpbar_mask = GetComponentsInChildren<Image>()[1];
                 hpbar_meter = GetComponentsInChildren<Image>()[2];
                 break;
@@ -56,7 +60,7 @@ public class HPBarUI : MonoBehaviour
             switch (entity)
             {
                 case EnemyEntity:
-                    hpbar_mask.transform.position = Camera.main.WorldToScreenPoint(entity.transform.position) + new UnityEngine.Vector3(width * -0.5f, height * 0.5f + 30.0f, 0);
+                    hpbar_mask.transform.position = Camera.main.WorldToScreenPoint(entity.transform.position) + new UnityEngine.Vector3(-50f, 100f, 0);
 
                     break;
                     //case BossEntity:

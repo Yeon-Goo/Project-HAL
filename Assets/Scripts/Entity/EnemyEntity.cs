@@ -41,7 +41,11 @@ public class EnemyEntity : Entity
             StatManager originalStatManager = Resources.Load<StatManager>("ScriptableObjects/green_slimeHPManager");
             stat_manager = Instantiate(originalStatManager);
         }
-
+        else if (this.gameObject.name.Contains("Green_Slime"))
+        {
+            StatManager originalStatManager = Resources.Load<StatManager>("ScriptableObjects/Green_SlimeHPManager");
+            stat_manager = Instantiate(originalStatManager);
+        }
         if (stat_manager == null) return;
 
         // Load HPBarUI Prefab
