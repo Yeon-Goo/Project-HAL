@@ -12,6 +12,7 @@ public class Archer : Weapon
     private float arrowSpeed = 25.0f;
     private IObjectPool<ArrowObject> _Pool;
     private float baseAttackCooltime = 0.5f;
+    private int arrowdamage = 10;
     [SerializeField]
     private bool isCharging = false;
     private bool isBuffActive = false;
@@ -25,7 +26,7 @@ public class Archer : Weapon
     private Coroutine afterImageCoroutine;
 
 
-    int[] skillMana = new int[] {1, 4, 8, 6, 4, 1, 1, 1, 1, 1, 1, 1 };
+    int[] skillMana = new int[] {1, 4, 8, 6, 4, 1, 7, 2, 1, 1, 1, 1 };
     private Vector2 mouseWorldPosition;
 
     public override int GetMana(int cardnum)
@@ -48,7 +49,7 @@ public class Archer : Weapon
         mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         yield return new WaitForSeconds(baseAttackCooltime); // 0.5초 대기 / 공속에 비례하게 줄어듬
 
-        BaseShot(0.0f, 0, 1);
+        BaseShot(0.0f, 0, arrowdamage);
     }
 
 
@@ -211,7 +212,6 @@ public class Archer : Weapon
 
         playerEntity.PlayAnimation("Attack");
         yield return new WaitForSeconds(0.5f);
-        int arrowdamage = 1;
 
         if (slevel >= 1)
         {
@@ -320,7 +320,6 @@ public class Archer : Weapon
     {
         playerEntity.CharacterStop();
 
-        int arrowdamage = 1;
         int arrownum = 5 + 3 * slevel;
 
         for (int i = 0; i < arrownum; i++)
@@ -381,7 +380,6 @@ public class Archer : Weapon
 
         playerEntity.PlayAnimation("Attack");
         yield return new WaitForSeconds(0.5f);
-        int arrowdamage = 1;
         BaseShot(0.0f, 2, arrowdamage);
 
         playerObject.GetComponent<PlayerDeck>().allLockOff();
@@ -440,7 +438,7 @@ public class Archer : Weapon
             arrow.transform.position += new Vector3(0.0f, 0.0f, 0.0f);
 
             Vector3 targetVec = position - arrow.transform.position;
-            arrow.SetArrowData(1, 1, 0, arrowSpeed, 0, false);
+            arrow.SetArrowData(arrowdamage, 1, 0, arrowSpeed, 0, false);
             arrow.Shoot(targetVec.normalized, 0.0f);
         }
     }
@@ -471,7 +469,6 @@ public class Archer : Weapon
         playerEntity.PlayAnimation("Attack");
         yield return new WaitForSeconds(0.5f);
 
-        int arrowdamage = 1;
         int arrownum = 3;
 
         for (int i = 0; i < arrownum; i++)
@@ -513,7 +510,6 @@ public class Archer : Weapon
 
         yield return new WaitForSeconds(0.5f);
 
-        int arrowdamage = 1;
         int arrownum = 24;
         float angleIncrement = 360f / arrownum;
 
@@ -565,7 +561,6 @@ public class Archer : Weapon
         playerEntity.velocity = temp;
 
         // 대쉬 후 화살 3발 발사
-        int arrowdamage = 1;
         for (int i = 0; i < 3; i++)
         {
             BaseShot(-15.0f + i*15.0f, 0, arrowdamage);

@@ -81,7 +81,7 @@ public class PlayerDeck : MonoBehaviour
         Debug.Log("now " + mouseWorldPosition.y + " and " + this.transform.position.y);
 
         // 마우스 포인터의 Y값이 minY와 maxY 사이에 있는지 확인
-        if (mouseWorldPosition.y >= minY && mouseWorldPosition.y <= this.transform.position.y + maxY)
+        if (mouseWorldPosition.y >= this.transform.position.y + minY && mouseWorldPosition.y <= this.transform.position.y + maxY)
         {
             return true;
         }
@@ -175,7 +175,7 @@ public class PlayerDeck : MonoBehaviour
         {
             if (i < deck.Count)
             {
-                cardTexts[i].text = $"Card {deck[i].num}\nLevel {deck[i].level}";
+                cardTexts[i].text = "";
                 cardImages[i].sprite = deck[i].image; // 카드 이미지 업데이트
                 cardImages[i].enabled = true; // 이미지 활성화
             }

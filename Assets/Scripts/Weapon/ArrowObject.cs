@@ -44,6 +44,7 @@ public class ArrowObject : MonoBehaviour
                     if (enemy.arrowstack > 0)
                     {
                         enemy.arrowstack -= 1;
+                        damage_per_stack = dmg / 2;
                         dmg += damage_per_stack;
                     }
                     damage_coroutine = StartCoroutine(enemy.DamageEntity(dmg, 0.0f, this.gameObject));
