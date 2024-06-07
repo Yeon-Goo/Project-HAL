@@ -501,18 +501,90 @@ public class Archer : Weapon
 
     private int ArrowRain(int slevel)
     {
-        Debug.Log("Performing Arrow Rain (범위형 화살 공격 + 방깎 시너지)");
-        // Arrow Rain implementation
-        return 0;
+        StartCoroutine(ArrowRainCoroutine(slevel));
+        return skillMana[6];
+    }
+
+    private IEnumerator ArrowRainCoroutine(int slevel)
+    {
+        playerEntity.CharacterStop();
+        playerObject.GetComponent<PlayerDeck>().allLockOn();
+        playerEntity.PlayAnimation("Attack");
+
+        yield return new WaitForSeconds(0.5f);
+
+        int arrowdamage = 1;
+        int arrownum = 24;
+        float angleIncrement = 360f / arrownum;
+
+        for (int i = 0; i < arrownum; i++)
+        {
+            BaseShot(i * angleIncrement, 0, arrowdamage);
+            
+        }
+        yield return new WaitForSeconds(0.1f);
+        for (int i = 0; i < arrownum; i++)
+        {
+            BaseShot(i * angleIncrement + 15.0f, 0, arrowdamage);
+
+        }
+
+        playerObject.GetComponent<PlayerDeck>().allLockOff();
     }
 
     private int RapidFire(int slevel)
     {
-        Debug.Log("Performing Rapid Fire (2~3발 연사)");
-        // Rapid Fire implementation
-        return 0;
+        mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        StartCoroutine(RapidFireCoroutine(slevel));
+        return skillMana[7];
     }
 
+    private IEnumerator RapidFireCoroutine(int slevel)
+    {
+        playerEntity.CharacterStop();
+        playerObject.GetComponent<PlayerDeck>().allLockOn();
+
+        playerEntity.EnableafterimageSystem();
+
+        float dashDistance = 1.5f; // 기존 길이의 절반
+        float dashTime = 0.1f;
+        float dashSpeed = 5.0f;
+        Vector2 startPosition = playerObject.transform.position;
+        Vector2 dashDirection = (startPosition - mouseWorldPosition).normalized; // 마우스 위치의 반대 방향
+        Vector2 targetPosition = startPosition + dashDirection * dashDistance;
+        playerEntity.target_pos = targetPosition;
+
+        float temp = playerEntity.velocity;
+        playerEntity.velocity = playerEntity.velocity * dashSpeed;
+
+        playerEntity.vectorreset();
+
+        yield return new WaitForSeconds(dashTime);
+
+        playerEntity.DisableafterimageSystem();
+        playerEntity.velocity = temp;
+
+        // 대쉬 후 화살 3발 발사
+        int arrowdamage = 1;
+        for (int i = 0; i < 3; i++)
+        {
+            BaseShot(-15.0f + i*15.0f, 0, arrowdamage);
+            yield return new WaitForSeconds(0.03f); // 각 화살 간의 간격
+        }
+
+        if(targetPosition.x > startPosition.x)
+        {
+            playerEntity.is_looking_right = true;
+        }
+        else
+        {
+            playerEntity.is_looking_right = false;
+        }
+
+        playerObject.GetComponent<PlayerDeck>().allLockOff();
+    }
+
+    //no---------------------
     private int BackstepShot(int slevel)
     {
         Debug.Log("Performing Backstep Shot (바라보는 방향에서 백스텝 하며 강한 화살 발사)");
