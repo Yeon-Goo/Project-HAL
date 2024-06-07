@@ -28,7 +28,9 @@ public class Item : ScriptableObject
     public enum ItemTypeEnum
     {
         COIN,
-        HEALTH
+        HEALTH,
+        STONE,
+        GRASS
     }
     
 
@@ -38,6 +40,7 @@ public class Item : ScriptableObject
         this.sprite = item.Sprite;
         this.stackable = item.Stackable;
         this.itemType = item.ItemType;
+        Debug.Log("Item 생성자");
     }
 
     
