@@ -60,6 +60,7 @@ public class PlayerEntity : Entity
     /***
     * Player의 Animation 관련 변수들
     ***/
+    public Coroutine player_damage_coroutine = null;
     Coroutine animation_coroutine = null;
     // Player가 살아 있는지
     public bool is_alive = true;
