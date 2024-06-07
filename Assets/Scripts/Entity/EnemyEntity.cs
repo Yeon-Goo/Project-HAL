@@ -76,10 +76,10 @@ public class EnemyEntity : Entity
         {
             PlayerEntity player = collision.gameObject.GetComponent<PlayerEntity>();
 
-            if (damage_coroutine == null)
+            if (player.player_damage_coroutine == null)
             {
                 // interval의 딜레이마다 damage_scale의 피해를 입힌다
-                damage_coroutine = StartCoroutine(player.DamageEntity(damage_scale, 1.0f, this.gameObject));
+                player.player_damage_coroutine = StartCoroutine(player.DamageEntity(damage_scale, 1.0f, this.gameObject));
             }
         }
     }
@@ -89,11 +89,13 @@ public class EnemyEntity : Entity
         // 플레이어가 Enemy의 Collision에서 벗어남
         if (collision.gameObject.CompareTag("Player"))
         {
-            if (damage_coroutine != null)
+            PlayerEntity player = collision.gameObject.GetComponent<PlayerEntity>();
+
+            if (player.player_damage_coroutine != null)
             {
                 // 대미지를 더 이상 받지 않음
-                StopCoroutine(damage_coroutine);
-                damage_coroutine = null;
+                StopCoroutine(player.player_damage_coroutine);
+                player.player_damage_coroutine = null;
             }
         }
     }
