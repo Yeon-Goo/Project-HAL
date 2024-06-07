@@ -38,6 +38,10 @@ public class PlayerDeck : MonoBehaviour
     private StatManager stat_manager;
 
     private bool allLock = false;
+    [SerializeField]
+    private float minY;
+    [SerializeField]
+    private float maxY;
 
     public void allLockOn()
     {
@@ -68,13 +72,32 @@ public class PlayerDeck : MonoBehaviour
         UpdateCardDisplay();
     }
 
+    // 마우스 포인터의 Y값이 특정 범위 안에 있는지 확인하는 메서드
+    public bool IsMouseYWithinRange()
+    {
+        // 마우스 포인터의 월드 위치 가져오기
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        Debug.Log("now " + mouseWorldPosition.y + " and " + this.transform.position.y);
+
+        // 마우스 포인터의 Y값이 minY와 maxY 사이에 있는지 확인
+        if (mouseWorldPosition.y >= this.transform.position.y + minY && mouseWorldPosition.y <= this.transform.position.y + maxY)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Q) && !allLock) UseCard(0);
         else if (Input.GetKeyDown(KeyCode.W) && !allLock) UseCard(1);
         else if (Input.GetKeyDown(KeyCode.E) && !allLock) UseCard(2);
         else if (Input.GetKeyDown(KeyCode.R) && !allLock) UseCard(3);
-        else if (Input.GetMouseButton(0) && !allLock) BaseAttack();
+        else if (Input.GetMouseButton(0) && !allLock && IsMouseYWithinRange()) BaseAttack();
         //else if (Input.GetMouseButtonDown(0)) BaseAttack();
     }
 
@@ -152,7 +175,7 @@ public class PlayerDeck : MonoBehaviour
         {
             if (i < deck.Count)
             {
-                cardTexts[i].text = $"Card {deck[i].num}\nLevel {deck[i].level}";
+                cardTexts[i].text = "";
                 cardImages[i].sprite = deck[i].image; // 카드 이미지 업데이트
                 cardImages[i].enabled = true; // 이미지 활성화
             }

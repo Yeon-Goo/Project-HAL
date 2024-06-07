@@ -12,6 +12,7 @@ public class Archer : Weapon
     private float arrowSpeed = 25.0f;
     private IObjectPool<ArrowObject> _Pool;
     private float baseAttackCooltime = 0.5f;
+    private int arrowdamage = 10;
     [SerializeField]
     private bool isCharging = false;
     private bool isBuffActive = false;
@@ -25,7 +26,7 @@ public class Archer : Weapon
     private Coroutine afterImageCoroutine;
 
 
-    int[] skillMana = new int[] {1, 4, 8, 6, 4, 1, 1, 1, 1, 1, 1, 1 };
+    int[] skillMana = new int[] {1, 4, 8, 6, 4, 1, 7, 2, 1, 1, 1, 1 };
     private Vector2 mouseWorldPosition;
 
     public override int GetMana(int cardnum)
@@ -48,7 +49,7 @@ public class Archer : Weapon
         mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         yield return new WaitForSeconds(baseAttackCooltime); // 0.5초 대기 / 공속에 비례하게 줄어듬
 
-        BaseShot(0.0f, 0, 1);
+        BaseShot(0.0f, 0, arrowdamage);
     }
 
 
@@ -211,7 +212,6 @@ public class Archer : Weapon
 
         playerEntity.PlayAnimation("Attack");
         yield return new WaitForSeconds(0.5f);
-        int arrowdamage = 1;
 
         if (slevel >= 1)
         {
@@ -320,7 +320,6 @@ public class Archer : Weapon
     {
         playerEntity.CharacterStop();
 
-        int arrowdamage = 1;
         int arrownum = 5 + 3 * slevel;
 
         for (int i = 0; i < arrownum; i++)
@@ -381,7 +380,6 @@ public class Archer : Weapon
 
         playerEntity.PlayAnimation("Attack");
         yield return new WaitForSeconds(0.5f);
-        int arrowdamage = 1;
         BaseShot(0.0f, 2, arrowdamage);
 
         playerObject.GetComponent<PlayerDeck>().allLockOff();
@@ -440,7 +438,7 @@ public class Archer : Weapon
             arrow.transform.position += new Vector3(0.0f, 0.0f, 0.0f);
 
             Vector3 targetVec = position - arrow.transform.position;
-            arrow.SetArrowData(1, 1, 0, arrowSpeed, 0, false);
+            arrow.SetArrowData(arrowdamage, 1, 0, arrowSpeed, 0, false);
             arrow.Shoot(targetVec.normalized, 0.0f);
         }
     }
@@ -450,7 +448,7 @@ public class Archer : Weapon
 
 
 
-    //No.5 마나 충전 스킬ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+    //No.5 푸른 화살 / 마나 충전 스킬ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
     private int ManaArrows(int slevel)
     {
         StartCoroutine(ManaArrowsCoroutine(slevel));
@@ -471,7 +469,6 @@ public class Archer : Weapon
         playerEntity.PlayAnimation("Attack");
         yield return new WaitForSeconds(0.5f);
 
-        int arrowdamage = 1;
         int arrownum = 3;
 
         for (int i = 0; i < arrownum; i++)
@@ -501,18 +498,88 @@ public class Archer : Weapon
 
     private int ArrowRain(int slevel)
     {
-        Debug.Log("Performing Arrow Rain (범위형 화살 공격 + 방깎 시너지)");
-        // Arrow Rain implementation
-        return 0;
+        StartCoroutine(ArrowRainCoroutine(slevel));
+        return skillMana[6];
+    }
+
+    private IEnumerator ArrowRainCoroutine(int slevel)
+    {
+        playerEntity.CharacterStop();
+        playerObject.GetComponent<PlayerDeck>().allLockOn();
+        playerEntity.PlayAnimation("Attack");
+
+        yield return new WaitForSeconds(0.5f);
+
+        int arrownum = 24;
+        float angleIncrement = 360f / arrownum;
+
+        for (int i = 0; i < arrownum; i++)
+        {
+            BaseShot(i * angleIncrement, 0, arrowdamage);
+            
+        }
+        yield return new WaitForSeconds(0.1f);
+        for (int i = 0; i < arrownum; i++)
+        {
+            BaseShot(i * angleIncrement + 15.0f, 0, arrowdamage);
+
+        }
+
+        playerObject.GetComponent<PlayerDeck>().allLockOff();
     }
 
     private int RapidFire(int slevel)
     {
-        Debug.Log("Performing Rapid Fire (2~3발 연사)");
-        // Rapid Fire implementation
-        return 0;
+        mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        StartCoroutine(RapidFireCoroutine(slevel));
+        return skillMana[7];
     }
 
+    private IEnumerator RapidFireCoroutine(int slevel)
+    {
+        playerEntity.CharacterStop();
+        playerObject.GetComponent<PlayerDeck>().allLockOn();
+
+        playerEntity.EnableafterimageSystem();
+
+        float dashDistance = 1.5f; // 기존 길이의 절반
+        float dashTime = 0.1f;
+        float dashSpeed = 5.0f;
+        Vector2 startPosition = playerObject.transform.position;
+        Vector2 dashDirection = (startPosition - mouseWorldPosition).normalized; // 마우스 위치의 반대 방향
+        Vector2 targetPosition = startPosition + dashDirection * dashDistance;
+        playerEntity.target_pos = targetPosition;
+
+        float temp = playerEntity.velocity;
+        playerEntity.velocity = playerEntity.velocity * dashSpeed;
+
+        playerEntity.vectorreset();
+
+        yield return new WaitForSeconds(dashTime);
+
+        playerEntity.DisableafterimageSystem();
+        playerEntity.velocity = temp;
+
+        // 대쉬 후 화살 3발 발사
+        for (int i = 0; i < 3; i++)
+        {
+            BaseShot(-15.0f + i*15.0f, 0, arrowdamage);
+            yield return new WaitForSeconds(0.03f); // 각 화살 간의 간격
+        }
+
+        if(targetPosition.x > startPosition.x)
+        {
+            playerEntity.is_looking_right = true;
+        }
+        else
+        {
+            playerEntity.is_looking_right = false;
+        }
+
+        playerObject.GetComponent<PlayerDeck>().allLockOff();
+    }
+
+    //no---------------------
     private int BackstepShot(int slevel)
     {
         Debug.Log("Performing Backstep Shot (바라보는 방향에서 백스텝 하며 강한 화살 발사)");
