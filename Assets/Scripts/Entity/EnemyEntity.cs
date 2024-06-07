@@ -76,8 +76,11 @@ public class EnemyEntity : Entity
         {
             PlayerEntity player = collision.gameObject.GetComponent<PlayerEntity>();
 
+            if(damage_coroutine == null)
+            {
                 // interval의 딜레이마다 damage_scale의 피해를 입힌다
-            StartCoroutine(player.DamageEntity(damage_scale, 1.0f, this.gameObject));
+                damage_coroutine = StartCoroutine(player.DamageEntity(damage_scale, 1.0f, this.gameObject));
+            }
         }
     }
 
