@@ -138,6 +138,6 @@ public class MonsterTracking : MonoBehaviour
 
     private void SetAnimation(string animationName, bool loop)
     {
-        skeletonAnimation.state.SetAnimation(0, animationName, loop);
+        //skeletonAnimation.state.SetAnimation(0, animationName, loop);
     }
 }
