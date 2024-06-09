@@ -8,6 +8,12 @@ public class SoundManager : MonoBehaviour
     [SerializeField]
     private AudioSource audioSource;
 
+    [SerializeField]
+    private AudioSource musicSource;
+
+    [SerializeField]
+    private AudioSource playerSource;
+
     [System.Serializable]
     public class Sound
     {
@@ -40,6 +46,32 @@ public class SoundManager : MonoBehaviour
     }
 
     public void PlaySound(string soundName)
+    {
+        if (soundDictionary.ContainsKey(soundName))
+        {
+            audioSource.PlayOneShot(soundDictionary[soundName]);
+        }
+        else
+        {
+            Debug.LogWarning($"Sound '{soundName}' not found!");
+        }
+    }
+
+    public void PlayMusic(string musicName)
+    {
+        if (soundDictionary.ContainsKey(musicName))
+        {
+            musicSource.clip = soundDictionary[musicName];
+            musicSource.loop = true;
+            musicSource.Play();
+        }
+        else
+        {
+            Debug.LogWarning($"Music '{musicName}' not found!");
+        }
+    }
+
+    public void PlayPlayerSound(string soundName)
     {
         if (soundDictionary.ContainsKey(soundName))
         {
