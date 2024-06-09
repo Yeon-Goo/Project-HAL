@@ -567,6 +567,7 @@ public class PlayerEntity : Entity
                 stat_manager.Cur_hp -= damage;
                 if(stat_manager.Cur_hp > float.Epsilon)
                 {
+                    StartCoroutine("FlickEntity");
                     SoundManager.Instance.PlayPlayerSound("playerhitsound");
                 }
             }
@@ -616,6 +617,16 @@ public class PlayerEntity : Entity
     public override void ResetEntity()
     {
         is_alive = true;
+
+        target_pos = Vector2.zero;
+        transform.position = Vector3.zero;
+
+        for(int i = 0; i < InventoryUI.numSlots; i++)
+        {
+            inventory_ui.ClearSlot(i);
+        }
+        SoundManager.Instance.PlayMusic("BaseMapMusic");
+
         CharacterIdleSet();
         if (animation_coroutine != null)
         {
