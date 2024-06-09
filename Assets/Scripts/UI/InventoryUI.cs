@@ -114,7 +114,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     // 요약:
     //     targetSlotNum에 해당하는 Slot을 비웁니다.
     //     만약 targetSlotNum이 numSlots이면 duplicatedSlot을 비웁니다.
-    private void ClearSlot(int targetSlotNum)
+    public void ClearSlot(int targetSlotNum)
     {
         // Duplicated Slot
         if (targetSlotNum == numSlots)
