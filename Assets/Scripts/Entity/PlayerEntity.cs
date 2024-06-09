@@ -184,6 +184,10 @@ public class PlayerEntity : Entity
         {
             KillEntity();
         }
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            inventory.SetActive(inventory.activeSelf ? false : true);
+        }
 
         vector_ = vector.magnitude;
         HPMPUpdate();
@@ -200,11 +204,6 @@ public class PlayerEntity : Entity
                 is_invincible = false;
                 this.interval = 0.0f;
             }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            inventory.SetActive(inventory.activeSelf ? false : true);
         }
 
         if (is_alive && !(is_animation_started ^ is_animation_cancelable))
