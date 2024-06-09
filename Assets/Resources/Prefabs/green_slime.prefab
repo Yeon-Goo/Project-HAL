@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 3499386380165807012}
   - component: {fileID: 5629722121858242181}
   m_Layer: 0
-  m_Name: Green_Slime
+  m_Name: Green_slime
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -164,7 +164,7 @@ MonoBehaviour:
   damageTextPrefab: {fileID: 3453731427029572494, guid: a6feb9b828fe2a04393e13e72ab99985, type: 3}
   stackTextPrefab: {fileID: 3807142244504146439, guid: 29a02629e61ad81469f5fdae1652dea9, type: 3}
   canvas: {fileID: 1157815839568653100, guid: 0d8b1f02299607b4c8ff56fea48ce546, type: 3}
-  stat_manager: {fileID: 11400000, guid: c4d3226e877a32749a35941122c14347, type: 2}
+  stat_manager: {fileID: 0}
   arrowstack: 0
 --- !u!50 &3499386380165807012
 Rigidbody2D:

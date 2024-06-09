@@ -36,7 +36,7 @@ public class EnemyEntity : Entity
             StatManager originalStatManager = Resources.Load<StatManager>("ScriptableObjects/ADC_slimeHPManager");
             stat_manager = Instantiate(originalStatManager);
         }
-        else if (this.gameObject.name.Contains("Green_Slime"))
+        else if (this.gameObject.name.Contains("Green_slime"))
         {
             StatManager originalStatManager = Resources.Load<StatManager>("ScriptableObjects/Green_SlimeHPManager");
             stat_manager = Instantiate(originalStatManager);
