@@ -88,6 +88,10 @@ public class PlayerEntity : Entity
     // Player의 무적 시간
     private float interval = 0.0f;
 
+    [SerializeField]
+    private float minY = -4.5f;
+    [SerializeField]
+    private float maxY = 4.3f;
 
     /***
      * Player의 Components
@@ -223,6 +227,22 @@ public class PlayerEntity : Entity
 
         UpdateMovement();
         UpdateAnimationState();
+    }
+
+    public bool IsMouseYWithinRange()
+    {
+        // 마우스 포인터의 월드 위치 가져오기
+        Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        // 마우스 포인터의 Y값이 minY와 maxY 사이에 있는지 확인
+        if (mouseWorldPosition.y >= this.transform.position.y + minY && mouseWorldPosition.y <= this.transform.position.y + maxY)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public void vectorreset()
@@ -479,7 +499,7 @@ public class PlayerEntity : Entity
         }
 
         // S키를 누르지 않았고 마우스 오른쪽 버튼을 눌렀을 때
-        if (is_moveable && Input.GetMouseButton(1))
+        if (is_moveable && Input.GetMouseButton(1) && IsMouseYWithinRange())
         //if (Input.GetMouseButtonDown(1) || (Input.GetMouseButton(1) && new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")).magnitude > 0.05f))
         {
             // Player의 벡터 계산
@@ -545,14 +565,17 @@ public class PlayerEntity : Entity
                 //GetComponent<CinemachineVirtualCamera>().VibrateForTimeAndAmount();
 
                 stat_manager.Cur_hp -= damage;
-                StartCoroutine("FlickEntity");
-                SoundManager.Instance.PlayPlayerSound("playerhitsound");
+                if(stat_manager.Cur_hp > float.Epsilon)
+                {
+                    SoundManager.Instance.PlayPlayerSound("playerhitsound");
+                }
             }
 
             // this의 체력이 0일 때
             //if (cur_hp <= float.Epsilon)
             if (stat_manager.Cur_hp <= float.Epsilon)
             {
+                SoundManager.Instance.PlayPlayerSound("playerdiesound");
                 KillEntity();
                 break;
             }
