@@ -14,10 +14,8 @@ public class Boss_Portal : MonoBehaviour
              {
                 Vector3 targetposition = new Vector3(4,-25,0);
                 other.transform.position = targetposition;
-
-             }
+                SoundManager.Instance.PlayMusic("KingSlimeMusic");
+            }
         }
     }
-        
-    
 }

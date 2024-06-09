@@ -532,7 +532,7 @@ public class PlayerEntity : Entity
     public override IEnumerator DamageEntity(int damage, float interval, GameObject entity)
     {
         //float cur_hp = hp_manager.GetCurrentHP();
-
+        
         while (is_alive)
         {
             if (!is_invincible)
@@ -546,6 +546,7 @@ public class PlayerEntity : Entity
                 //GetComponent<CinemachineVirtualCamera>().VibrateForTimeAndAmount();
 
                 stat_manager.Cur_hp -= damage;
+                SoundManager.Instance.PlayPlayerSound("playerhitsound");
             }
 
             // this의 체력이 0일 때

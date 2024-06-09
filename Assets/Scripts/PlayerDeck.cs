@@ -70,6 +70,8 @@ public class PlayerDeck : MonoBehaviour
 
         InitializeDeck();
         UpdateCardDisplay();
+
+        SoundManager.Instance.PlayMusic("BaseMapMusic");
     }
 
     // 마우스 포인터의 Y값이 특정 범위 안에 있는지 확인하는 메서드
