@@ -545,6 +545,7 @@ public class PlayerEntity : Entity
                 //GetComponent<CinemachineVirtualCamera>().VibrateForTimeAndAmount();
 
                 stat_manager.Cur_hp -= damage;
+                StartCoroutine("FlickEntity");
                 SoundManager.Instance.PlayPlayerSound("playerhitsound");
             }
 
