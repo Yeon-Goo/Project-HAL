@@ -545,13 +545,17 @@ public class PlayerEntity : Entity
                 //GetComponent<CinemachineVirtualCamera>().VibrateForTimeAndAmount();
 
                 stat_manager.Cur_hp -= damage;
-                SoundManager.Instance.PlayPlayerSound("playerhitsound");
+                if(stat_manager.Cur_hp > float.Epsilon)
+                {
+                    SoundManager.Instance.PlayPlayerSound("playerhitsound");
+                }
             }
 
             // this의 체력이 0일 때
             //if (cur_hp <= float.Epsilon)
             if (stat_manager.Cur_hp <= float.Epsilon)
             {
+                SoundManager.Instance.PlayPlayerSound("playerdiesound");
                 KillEntity();
                 break;
             }
