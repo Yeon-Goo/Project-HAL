@@ -102,12 +102,18 @@ public abstract class Entity : MonoBehaviour
 
     public virtual IEnumerator FlickEntity()
     {
-        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+        SpriteRenderer[] meshRenderer = this.transform.GetComponentsInChildren<SpriteRenderer>();
         if (meshRenderer != null)
         {
-            meshRenderer.material.color = Color.red;
+            foreach (SpriteRenderer renderer in meshRenderer)
+            {
+                renderer.material.color = Color.red;
+            }
             yield return new WaitForSeconds(0.1f);
-            meshRenderer.material.color = Color.white;
+            foreach (SpriteRenderer renderer in meshRenderer)
+            {
+                renderer.material.color = Color.white;
+            }
         }
     }
 
