@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 3499386380165807012}
   - component: {fileID: 5629722121858242181}
   m_Layer: 0
-  m_Name: Green_slime
+  m_Name: green_slime
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,7 +143,7 @@ MonoBehaviour:
   speed: 2
   range: 4
   tracking_range: 10
-  attack_range: 2
+  attack_range: 2.6
   attack_speed: 500
   attack_time: 0.7
   idle_delay: 1
