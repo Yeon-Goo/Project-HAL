@@ -27,7 +27,8 @@ public class MonsterTracking : MonoBehaviour
     {
         Idle = 0,
         Walk = 1,
-        Attack = 2
+        PrepareAttack = 2,
+        Attack = 3
     }
 
     void Start()
@@ -79,19 +80,29 @@ public class MonsterTracking : MonoBehaviour
                 transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
                 FlipSprite(); // 스프라이트의 방향을 지속적으로 업데이트
             }
-            if (distance <= attack_range) // 공격 사거리가 됐을 경우 공격상태로 전환
+            if (distance <= attack_range) // 공격 사거리가 됐을 경우 공격 준비 상태로 전환
             {
                 move_direction = (player.position - transform.position).normalized;
-                rb.velocity = Vector2.zero; // 기존의 속도를 초기화
-                rb.AddForce(move_direction * attack_speed, ForceMode2D.Impulse); // 플레이어 방향으로 힘을 가함
-                monster_state = (int)StateEnum.Attack;
-                SetAnimation("Attack", false);
+                monster_state = (int)StateEnum.PrepareAttack;
+                SetAnimation("Idle", true);
                 tempTime = Time.time;
             }
             if (distance > tracking_range) // 시야 사거리가 멀어졌을 경우 평상시로 전환
             {
                 monster_state = (int)StateEnum.Idle;
                 SetAnimation("Idle", true);
+                tempTime = Time.time;
+            }
+        }
+
+        if (monster_state == (int)StateEnum.PrepareAttack) // 공격 준비
+        {
+            rb.velocity = Vector2.zero; // 움직임을 멈춤
+            if (Time.time - tempTime > 0.5f) // 0.5초 동안 대기
+            {
+                rb.AddForce(move_direction * attack_speed, ForceMode2D.Impulse); // 플레이어 방향으로 힘을 가함
+                monster_state = (int)StateEnum.Attack;
+                SetAnimation("Attack", false);
                 tempTime = Time.time;
             }
         }
