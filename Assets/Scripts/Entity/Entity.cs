@@ -102,9 +102,17 @@ public abstract class Entity : MonoBehaviour
 
     public virtual IEnumerator FlickEntity()
     {
-        GetComponent<SpriteRenderer>().color = Color.red;
-        yield return new WaitForSeconds(0.1f);
-        GetComponent<SpriteRenderer>().color = Color.white;
+        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+        if (meshRenderer != null)
+        {
+            meshRenderer.material.color = Color.red;
+            yield return new WaitForSeconds(0.1f);
+            meshRenderer.material.color = Color.white;
+        }
+        else
+        {
+            Debug.LogError("MeshRenderer를 찾을 수 없습니다. MeshRenderer를 추가하세요.");
+        }
     }
 
     public virtual void KillEntity()

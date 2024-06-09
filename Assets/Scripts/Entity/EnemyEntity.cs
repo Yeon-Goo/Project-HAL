@@ -31,14 +31,9 @@ public class EnemyEntity : Entity
             StatManager originalStatManager = Resources.Load<StatManager>("ScriptableObjects/king_slimeHPManager");
             stat_manager = Instantiate(originalStatManager);
         }
-        else if (this.gameObject.name.Contains("rupin"))
+        else if (this.gameObject.name.Contains("ADC_slime"))
         {
-            StatManager originalStatManager = Resources.Load<StatManager>("ScriptableObjects/rupinHPManager");
-            stat_manager = Instantiate(originalStatManager);
-        }
-        else if (this.gameObject.name.Contains("green_slime"))
-        {
-            StatManager originalStatManager = Resources.Load<StatManager>("ScriptableObjects/green_slimeHPManager");
+            StatManager originalStatManager = Resources.Load<StatManager>("ScriptableObjects/ADC_slimeHPManager");
             stat_manager = Instantiate(originalStatManager);
         }
         else if (this.gameObject.name.Contains("Green_Slime"))
