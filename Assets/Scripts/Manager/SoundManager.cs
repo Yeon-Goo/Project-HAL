@@ -75,7 +75,7 @@ public class SoundManager : MonoBehaviour
     {
         if (soundDictionary.ContainsKey(soundName))
         {
-            audioSource.PlayOneShot(soundDictionary[soundName]);
+            playerSource.PlayOneShot(soundDictionary[soundName]);
         }
         else
         {
