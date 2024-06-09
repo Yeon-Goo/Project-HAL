@@ -109,10 +109,6 @@ public abstract class Entity : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
             meshRenderer.material.color = Color.white;
         }
-        else
-        {
-            Debug.LogError("MeshRenderer를 찾을 수 없습니다. MeshRenderer를 추가하세요.");
-        }
     }
 
     public virtual void KillEntity()
