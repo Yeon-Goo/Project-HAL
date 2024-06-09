@@ -1,5 +1,7 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class king_slimeEntity : MonoBehaviour
 {
@@ -10,6 +12,7 @@ public class king_slimeEntity : MonoBehaviour
     public GameObject bossHPUI; // Boss_HP UI 오브젝트 참조
     public Image filledSlider;  // 채워진 슬라이더 이미지
     public Image emptySlider;   // 빈 슬라이더 이미지
+    public TextMeshProUGUI hpText;         // HP 텍스트 컴포넌트 참조
     public float speed = 2f;
     public float range = 10f;
     public float barrage_time = 4f;
@@ -64,11 +67,25 @@ public class king_slimeEntity : MonoBehaviour
         if (bossHPUI != null)
         {
             bossHPUI.SetActive(false);
-            filledSlider = bossHPUI.transform.Find("Boss_Fill").GetComponent<Image>();
         }
+    }
 
-        // StatManager 컴포넌트를 가져옴
-        stat_manager = this.GetComponent<Entity>().stat_manager;
+    public IEnumerator SetStatManagerCoroutine()
+    {
+        while (true)
+        {
+            stat_manager = this.GetComponent<Entity>().stat_manager;
+            if (stat_manager == null)
+            {
+                Debug.Log("StatManager is not yet assigned.");
+                yield return null; // 다음 프레임까지 대기
+            }
+            else
+            {
+                Debug.Log("StatManager assigned successfully.");
+                break;
+            }
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -116,7 +133,15 @@ public class king_slimeEntity : MonoBehaviour
 
     void FixedUpdate()
     {
-        UpdateHealthBar();
+        if (stat_manager != null)
+        {
+            UpdateHealthBar();
+        }
+        else
+        {
+            StartCoroutine(SetStatManagerCoroutine());
+        }
+
         float distance = Vector2.Distance(transform.position, player.position);
         if (monster_state == (int)StateEnum.idle) // 평상시
         {
@@ -226,5 +251,11 @@ public class king_slimeEntity : MonoBehaviour
 
         // 채워진 슬라이더의 fillAmount를 설정
         filledSlider.fillAmount = fillAmount;
+
+        // HP 텍스트 업데이트
+        if (hpText != null)
+        {
+            hpText.text = $"{stat_manager.Cur_hp} / {stat_manager.Max_hp}";
+        }
     }
 }
