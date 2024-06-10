@@ -258,4 +258,27 @@ public class king_slimeEntity : MonoBehaviour
             hpText.text = $"{stat_manager.Cur_hp} / {stat_manager.Max_hp}";
         }
     }
+    public void DestroyHPBarUI()
+    {
+        // Boss_HP UI 오브젝트를 비활성화
+        if (bossHPUI != null)
+        {
+            bossHPUI.SetActive(false);
+        }
+
+        if (filledSlider != null)
+        {
+            Destroy(filledSlider.gameObject);
+        }
+
+        if (emptySlider != null)
+        {
+            Destroy(emptySlider.gameObject);
+        }
+
+        if (hpText != null)
+        {
+            Destroy(hpText.gameObject);
+        }
+    }
 }
