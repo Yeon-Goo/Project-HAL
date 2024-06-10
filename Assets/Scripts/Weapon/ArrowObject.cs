@@ -22,7 +22,7 @@ public class ArrowObject : MonoBehaviour
     // 화살이 enemy와 충돌할 경우 호출되는 메서드
     private void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.CompareTag("Enemy"))
+        if (coll.gameObject.CompareTag("Enemy") || coll.gameObject.CompareTag("Boss_Enemy"))
         {
             //coll.gameObject.GetComponent<EnemyObject>().Damaged(dmg, armor_de);
             EnemyEntity enemy = coll.gameObject.GetComponent<EnemyEntity>();

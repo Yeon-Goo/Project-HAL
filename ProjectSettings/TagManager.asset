@@ -12,8 +12,8 @@ TagManager:
   - Glass
   - Stone
   - water
-  - King_Slime
   - Inventory
+  - Boss_Enemy
   layers:
   - Default
   - TransparentFX
