@@ -60,8 +60,14 @@ public class HPBarUI : MonoBehaviour
             switch (entity)
             {
                 case EnemyEntity:
-                    hpbar_mask.transform.position = Camera.main.WorldToScreenPoint(entity.transform.position) + new UnityEngine.Vector3(-40f, 100f, 0);
-
+                    if (entity.CompareTag("Boss_Enemy"))
+                    {
+                        hpbar_mask.transform.position = Camera.main.WorldToScreenPoint(entity.transform.position) + new UnityEngine.Vector3(-40f, 230f, 0);
+                    }
+                    else
+                    {
+                        hpbar_mask.transform.position = Camera.main.WorldToScreenPoint(entity.transform.position) + new UnityEngine.Vector3(-40f, 100f, 0);
+                    }
                     break;
                     //case BossEntity:
                     //break;
