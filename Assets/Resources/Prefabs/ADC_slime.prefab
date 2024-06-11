@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 9012975891620209175}
   - component: {fileID: 1006624283122616330}
   - component: {fileID: 1742189318831823100}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ADC_slime
   m_TagString: Enemy
   m_Icon: {fileID: 0}

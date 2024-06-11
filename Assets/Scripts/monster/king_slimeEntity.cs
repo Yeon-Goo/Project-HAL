@@ -2,21 +2,22 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Spine.Unity;
 
 public class king_slimeEntity : MonoBehaviour
 {
     public Rigidbody2D rb;
     public GameObject rupinPrefab;
     public GameObject BananaPrefab;
+    public GameObject BoomPrefab;
     public Transform player;
     public GameObject bossHPUI; // Boss_HP UI 오브젝트 참조
     public Image filledSlider;  // 채워진 슬라이더 이미지
     public Image emptySlider;   // 빈 슬라이더 이미지
-    public TextMeshProUGUI hpText;         // HP 텍스트 컴포넌트 참조
+    public TextMeshProUGUI hpText; // HP 텍스트 컴포넌트 참조
     public float speed = 2f;
     public float range = 10f;
     public float barrage_time = 4f;
-    public float rush_time = 5f;
     public float summon_time = 3f;
     private int monster_state = 0;
     private float tempTime = 0f;
@@ -28,6 +29,8 @@ public class king_slimeEntity : MonoBehaviour
     float r;
 
     private StatManager stat_manager;
+    private SkeletonAnimation skeletonAnimation;
+    private Coroutine barrageCoroutine;
 
     public static Vector3 AngleToVector(float angleDegrees)
     {
@@ -42,7 +45,6 @@ public class king_slimeEntity : MonoBehaviour
         return new Vector3(x, y, 0);
     }
 
-    private Animator animator;
     private static string animationState = "AnimationState";
 
     enum StateEnum
@@ -52,15 +54,16 @@ public class king_slimeEntity : MonoBehaviour
         barrage = 2,
         rush = 3,
         summon = 4,
+        boom = 5,
     }
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+        skeletonAnimation = GetComponent<SkeletonAnimation>();
         monster_state = (int)StateEnum.idle;
-        transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
-        animator.SetInteger(animationState, monster_state);
+        transform.localScale = new Vector3(1.5f, 1.5f, 1.0f);
+        SetAnimation("Idle", true);
 
         // Boss_HP UI 오브젝트를 찾아 비활성화
         bossHPUI = GameObject.Find("BossHPBar");
@@ -88,49 +91,52 @@ public class king_slimeEntity : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+/*    void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.gameObject.layer == LayerMask.NameToLayer("UpWall"))
+        if (monster_state == (int)StateEnum.rush)
         {
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            r = Random.Range(210, 330);
-            Vector3 NewDirection = AngleToVector(r);
-            GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 500000);
-        }
-        else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("DownWall"))
-        {
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            r = Random.Range(30, 150);
-            Vector3 NewDirection = AngleToVector(r);
-            GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 500000);
-        }
-        else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("LeftWall"))
-        {
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            r = Random.Range(-30, 30);
-            Vector3 NewDirection = AngleToVector(r);
-            GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 500000);
-        }
-        else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("RightWall"))
-        {
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-            r = Random.Range(150, 210);
-            Vector3 NewDirection = AngleToVector(r);
-            GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 500000);
-        }
-        else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Blocking") || collision.collider.gameObject.layer == LayerMask.NameToLayer("Enemies"))
-        {
-            Vector2 incomingVector = rb.velocity;
-            Vector2 normalVector = collision.contacts[0].normal;
-            Vector2 reflectVector = Vector2.Reflect(incomingVector, normalVector).normalized;
+            if (collision.collider.gameObject.layer == LayerMask.NameToLayer("UpWall"))
+            {
+                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                r = Random.Range(210, 330);
+                Vector3 NewDirection = AngleToVector(r);
+                GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 500000);
+            }
+            else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("DownWall"))
+            {
+                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                r = Random.Range(30, 150);
+                Vector3 NewDirection = AngleToVector(r);
+                GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 500000);
+            }
+            else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("LeftWall"))
+            {
+                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                r = Random.Range(-30, 30);
+                Vector3 NewDirection = AngleToVector(r);
+                GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 500000);
+            }
+            else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("RightWall"))
+            {
+                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+                r = Random.Range(150, 210);
+                Vector3 NewDirection = AngleToVector(r);
+                GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 500000);
+            }
+            else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Blocking") || collision.collider.gameObject.layer == LayerMask.NameToLayer("Enemies"))
+            {
+                Vector2 incomingVector = rb.velocity;
+                Vector2 normalVector = collision.contacts[0].normal;
+                Vector2 reflectVector = Vector2.Reflect(incomingVector, normalVector).normalized;
 
-            float speedReduction = 0.3f;
-            float newSpeed = Mathf.Max(0, incomingVector.magnitude - speedReduction);
+                float speedReduction = 0.3f;
+                float newSpeed = Mathf.Max(0, incomingVector.magnitude - speedReduction);
 
-            rb.velocity = reflectVector * newSpeed;
+                rb.velocity = reflectVector * newSpeed;
+            }
         }
     }
-
+*/
     void FixedUpdate()
     {
         if (stat_manager != null)
@@ -152,41 +158,41 @@ public class king_slimeEntity : MonoBehaviour
                     bossHPUI.SetActive(true); // Boss_HP UI 활성화
                 }
                 monster_state = (int)StateEnum.move;
-                transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
-                animator.SetInteger(animationState, monster_state);
+                UpdateScaleTowardsPlayer(); // 플레이어 방향에 따른 Scale 업데이트
+                SetAnimation("Idle", true);
                 tempTime = Time.time;
             }
         }
 
         if (monster_state == (int)StateEnum.move) // 추격 중
         {
+            UpdateScaleTowardsPlayer(); // 플레이어 방향에 따른 Scale 업데이트
             transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
             if (Time.time - tempTime > 3.0f)
             {
-                int rand = Random.Range(1, 15);
-                if (rand < 8)
+                int rand = Random.Range(0, 16);
+                if (rand < 5)
                 {
                     monster_state = (int)StateEnum.barrage;
-                    transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
-                    animator.SetInteger(animationState, monster_state);
+                    SetAnimation("Walk", true);
+                    GetComponent<Rigidbody2D>().velocity = Vector2.zero; // 정지
+                    barrageCoroutine = StartCoroutine(BarrageMovement());
                     tempTime = Time.time;
                 }
-                else if (rand < 14)
+                else if (rand < 10)
                 {
                     monster_state = (int)StateEnum.rush;
-                    transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
-                    animator.SetInteger(animationState, monster_state);
-                    tempTime = Time.time;
-                    r = Random.Range(0, 360);
-                    r = 270;
-                    Vector3 NewDirection = AngleToVector(r);
-                    GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 500000);
+                    StartCoroutine(RushSequence());
+                }
+                else if (rand < 15)
+                {
+                    monster_state = (int)StateEnum.boom;
+                    StartCoroutine(BoomSequence());
                 }
                 else
                 {
                     monster_state = (int)StateEnum.summon;
-                    transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
-                    animator.SetInteger(animationState, monster_state);
+                    SetAnimation("Walk", true);
                     tempTime = Time.time;
                 }
             }
@@ -194,7 +200,7 @@ public class king_slimeEntity : MonoBehaviour
 
         if (monster_state == (int)StateEnum.barrage) // 탄막 피하기
         {
-            GetComponent<Rigidbody2D>().velocity = Vector2.zero; // 정지
+            UpdateScale(); // x 속도에 따른 Scale 업데이트
             if (Time.time - tempTime >= 0.3f * barrage_count)
             {
                 float rand = Random.Range(12, 24);
@@ -211,21 +217,13 @@ public class king_slimeEntity : MonoBehaviour
             {
                 barrage_count = 4;
                 tempTime = Time.time;
-                monster_state = (int)StateEnum.move;
-                transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
-                animator.SetInteger(animationState, monster_state);
-            }
-        }
-
-        if (monster_state == (int)StateEnum.rush) // 돌진
-        {
-            if (Time.time - tempTime > rush_time) // 돌진이 끝나고 추격상태로 전환
-            {
                 GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                tempTime = Time.time;
                 monster_state = (int)StateEnum.move;
-                transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
-                animator.SetInteger(animationState, (int)StateEnum.idle);
+                SetAnimation("Idle", true);
+                if (barrageCoroutine != null)
+                {
+                    StopCoroutine(barrageCoroutine);
+                }
             }
         }
 
@@ -238,10 +236,111 @@ public class king_slimeEntity : MonoBehaviour
                 rupin.transform.position = transform.position;
                 tempTime = Time.time;
                 monster_state = (int)StateEnum.move;
-                transform.localScale = new Vector3(4.0f, 4.0f, 1.0f);
-                animator.SetInteger(animationState, (int)StateEnum.idle);
+                SetAnimation("Idle", true);
             }
         }
+    }
+
+    IEnumerator RushSequence()
+    {
+        int rand = Random.Range(0, 10);
+        int n;
+        if(rand < 1)
+        {
+            n = 4;
+        }
+        else
+        {
+            n = 3;
+        }
+
+        for (int i = 0; i < n; i++)
+        {
+            SetAnimation("Attack", false);
+            yield return new WaitForSeconds(0.25f); // 공격 모션 0.3초 대기
+
+            Vector2 direction = (player.position - transform.position).normalized;
+            GetComponent<Rigidbody2D>().velocity = direction * 8; // 돌진 시작
+            UpdateScale();
+
+            float elapsed = 0f;
+            while (elapsed < 1.2f)
+            {
+                elapsed += Time.deltaTime;
+                GetComponent<Rigidbody2D>().velocity = Vector2.Lerp(direction * 8, Vector2.zero, elapsed / 1.2f); // 점차 느려짐
+                yield return null;
+            }
+
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero; // 완전히 멈춤
+            yield return new WaitForSeconds(0.3f); // 다음 공격 모션 전 0.3초 대기
+        }
+
+        monster_state = (int)StateEnum.move;
+        SetAnimation("Idle", true);
+        tempTime = Time.time;
+    }
+    IEnumerator BoomSequence()
+    {
+        SetAnimation("Attack", false);
+        Vector2 startPosition = transform.position;
+        Vector2 targetPosition = player.position; // 플레이어의 현재 위치 저장
+        yield return new WaitForSeconds(0.5f); // 1초 대기
+
+        GameObject boom = Instantiate(BoomPrefab);
+        boom.transform.position = startPosition;
+
+        Vector2 direction = (targetPosition - startPosition).normalized;
+        float distance = Vector2.Distance(startPosition, targetPosition);
+        float flightDuration = 1f; // 포물선 비행 시간
+
+        float elapsed = 0f;
+        while (elapsed < flightDuration)
+        {
+            float t = elapsed / flightDuration;
+            float height = 2.0f * Mathf.Sin(t * Mathf.PI); // 포물선 효과를 위한 높이 계산
+            Vector2 currentPosition = Vector2.Lerp(startPosition, targetPosition, t);
+            boom.transform.position = new Vector3(currentPosition.x, currentPosition.y + height, 0);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        monster_state = (int)StateEnum.move;
+        SetAnimation("Idle", true);
+        tempTime = Time.time;
+    }
+    void UpdateScale()
+    {
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb.velocity.x > 0)
+        {
+            transform.localScale = new Vector3(1.5f, 1.5f, 1.0f);
+        }
+        else if (rb.velocity.x < 0)
+        {
+            transform.localScale = new Vector3(-1.5f, 1.5f, 1.0f);
+        }
+    }
+
+    void UpdateScaleTowardsPlayer()
+    {
+        if (player.position.x > transform.position.x)
+        {
+            transform.localScale = new Vector3(1.5f, 1.5f, 1.0f);
+        }
+        else
+        {
+            transform.localScale = new Vector3(-1.5f, 1.5f, 1.0f);
+        }
+    }
+    private IEnumerator BarrageMovement()
+    {
+        while (monster_state == (int)StateEnum.barrage)
+        {
+            rb.velocity = new Vector2(speed, rb.velocity.y); // 오른쪽으로 이동
+            yield return new WaitForSeconds(0.5f);
+            rb.velocity = new Vector2(-speed, rb.velocity.y); // 왼쪽으로 이동
+            yield return new WaitForSeconds(0.5f);
+        }
+        rb.velocity = Vector2.zero; // 멈춤
     }
 
     // 체력 바를 업데이트하는 메서드
@@ -258,6 +357,7 @@ public class king_slimeEntity : MonoBehaviour
             hpText.text = $"{stat_manager.Cur_hp} / {stat_manager.Max_hp}";
         }
     }
+
     public void DestroyHPBarUI()
     {
         // Boss_HP UI 오브젝트를 비활성화
@@ -280,5 +380,10 @@ public class king_slimeEntity : MonoBehaviour
         {
             Destroy(hpText.gameObject);
         }
+    }
+
+    private void SetAnimation(string animationName, bool loop)
+    {
+        skeletonAnimation.state.SetAnimation(0, animationName, loop);
     }
 }
