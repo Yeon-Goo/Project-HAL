@@ -5,19 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class Boss_Portal : MonoBehaviour
 {
-    public GameObject portal;
-    
-     void Update()
-    {
-        if (GameObject.Find("king_slime") == null)
-        {
-            if (portal != null)
-            {
-                portal.SetActive(true);
-                Debug.Log("Stage0_Clear_Portal has been activated.");
-            }
-    }
-    }
 
     void OnCollisionEnter2D(Collision2D other)
     {
