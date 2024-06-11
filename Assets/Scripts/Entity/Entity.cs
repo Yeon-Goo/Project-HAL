@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using TMPro;
 
 public abstract class Entity : MonoBehaviour
 {
@@ -25,8 +24,6 @@ public abstract class Entity : MonoBehaviour
         get;
         set;
     }
-
-    private king_slimeEntity kingSlimeEntity;
 
     public void Start()
     {
@@ -132,30 +129,6 @@ public abstract class Entity : MonoBehaviour
         if (currentStackTextObj != null)
         {
             Destroy(currentStackTextObj);
-        }
-
-        // 태그가 Boss_Enemy인지 확인
-        if (CompareTag("Boss_Enemy"))
-        {
-            kingSlimeEntity = GetComponent<king_slimeEntity>();
-            //HPBarUI 없애는 코드
-            kingSlimeEntity.DestroyHPBarUI();
-            // TMPro 텍스트 오브젝트 생성
-            GameObject clearTextObj = new GameObject("ClearText");
-            clearTextObj.transform.SetParent(canvas.transform, false); // 캔버스의 자식으로 설정
-
-            // TextMeshProUGUI 컴포넌트 추가 및 설정
-            TextMeshProUGUI clearText = clearTextObj.AddComponent<TextMeshProUGUI>();
-            clearText.text = "CLEAR!!!";
-            clearText.fontSize = 100;
-            clearText.color = Color.white;
-            clearText.alignment = TextAlignmentOptions.Center;
-
-            // RectTransform 설정
-            RectTransform rectTransform = clearText.GetComponent<RectTransform>();
-            rectTransform.sizeDelta = new Vector2(1000, 50);
-            rectTransform.anchoredPosition = new Vector2(0, 50); // 설정된 위치에 배치
-
         }
 
         Destroy(gameObject);

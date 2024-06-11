@@ -81,7 +81,7 @@ public class PlayerDeck : MonoBehaviour
         Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         // 마우스 포인터의 Y값이 minY와 maxY 사이에 있는지 확인
-        if (mouseWorldPosition.y >= playerobject.transform.position.y + minY && mouseWorldPosition.y <= playerobject.transform.position.y + maxY)
+        if (mouseWorldPosition.y >= this.transform.position.y + minY && mouseWorldPosition.y <= this.transform.position.y + maxY)
         {
             return true;
         }

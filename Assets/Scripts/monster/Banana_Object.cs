@@ -5,6 +5,11 @@ using UnityEngine;
 public class Banana_Object : MonoBehaviour
 {
     private int dmg = 2;
+    Coroutine damage_coroutine;
+    public Coroutine GetDamageCoroutine()
+    {
+        return damage_coroutine;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -15,8 +20,12 @@ public class Banana_Object : MonoBehaviour
         if (coll.gameObject.CompareTag("Player"))
         {
             PlayerEntity player = coll.gameObject.GetComponent<PlayerEntity>();
-            StartCoroutine(player.DamageEntity(dmg, 1.0f, this.gameObject));
-            Destroy(gameObject);
+
+            if (damage_coroutine == null)
+            {
+                damage_coroutine = StartCoroutine(player.DamageEntity(dmg, 1.0f, this.gameObject));
+                Destroy(gameObject);
+            }
         }
     }
 

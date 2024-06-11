@@ -114,7 +114,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     // 요약:
     //     targetSlotNum에 해당하는 Slot을 비웁니다.
     //     만약 targetSlotNum이 numSlots이면 duplicatedSlot을 비웁니다.
-    private void ClearSlot(int targetSlotNum)
+    public void ClearSlot(int targetSlotNum)
     {
         // Duplicated Slot
         if (targetSlotNum == numSlots)
@@ -146,18 +146,26 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     //     duplicatedSlot을 월드에 드랍합니다.
     private bool DropItem()
     {
-        //Debug.Log("DropItem");
         // Drop Clicked Slot's Item
         string prefab_path = null;
         GameObject prefab_to_spawn;
 
+        prefab_path = "Prefabs/";
+
         switch (itemToDrop.ItemType)
         {
             case Item.ItemTypeEnum.COIN:
-                prefab_path = "Prefabs/CoinObject";
+                prefab_path += "CoinObject";
+                break;
+            case Item.ItemTypeEnum.GRASS:
+                prefab_path += "Glass_PickableObject";
+                break;
+            case Item.ItemTypeEnum.STONE:
+                prefab_path += "Stone_PickableObject";
                 break;
         };
-        
+
+        Debug.Log(prefab_path);
         if (prefab_path != null)
         {
             prefab_to_spawn = Resources.Load<GameObject>(prefab_path);
@@ -241,7 +249,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     //     targetSlotNum의 slot이 itemToAdd를 가지고 있지 않고 비어 있지도 않으면 false를 반환합니다.
     public bool AddItemAt(PickableObjects itemToAdd, int targetSlotNum)
     {
-        //Debug.Log("Add Item At");
+        Debug.Log("Add Item At");
         if (items[targetSlotNum] != null && items[targetSlotNum].ItemType == itemToAdd.Item.ItemType && itemToAdd.Item.Stackable == true)
         {
 
@@ -252,7 +260,9 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
             {
                 //qtyText.enabled = true;
                 int qty = int.Parse(qtyText.text);
+                Debug.Log("qty = " + qty + ", itemToAdd.Quantity = " + itemToAdd.Quantity);
                 qty += itemToAdd.Quantity;
+                Debug.Log("qty = " + qty);
                 qtyText.text = qty.ToString();
             }
 
@@ -260,6 +270,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
         }
         else if (items[targetSlotNum] == null)
         {
+            Debug.Log("targetSlot is null");
             items[targetSlotNum] = Instantiate(itemToAdd.Item);
             itemImages[targetSlotNum].sprite = itemToAdd.Item.Sprite;
             itemImages[targetSlotNum].enabled = true;
@@ -293,8 +304,12 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
 
         int quantity = int.Parse(duplicatedSlot_QtyText.text);
         // Destination Slot is empty
-        //Debug.Log("MoveItem");
-        //Debug.Log("item.objectname = " + items[targetSlotNum].ObjectName + ", item.sprite = " + items[targetSlotNum].Sprite + "items.stackable" + items[targetSlotNum].Stackable + "items.itemType" + items[targetSlotNum].ItemType);
+        if (items[targetSlotNum] != null)
+        {
+            //Debug.Log("item.objectname = " + items[targetSlotNum].ObjectName + ", item.sprite = " + items[targetSlotNum].Sprite + "items.stackable" + items[targetSlotNum].Stackable + "items.itemType" + items[targetSlotNum].ItemType);
+        }
+            
+
         if (AddItemAt(new PickableObjects(items[clicked_slot], quantity), targetSlotNum))
         {
             //Debug.Log("Slot is empty");
@@ -316,20 +331,18 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
             // Swap
             if (int.Parse(src_qty_text.text) == quantity)
             {
-                Item tmpItems = items[targetSlotNum];
-                Image tmpItemImages = itemImages[targetSlotNum];
-                GameObject tmpSlots = slots[targetSlotNum];
+                GameObject srcSlots = slots[clicked_slot];
+                string srcQty = srcSlots.transform.GetComponentsInChildren<TMP_Text>()[0].text;
+                PickableObjects srcTmp = new PickableObjects(items[clicked_slot], int.Parse(srcQty));
+                ClearSlot(clicked_slot);
 
-                items[targetSlotNum] = items[targetSlotNum];
-                itemImages[targetSlotNum] = itemImages[targetSlotNum];
-                slots[targetSlotNum] = slots[targetSlotNum];
+                GameObject dstSlots = slots[targetSlotNum];
+                string dstQty = dstSlots.transform.GetComponentsInChildren<TMP_Text>()[0].text;
+                PickableObjects dstTmp = new PickableObjects(items[targetSlotNum], int.Parse(dstQty));
+                ClearSlot(targetSlotNum);
 
-                items[targetSlotNum] = tmpItems;
-                itemImages[targetSlotNum] = tmpItemImages;
-                slots[targetSlotNum] = tmpSlots;
-                /*
-                 * Quantity
-                 */
+                AddItemAt(srcTmp, targetSlotNum);
+                AddItemAt(dstTmp, clicked_slot);
 
                 ClearSlot(numSlots);
 
@@ -337,6 +350,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
             }
             else
             {
+                /*
                 Item tmpItems = new Item(items[targetSlotNum]);
                 Image tmpItemImages = itemImages[targetSlotNum];
                 GameObject tmpSlots = slots[targetSlotNum];
@@ -348,12 +362,11 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                 items[targetSlotNum] = tmpItems;
                 itemImages[targetSlotNum] = tmpItemImages;
                 slots[targetSlotNum] = tmpSlots;
-                /*
-                 * Quantity
-                 */
 
+
+                */
                 ClearSlot(numSlots);
-
+                
                 return true;
             }
 
@@ -396,15 +409,11 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                 {
                     is_item_clicked = false;
 
-                    if (MoveItem(current_clicked_slot))
+                    Debug.Log("clicked_slot = " + clicked_slot + ", current_clicked_slot = " + current_clicked_slot);
+                    if (current_clicked_slot != clicked_slot)
                     {
-
+                        MoveItem(current_clicked_slot);
                     }
-                    else
-                    {
-                        //SwapSlot();
-                    }
-
                     ClearSlot(numSlots);
                 }
                 // 좌클릭으로 모든 수량 선택
@@ -419,7 +428,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                         TMP_Text src_qty_text = src.transform.GetComponentsInChildren<TMP_Text>()[0];
                         Image src_image = itemImages[clicked_slot];
 
-                        itemToDrop = items[clicked_slot];
+                        itemToDrop = new Item(items[clicked_slot]);
                         duplicatedSlot_Image.sprite = src_image.sprite;
                         duplicatedSlot_Image.enabled = true;
                         duplicatedSlot_QtyText.text = src_qty_text.text;
@@ -474,12 +483,11 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                         TMP_Text src_qty_text = src.transform.GetComponentsInChildren<TMP_Text>()[0];
                         Image src_image = itemImages[clicked_slot];
 
-                        itemToDrop = items[clicked_slot];
+                        itemToDrop = new Item(items[clicked_slot]);
                         duplicatedSlot_Image.sprite = src_image.sprite;
                         duplicatedSlot_Image.enabled = true;
                         duplicatedSlot_QtyText.enabled = true;
 
-                        Debug.Log("duplicatedSlot_QtyText.text = " + duplicatedSlot_QtyText.text);
                         int dst_qty;
                         if (duplicatedSlot_QtyText.text.Equals(""))
                         {

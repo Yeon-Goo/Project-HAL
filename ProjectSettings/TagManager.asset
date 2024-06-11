@@ -12,8 +12,8 @@ TagManager:
   - Glass
   - Stone
   - water
+  - King_Slime
   - Inventory
-  - Boss_Enemy
   layers:
   - Default
   - TransparentFX
@@ -26,10 +26,10 @@ TagManager:
   - Enemies
   - Player_Attack
   - Enemy_Attack
-  - 
-  - 
-  - 
-  - 
+  - UpWall
+  - DownWall
+  - LeftWall
+  - RightWall
   - 
   - 
   - 
@@ -71,7 +71,4 @@ TagManager:
     locked: 0
   - name: Tilemap_Trees_and_Rocks(Over)
     uniqueID: 3425836341
-    locked: 0
-  - name: Enemy_Attack
-    uniqueID: 4051070645
     locked: 0
