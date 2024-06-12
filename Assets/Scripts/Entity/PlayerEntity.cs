@@ -100,6 +100,8 @@ public class PlayerEntity : Entity
     private new Rigidbody2D rigidbody;
     private ParticleSystem particleSystem;
 
+    private TextManager textManager;
+
     // Player가 현재 어떤 애니메이션을 재생해야 하는지 저장하는 변수
     enum AnimationStateEnum
     {
@@ -168,6 +170,9 @@ public class PlayerEntity : Entity
         DisableafterimageSystem();
         //ResetEntity();
         statInit();
+
+        
+
     }
 
     /*
@@ -577,6 +582,11 @@ public class PlayerEntity : Entity
             if (stat_manager.Cur_hp <= float.Epsilon)
             {
                 SoundManager.Instance.PlayPlayerSound("playerdiesound");
+                textManager = FindObjectOfType<TextManager>();
+                if (textManager != null)
+                {
+                    textManager.ShowCentralText("You Died\npress H to revive");
+                }
                 KillEntity();
                 break;
             }
