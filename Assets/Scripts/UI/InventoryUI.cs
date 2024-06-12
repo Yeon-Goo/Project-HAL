@@ -165,7 +165,6 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                 break;
         };
 
-        Debug.Log(prefab_path);
         if (prefab_path != null)
         {
             prefab_to_spawn = Resources.Load<GameObject>(prefab_path);
