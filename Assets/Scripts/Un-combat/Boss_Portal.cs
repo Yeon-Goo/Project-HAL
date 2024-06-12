@@ -14,7 +14,7 @@ public class Boss_Portal : MonoBehaviour
             if (portal != null)
             {
                 portal.SetActive(true);
-                Debug.Log("Stage0_Clear_Portal has been activated.");
+                //Debug.Log("Stage0_Clear_Portal has been activated.");
             }
     }
     }

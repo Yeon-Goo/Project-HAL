@@ -567,6 +567,7 @@ public class PlayerEntity : Entity
                 stat_manager.Cur_hp -= damage;
                 if(stat_manager.Cur_hp > float.Epsilon)
                 {
+                    StartCoroutine("FlickEntity");
                     SoundManager.Instance.PlayPlayerSound("playerhitsound");
                 }
             }
