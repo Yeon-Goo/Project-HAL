@@ -200,7 +200,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     //     itemToAdd를 Inventory에 추가하는 데에 성공하면 true를 반환하고, 실패하면 false를 반환합니다.
     public bool AddItem(PickableObjects itemToAdd)
     {
-        Debug.Log("itemToAdd = " + itemToAdd + ", itemToAdd.item.ItemType = " + itemToAdd.Item.ItemType);
+        //Debug.Log("itemToAdd = " + itemToAdd + ", itemToAdd.item.ItemType = " + itemToAdd.Item.ItemType);
         
         for (int i = 0; i < items.Length; i++)
         {
@@ -248,7 +248,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
     //     targetSlotNum의 slot이 itemToAdd를 가지고 있지 않고 비어 있지도 않으면 false를 반환합니다.
     public bool AddItemAt(PickableObjects itemToAdd, int targetSlotNum)
     {
-        Debug.Log("Add Item At");
+        //Debug.Log("Add Item At");
         if (items[targetSlotNum] != null && items[targetSlotNum].ItemType == itemToAdd.Item.ItemType && itemToAdd.Item.Stackable == true)
         {
 
@@ -259,9 +259,9 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
             {
                 //qtyText.enabled = true;
                 int qty = int.Parse(qtyText.text);
-                Debug.Log("qty = " + qty + ", itemToAdd.Quantity = " + itemToAdd.Quantity);
+                //Debug.Log("qty = " + qty + ", itemToAdd.Quantity = " + itemToAdd.Quantity);
                 qty += itemToAdd.Quantity;
-                Debug.Log("qty = " + qty);
+                //Debug.Log("qty = " + qty);
                 qtyText.text = qty.ToString();
             }
 
@@ -269,7 +269,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
         }
         else if (items[targetSlotNum] == null)
         {
-            Debug.Log("targetSlot is null");
+            //Debug.Log("targetSlot is null");
             items[targetSlotNum] = Instantiate(itemToAdd.Item);
             itemImages[targetSlotNum].sprite = itemToAdd.Item.Sprite;
             itemImages[targetSlotNum].enabled = true;
@@ -408,7 +408,7 @@ public class InventoryUI : MonoBehaviour, IPointerClickHandler, IDragHandler, IP
                 {
                     is_item_clicked = false;
 
-                    Debug.Log("clicked_slot = " + clicked_slot + ", current_clicked_slot = " + current_clicked_slot);
+                    //Debug.Log("clicked_slot = " + clicked_slot + ", current_clicked_slot = " + current_clicked_slot);
                     if (current_clicked_slot != clicked_slot)
                     {
                         MoveItem(current_clicked_slot);
