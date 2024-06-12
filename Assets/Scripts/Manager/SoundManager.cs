@@ -28,8 +28,10 @@ public class SoundManager : MonoBehaviour
     private Dictionary<string, AudioClip> soundDictionary;
 
     //볼륨 조절 변수
-    public Slider bgm_slider;
-    public Slider sfx_slider;
+    [SerializeField]
+    private Slider bgm_slider;
+    [SerializeField]
+    private Slider sfx_slider;
 
     private void Awake()
     {
@@ -49,11 +51,10 @@ public class SoundManager : MonoBehaviour
             soundDictionary[sound.name] = sound.clip;
         }
 
-        bgm_slider = bgm_slider.GetComponent<Slider>();
-        sfx_slider = sfx_slider.GetComponent<Slider>();
-
         bgm_slider.onValueChanged.AddListener(ChangeBgmSound);
         sfx_slider.onValueChanged.AddListener(ChangeSfxSound);
+        ChangeBgmSound(bgm_slider.value);
+        ChangeSfxSound(sfx_slider.value);
     }
 
     public void PlaySound(string soundName)
