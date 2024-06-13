@@ -156,6 +156,8 @@ public abstract class Entity : MonoBehaviour
             rectTransform.sizeDelta = new Vector2(1000, 50);
             rectTransform.anchoredPosition = new Vector2(0, 50); // 설정된 위치에 배치
 
+            // 3초 뒤에 텍스트 오브젝트 삭제
+            Destroy(clearTextObj, 4f);
         }
 
         Destroy(gameObject);

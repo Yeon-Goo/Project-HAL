@@ -85,7 +85,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1164277935
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &5793005677089821213
@@ -164,7 +164,7 @@ MonoBehaviour:
   speed: 2
   range: 8
   tracking_range: 13
-  attack_range: 10
+  attack_range: 7
   attack_speed: 5
   attack_time: 0.42
   idle_delay: 1

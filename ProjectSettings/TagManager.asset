@@ -60,6 +60,9 @@ TagManager:
   - name: Tilemap_Walkable_Objects
     uniqueID: 1342830985
     locked: 0
+  - name: Enemy_Attack
+    uniqueID: 4051070645
+    locked: 0
   - name: Tilemap_Trees_and_Rocks(Under)
     uniqueID: 99373249
     locked: 0
@@ -71,7 +74,4 @@ TagManager:
     locked: 0
   - name: Tilemap_Trees_and_Rocks(Over)
     uniqueID: 3425836341
-    locked: 0
-  - name: Enemy_Attack
-    uniqueID: 4051070645
     locked: 0

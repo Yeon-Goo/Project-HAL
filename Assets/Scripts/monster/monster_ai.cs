@@ -49,6 +49,7 @@ public class MonsterAI : MonoBehaviour
             {
                 if (distance < range) // 거리가 가까워지면 추격상태로 전환
                 {
+                    GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                     monster_state = (int)StateEnum.Walk;
                     SetAnimation("Walk", true);
                 }
@@ -59,6 +60,7 @@ public class MonsterAI : MonoBehaviour
                     move_direction = (From_Current_To_Initial + wanderDirection).normalized;
                     target_pos = transform.position + (Vector3)move_direction * 10;
                     tempTime = Time.time;
+                    GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                     monster_state = (int)StateEnum.Walk;
                     SetAnimation("Walk", true);
                 }
@@ -79,6 +81,7 @@ public class MonsterAI : MonoBehaviour
             {
                 move_direction = (player.position - transform.position).normalized;
                 target_pos = transform.position + (Vector3)move_direction * 5;
+                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 monster_state = (int)StateEnum.Attack;
                 SetAnimation("Attack", false);
                 tempTime = Time.time;
@@ -86,6 +89,7 @@ public class MonsterAI : MonoBehaviour
             }
             if (distance > tracking_range) // 시야 사거리가 멀어졌을 경우 평상시로 전환
             {
+                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 monster_state = (int)StateEnum.Idle;
                 SetAnimation("Idle", true);
                 tempTime = Time.time;
@@ -112,7 +116,7 @@ public class MonsterAI : MonoBehaviour
                     Banana.transform.position = transform.position + new Vector3(1f, 0.5f, 0f);
                 }
                 Banana.GetComponent<Rigidbody2D>().AddForce((target_pos - transform.position).normalized * 1000);
-
+                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
                 monster_state = (int)StateEnum.Idle; // Idle 상태로 전환하여 1초 유지
                 SetAnimation("Idle", true);
                 after_Attack = true;

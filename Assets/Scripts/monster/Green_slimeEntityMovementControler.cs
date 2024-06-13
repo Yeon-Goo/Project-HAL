@@ -49,6 +49,7 @@ public class MonsterTracking : MonoBehaviour
 
         if (monster_state == (int)StateEnum.Idle) // 평상시
         {
+            rb.velocity = Vector2.zero;
             if(after_Attack == false)
             {
                 if (distance < range) // 거리가 가까워지면 추격상태로 전환
@@ -100,6 +101,7 @@ public class MonsterTracking : MonoBehaviour
             rb.velocity = Vector2.zero; // 움직임을 멈춤
             if (Time.time - tempTime > 0.5f) // 0.5초 동안 대기
             {
+                FlipSprite();
                 rb.AddForce(move_direction * attack_speed, ForceMode2D.Impulse); // 플레이어 방향으로 힘을 가함
                 monster_state = (int)StateEnum.Attack;
                 SetAnimation("Attack", false);
@@ -111,7 +113,6 @@ public class MonsterTracking : MonoBehaviour
         {
             if (Time.time - tempTime > attack_time) // 공격 애니메이션이 끝나고
             {
-                rb.velocity = Vector2.zero;
                 monster_state = (int)StateEnum.Idle; // Idle 상태로 전환하여 1초 유지
                 SetAnimation("Idle", true);
                 after_Attack = true;

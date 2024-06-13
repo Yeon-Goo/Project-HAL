@@ -91,52 +91,6 @@ public class king_slimeEntity : MonoBehaviour
         }
     }
 
-/*    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (monster_state == (int)StateEnum.rush)
-        {
-            if (collision.collider.gameObject.layer == LayerMask.NameToLayer("UpWall"))
-            {
-                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                r = Random.Range(210, 330);
-                Vector3 NewDirection = AngleToVector(r);
-                GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 500000);
-            }
-            else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("DownWall"))
-            {
-                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                r = Random.Range(30, 150);
-                Vector3 NewDirection = AngleToVector(r);
-                GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 500000);
-            }
-            else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("LeftWall"))
-            {
-                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                r = Random.Range(-30, 30);
-                Vector3 NewDirection = AngleToVector(r);
-                GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 500000);
-            }
-            else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("RightWall"))
-            {
-                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-                r = Random.Range(150, 210);
-                Vector3 NewDirection = AngleToVector(r);
-                GetComponent<Rigidbody2D>().AddForce(NewDirection.normalized * 500000);
-            }
-            else if (collision.collider.gameObject.layer == LayerMask.NameToLayer("Blocking") || collision.collider.gameObject.layer == LayerMask.NameToLayer("Enemies"))
-            {
-                Vector2 incomingVector = rb.velocity;
-                Vector2 normalVector = collision.contacts[0].normal;
-                Vector2 reflectVector = Vector2.Reflect(incomingVector, normalVector).normalized;
-
-                float speedReduction = 0.3f;
-                float newSpeed = Mathf.Max(0, incomingVector.magnitude - speedReduction);
-
-                rb.velocity = reflectVector * newSpeed;
-            }
-        }
-    }
-*/
     void FixedUpdate()
     {
         if (stat_manager != null)
@@ -148,14 +102,40 @@ public class king_slimeEntity : MonoBehaviour
             StartCoroutine(SetStatManagerCoroutine());
         }
 
+        if (player.position.y > -10f)
+        {
+            DisableHPBarUI();
+            stat_manager.Cur_hp = stat_manager.Max_hp;
+            monster_state = (int)StateEnum.idle;
+            transform.position = new Vector3(11, -32, 0);
+            SetAnimation("Idle", true);
+            return;
+        }
+
         float distance = Vector2.Distance(transform.position, player.position);
+
         if (monster_state == (int)StateEnum.idle) // 평상시
         {
             if (distance < range) // 거리가 가까워지면 추격상태로 전환
             {
                 if (bossHPUI != null)
                 {
-                    bossHPUI.SetActive(true); // Boss_HP UI 활성화
+                    bossHPUI.SetActive(true);
+                }
+
+                if (filledSlider != null)
+                {
+                    filledSlider.gameObject.SetActive(true);
+                }
+
+                if (emptySlider != null)
+                {
+                    emptySlider.gameObject.SetActive(true);
+                }
+
+                if (hpText != null)
+                {
+                    hpText.gameObject.SetActive(true);
                 }
                 monster_state = (int)StateEnum.move;
                 UpdateScaleTowardsPlayer(); // 플레이어 방향에 따른 Scale 업데이트
@@ -379,6 +359,29 @@ public class king_slimeEntity : MonoBehaviour
         if (hpText != null)
         {
             Destroy(hpText.gameObject);
+        }
+    }
+
+    private void DisableHPBarUI()
+    {
+        if (bossHPUI != null)
+        {
+            bossHPUI.SetActive(false);
+        }
+
+        if (filledSlider != null)
+        {
+            filledSlider.gameObject.SetActive(false);
+        }
+
+        if (emptySlider != null)
+        {
+            emptySlider.gameObject.SetActive(false);
+        }
+
+        if (hpText != null)
+        {
+            hpText.gameObject.SetActive(false);
         }
     }
 
