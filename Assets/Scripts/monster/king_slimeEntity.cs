@@ -151,7 +151,7 @@ public class king_slimeEntity : MonoBehaviour
             if (Time.time - tempTime > 3.0f)
             {
                 int rand = Random.Range(0, 16);
-                if (rand < 5)
+                if (rand < 0)
                 {
                     monster_state = (int)StateEnum.barrage;
                     SetAnimation("Walk", true);
@@ -159,12 +159,12 @@ public class king_slimeEntity : MonoBehaviour
                     barrageCoroutine = StartCoroutine(BarrageMovement());
                     tempTime = Time.time;
                 }
-                else if (rand < 10)
+                else if (rand < 0)
                 {
                     monster_state = (int)StateEnum.rush;
                     StartCoroutine(RushSequence());
                 }
-                else if (rand < 15)
+                else if (rand < 16)
                 {
                     monster_state = (int)StateEnum.boom;
                     StartCoroutine(BoomSequence());
@@ -267,6 +267,15 @@ public class king_slimeEntity : MonoBehaviour
         yield return new WaitForSeconds(0.5f); // 1초 대기
 
         GameObject boom = Instantiate(BoomPrefab);
+        if (transform.position.x > player.position.x)
+        {
+            startPosition = startPosition + new Vector2(-1.8f, 2.3f);
+        }
+        else
+        {
+            startPosition = startPosition + new Vector2(1.8f, 2.3f);
+        }
+        
         boom.transform.position = startPosition;
 
         Vector2 direction = (targetPosition - startPosition).normalized;
