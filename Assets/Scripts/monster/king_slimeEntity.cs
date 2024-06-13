@@ -151,7 +151,7 @@ public class king_slimeEntity : MonoBehaviour
             if (Time.time - tempTime > 3.0f)
             {
                 int rand = Random.Range(0, 16);
-                if (rand < 0)
+                if (rand < 5)
                 {
                     monster_state = (int)StateEnum.barrage;
                     SetAnimation("Walk", true);
@@ -159,12 +159,12 @@ public class king_slimeEntity : MonoBehaviour
                     barrageCoroutine = StartCoroutine(BarrageMovement());
                     tempTime = Time.time;
                 }
-                else if (rand < 0)
+                else if (rand < 10)
                 {
                     monster_state = (int)StateEnum.rush;
                     StartCoroutine(RushSequence());
                 }
-                else if (rand < 16)
+                else if (rand < 15)
                 {
                     monster_state = (int)StateEnum.boom;
                     StartCoroutine(BoomSequence());
