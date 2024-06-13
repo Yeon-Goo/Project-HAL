@@ -151,8 +151,8 @@ public class king_slimeEntity : MonoBehaviour
             transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
             if (Time.time - tempTime > 3.0f)
             {
-                int rand = Random.Range(0, 16);
-                if (rand < 0)
+                int rand = Random.Range(0, 79);
+                if (rand < 30)
                 {
                     pattern_rand = Random.Range(0, 2);
                     rand_barrage = Random.Range(0, 90);
@@ -161,12 +161,12 @@ public class king_slimeEntity : MonoBehaviour
                     barrageCoroutine = StartCoroutine(BarrageMovement());
                     tempTime = Time.time;
                 }
-                else if (rand < 0)
+                else if (rand < 45)
                 {
                     monster_state = (int)StateEnum.rush;
                     StartCoroutine(RushSequence());
                 }
-                else if (rand < 16)
+                else if (rand < 75)
                 {
                     pattern_rand = Random.Range(0, 2);
                     monster_state = (int)StateEnum.boom;
