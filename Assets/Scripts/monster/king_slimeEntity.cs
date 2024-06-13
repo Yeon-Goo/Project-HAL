@@ -27,6 +27,8 @@ public class king_slimeEntity : MonoBehaviour
     private Vector3 target_pos;
     int barrage_count = 4;
     float r;
+    int pattern_rand = 0;
+    float rand_barrage = 0;
 
     private StatManager stat_manager;
     private SkeletonAnimation skeletonAnimation;
@@ -80,12 +82,10 @@ public class king_slimeEntity : MonoBehaviour
             stat_manager = this.GetComponent<Entity>().stat_manager;
             if (stat_manager == null)
             {
-                Debug.Log("StatManager is not yet assigned.");
                 yield return null; // 다음 프레임까지 대기
             }
             else
             {
-                Debug.Log("StatManager assigned successfully.");
                 break;
             }
         }
@@ -147,27 +147,37 @@ public class king_slimeEntity : MonoBehaviour
         if (monster_state == (int)StateEnum.move) // 추격 중
         {
             UpdateScaleTowardsPlayer(); // 플레이어 방향에 따른 Scale 업데이트
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero; // 정지
             transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
             if (Time.time - tempTime > 3.0f)
             {
                 int rand = Random.Range(0, 16);
-                if (rand < 5)
+                if (rand < 0)
                 {
+                    pattern_rand = Random.Range(0, 2);
+                    rand_barrage = Random.Range(0, 90);
                     monster_state = (int)StateEnum.barrage;
                     SetAnimation("Walk", true);
-                    GetComponent<Rigidbody2D>().velocity = Vector2.zero; // 정지
                     barrageCoroutine = StartCoroutine(BarrageMovement());
                     tempTime = Time.time;
                 }
-                else if (rand < 10)
+                else if (rand < 0)
                 {
                     monster_state = (int)StateEnum.rush;
                     StartCoroutine(RushSequence());
                 }
-                else if (rand < 15)
+                else if (rand < 16)
                 {
+                    pattern_rand = Random.Range(0, 2);
                     monster_state = (int)StateEnum.boom;
-                    StartCoroutine(BoomSequence());
+                    if(pattern_rand == 0)
+                    {
+                        StartCoroutine(BoomSequence());
+                    }
+                    else
+                    {
+                        StartCoroutine(GatlingSequence());
+                    }
                 }
                 else
                 {
@@ -181,7 +191,7 @@ public class king_slimeEntity : MonoBehaviour
         if (monster_state == (int)StateEnum.barrage) // 탄막 피하기
         {
             UpdateScale(); // x 속도에 따른 Scale 업데이트
-            if (Time.time - tempTime >= 0.3f * barrage_count)
+            if (Time.time - tempTime >= 0.3f * barrage_count && pattern_rand == 0)
             {
                 float rand = Random.Range(12, 24);
                 for (int i = 0; i < 10; i++)
@@ -189,6 +199,17 @@ public class king_slimeEntity : MonoBehaviour
                     GameObject Banana = Instantiate(BananaPrefab);
                     Banana.transform.position = transform.position;
                     Vector3 NewDirection = AngleToVector(36 * i + 18 * barrage_count + rand);
+                    Banana.GetComponent<Rigidbody2D>().AddForce((NewDirection).normalized * 900);
+                }
+                barrage_count++;
+            }
+            if (Time.time - tempTime >= 0.1f * barrage_count && pattern_rand == 1)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    GameObject Banana = Instantiate(BananaPrefab);
+                    Banana.transform.position = transform.position;
+                    Vector3 NewDirection = AngleToVector(90 * i + 17 * barrage_count + rand_barrage);
                     Banana.GetComponent<Rigidbody2D>().AddForce((NewDirection).normalized * 900);
                 }
                 barrage_count++;
@@ -220,7 +241,39 @@ public class king_slimeEntity : MonoBehaviour
             }
         }
     }
+    private IEnumerator GatlingSequence()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            SetAnimation("Attack", false);
+            UpdateScaleTowardsPlayer();
+            yield return new WaitForSeconds(0.5f); // 공격 모션 0.5초 대기
+            Vector3 poscorrection;
+            if (transform.position.x > player.position.x)
+            {
+                poscorrection = new Vector3(-1.7f, 2.2f, 0f);
+            }
+            else
+            {
+                poscorrection = new Vector3(1.7f, 2.2f, 0f);
+            }
+            for (int j = 0; j < 6; j++)
+            {
+                GameObject Banana = Instantiate(BananaPrefab);
+                Banana.transform.position = transform.position + poscorrection;
+                Vector2 direction = (player.position - Banana.transform.position).normalized;
+                Banana.GetComponent<Rigidbody2D>().AddForce(direction * 1200);
+                yield return new WaitForSeconds(0.1f); // 바나나 발사 간격 0.1초
+            }
+            UpdateScaleTowardsPlayer();
+            yield return new WaitForSeconds(0.2f); // 공격 모션 후 0.5초 대기
+        }
 
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero; // 정지
+        monster_state = (int)StateEnum.move;
+        SetAnimation("Idle", true);
+        tempTime = Time.time;
+    }
     IEnumerator RushSequence()
     {
         int rand = Random.Range(0, 10);
@@ -254,7 +307,7 @@ public class king_slimeEntity : MonoBehaviour
             GetComponent<Rigidbody2D>().velocity = Vector2.zero; // 완전히 멈춤
             yield return new WaitForSeconds(0.3f); // 다음 공격 모션 전 0.3초 대기
         }
-
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero; // 정지
         monster_state = (int)StateEnum.move;
         SetAnimation("Idle", true);
         tempTime = Time.time;
@@ -293,6 +346,7 @@ public class king_slimeEntity : MonoBehaviour
             yield return null;
         }
         monster_state = (int)StateEnum.move;
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero; // 정지
         SetAnimation("Idle", true);
         tempTime = Time.time;
     }
