@@ -46,6 +46,11 @@ public class MonsterTracking : MonoBehaviour
     void FixedUpdate()
     {
         float distance = Vector2.Distance(transform.position, player.position);
+        if (distance >= 30f) // 플레이어와의 거리가 30 이상이면 몬스터를 제거
+        {
+            Destroy(gameObject);
+            return;
+        }
 
         if (monster_state == (int)StateEnum.Idle) // 평상시
         {
